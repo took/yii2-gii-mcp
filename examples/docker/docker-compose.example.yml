@@ -1,0 +1,77 @@
+# Example Docker Compose configuration for Yii2 with yii2-gii-mcp
+#
+# This is a reference setup showing how to configure Docker for use with the MCP server.
+# Adjust to match your project's specific requirements.
+
+version: '3.8'
+
+services:
+  # PHP Application Container
+  php:
+    image: php:8.2-fpm
+    container_name: yii2-php
+    working_dir: /var/www/html
+    volumes:
+      # Mount project directory
+      - ./:/var/www/html:delegated
+      # Optional: Persistent vendor directory for better performance
+      # - vendor:/var/www/html/vendor
+    networks:
+      - yii2-network
+    depends_on:
+      - mysql
+    environment:
+      - PHP_IDE_CONFIG=serverName=yii2-docker
+      - YII_DEBUG=1
+      - YII_ENV=dev
+
+  # MySQL Database Container
+  mysql:
+    image: mysql:8.0
+    container_name: yii2-mysql
+    ports:
+      # Expose to host for MCP server access
+      - "3306:3306"
+    volumes:
+      # Persistent database storage
+      - mysql-data:/var/lib/mysql
+    networks:
+      - yii2-network
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: yii2_app
+      MYSQL_USER: yii2
+      MYSQL_PASSWORD: yii2pass
+    command: --default-authentication-plugin=mysql_native_password
+
+  # Nginx Web Server (optional)
+  nginx:
+    image: nginx:alpine
+    container_name: yii2-nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html:delegated
+      # Mount nginx config
+      # - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - yii2-network
+    depends_on:
+      - php
+
+networks:
+  yii2-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
+    driver: local
+  # Uncomment if using persistent vendor volume
+  # vendor:
+  #   driver: local
+
+# Usage:
+#   docker compose up -d
+#   docker compose down
+#   docker compose logs -f
+#   docker exec -it yii2-php bash

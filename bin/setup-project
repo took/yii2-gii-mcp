@@ -1,0 +1,121 @@
+#!/usr/bin/env php
+<?php
+/**
+ * Setup script for yii2-gii-mcp in a Yii2 project
+ * 
+ * This script helps you quickly set up the MCP server configuration
+ * for your Yii2 project by copying the smart config template.
+ * 
+ * Usage:
+ *   cd /path/to/your/yii2/project
+ *   php vendor/took/yii2-gii-mcp/bin/setup-project
+ * 
+ * This will:
+ * 1. Detect your project structure
+ * 2. Copy the config-advanced-template.php to your project root as config-mcp.php
+ * 3. Display instructions for configuring Firebender
+ */
+
+echo "\n";
+echo "==========================================================\n";
+echo "  yii2-gii-mcp Project Setup\n";
+echo "==========================================================\n\n";
+
+// Detect project root
+$projectRoot = getcwd();
+echo "Project root: $projectRoot\n";
+
+// Check if we're in a Yii2 project
+$hasVendor = is_dir($projectRoot . '/vendor');
+$hasComposerJson = file_exists($projectRoot . '/composer.json');
+
+if (!$hasVendor || !$hasComposerJson) {
+    echo "\n";
+    echo "ERROR: This doesn't appear to be a Yii2 project root.\n";
+    echo "Please run this script from your Yii2 project root directory.\n";
+    echo "\n";
+    echo "Expected:\n";
+    echo "  - composer.json file\n";
+    echo "  - vendor/ directory\n";
+    echo "\n";
+    exit(1);
+}
+
+// Detect Yii2 template type
+$isBasicTemplate = is_dir($projectRoot . '/app') && is_dir($projectRoot . '/config');
+$isAdvancedTemplate = is_dir($projectRoot . '/common') && is_dir($projectRoot . '/console');
+$hasApiDirectory = is_dir($projectRoot . '/api');
+
+echo "\nDetected template: ";
+if ($isBasicTemplate) {
+    echo "Basic Template\n";
+} elseif ($isAdvancedTemplate) {
+    echo "Advanced Template";
+    if ($hasApiDirectory) {
+        echo " + API";
+    }
+    echo "\n";
+} else {
+    echo "Unknown (custom structure)\n";
+}
+
+// Find the template file
+$templateSource = __DIR__ . '/../examples/config-advanced-template.php';
+$configDestination = $projectRoot . '/config-mcp.php';
+
+if (!file_exists($templateSource)) {
+    echo "\nERROR: Template file not found at: $templateSource\n";
+    exit(1);
+}
+
+// Check if config already exists
+if (file_exists($configDestination)) {
+    echo "\n";
+    echo "⚠️  WARNING: config-mcp.php already exists in your project.\n";
+    echo "Location: $configDestination\n";
+    echo "\n";
+    echo "Do you want to overwrite it? [y/N]: ";
+    $handle = fopen("php://stdin", "r");
+    $line = trim(fgets($handle));
+    fclose($handle);
+    
+    if (strtolower($line) !== 'y' && strtolower($line) !== 'yes') {
+        echo "\nSetup cancelled. No files were modified.\n\n";
+        exit(0);
+    }
+}
+
+// Copy the template
+if (!copy($templateSource, $configDestination)) {
+    echo "\nERROR: Failed to copy config template.\n";
+    exit(1);
+}
+
+chmod($configDestination, 0644);
+
+echo "\n✓ Config file created: config-mcp.php\n";
+
+// Display next steps
+echo "\n";
+echo "==========================================================\n";
+echo "  Setup Complete!\n";
+echo "==========================================================\n\n";
+
+echo "Next steps:\n\n";
+
+echo "1. Test the MCP server:\n";
+echo "   YII2_CONFIG_PATH=$projectRoot/config-mcp.php \\\n";
+echo "     php vendor/took/yii2-gii-mcp/examples/test-list-tables.php\n\n";
+
+echo "2. Configure Firebender (PhpStorm):\n";
+echo "   The MCP server is already configured globally for all Yii2 projects.\n";
+echo "   Just restart PhpStorm/Firebender if it's running.\n\n";
+
+echo "3. Start using it:\n";
+echo "   - Ask Firebender to \"list database tables\"\n";
+echo "   - Ask to \"generate a model for the users table\"\n";
+echo "   - Ask to \"inspect the database schema\"\n\n";
+
+echo "For more information, see:\n";
+echo "  - README: vendor/took/yii2-gii-mcp/README.md\n";
+echo "  - Firebender Setup: vendor/took/yii2-gii-mcp/docs/firebender-setup.md\n\n";

@@ -1,0 +1,366 @@
+#!/usr/bin/env php
+<?php
+/**
+ * Interactive Setup Wizard for yii2-gii-mcp
+ * 
+ * This script provides an easy, step-by-step setup process for configuring
+ * the MCP server with Firebender, Claude Desktop, or other MCP clients.
+ * 
+ * Usage:
+ *   cd /path/to/your/yii2/project
+ *   php vendor/took/yii2-gii-mcp/bin/interactive-setup
+ */
+
+// Colors for terminal output
+class Colors {
+    const RESET = "\033[0m";
+    const GREEN = "\033[32m";
+    const BLUE = "\033[34m";
+    const YELLOW = "\033[33m";
+    const RED = "\033[31m";
+    const BOLD = "\033[1m";
+}
+
+function printHeader($text) {
+    echo "\n" . Colors::BOLD . Colors::BLUE;
+    echo "==========================================================\n";
+    echo "  " . $text . "\n";
+    echo "==========================================================\n";
+    echo Colors::RESET . "\n";
+}
+
+function printSuccess($text) {
+    echo Colors::GREEN . "✓ " . $text . Colors::RESET . "\n";
+}
+
+function printWarning($text) {
+    echo Colors::YELLOW . "⚠️  " . $text . Colors::RESET . "\n";
+}
+
+function printError($text) {
+    echo Colors::RED . "✗ " . $text . Colors::RESET . "\n";
+}
+
+function printInfo($text) {
+    echo Colors::BLUE . "ℹ " . $text . Colors::RESET . "\n";
+}
+
+function askQuestion($question, $default = null) {
+    if ($default !== null) {
+        echo Colors::BOLD . $question . " [" . $default . "]: " . Colors::RESET;
+    } else {
+        echo Colors::BOLD . $question . ": " . Colors::RESET;
+    }
+    
+    $handle = fopen("php://stdin", "r");
+    $line = trim(fgets($handle));
+    fclose($handle);
+    
+    if ($line === '' && $default !== null) {
+        return $default;
+    }
+    
+    return $line;
+}
+
+function askYesNo($question, $default = 'y') {
+    $defaultText = $default === 'y' ? 'Y/n' : 'y/N';
+    $answer = askQuestion($question . " [$defaultText]", $default);
+    return in_array(strtolower($answer), ['y', 'yes']);
+}
+
+// Start setup
+printHeader("yii2-gii-mcp Interactive Setup Wizard");
+
+echo "This wizard will help you set up the MCP server for:\n";
+echo "  • Firebender (PhpStorm/IntelliJ)\n";
+echo "  • Claude Desktop\n";
+echo "  • Other MCP-compatible AI agents\n\n";
+
+// Step 1: Detect project root
+printInfo("Detecting project structure...");
+$projectRoot = getcwd();
+echo "Project root: " . Colors::BOLD . $projectRoot . Colors::RESET . "\n\n";
+
+// Check if we're in a Yii2 project
+$hasVendor = is_dir($projectRoot . '/vendor');
+$hasComposerJson = file_exists($projectRoot . '/composer.json');
+
+if (!$hasVendor || !$hasComposerJson) {
+    printError("This doesn't appear to be a Yii2 project root.");
+    echo "Please run this script from your Yii2 project root directory.\n";
+    echo "Expected: composer.json file and vendor/ directory\n\n";
+    exit(1);
+}
+
+printSuccess("Valid Yii2 project detected");
+
+// Step 2: Detect template type
+$isBasicTemplate = is_dir($projectRoot . '/app') && is_dir($projectRoot . '/config');
+$isAdvancedTemplate = is_dir($projectRoot . '/common') && is_dir($projectRoot . '/console');
+$hasApiDirectory = is_dir($projectRoot . '/api');
+$hasFrontend = is_dir($projectRoot . '/frontend');
+$hasBackend = is_dir($projectRoot . '/backend');
+
+echo "Template type: ";
+if ($isBasicTemplate) {
+    echo Colors::GREEN . "Basic Template" . Colors::RESET . "\n";
+} elseif ($isAdvancedTemplate) {
+    echo Colors::GREEN . "Advanced Template";
+    $parts = [];
+    if ($hasFrontend) $parts[] = "frontend";
+    if ($hasBackend) $parts[] = "backend";
+    if ($hasApiDirectory) $parts[] = "api";
+    if (!empty($parts)) {
+        echo " (" . implode(", ", $parts) . ")";
+    }
+    echo Colors::RESET . "\n";
+} else {
+    echo Colors::YELLOW . "Custom/Unknown" . Colors::RESET . "\n";
+}
+
+echo "\n";
+
+// Step 3: Check for existing config
+$configDestination = $projectRoot . '/config-mcp.php';
+$hasExistingConfig = file_exists($configDestination);
+
+if ($hasExistingConfig) {
+    printWarning("Found existing config-mcp.php");
+    if (!askYesNo("Do you want to overwrite it?", 'n')) {
+        printInfo("Keeping existing config-mcp.php");
+        $skipConfigCreation = true;
+    } else {
+        $skipConfigCreation = false;
+    }
+} else {
+    $skipConfigCreation = false;
+}
+
+// Step 4: Create config file
+if (!$skipConfigCreation) {
+    printInfo("Creating config-mcp.php...");
+    
+    $templateSource = __DIR__ . '/../examples/config-advanced-template.php';
+    
+    if (!file_exists($templateSource)) {
+        printError("Template file not found at: $templateSource");
+        exit(1);
+    }
+    
+    if (!copy($templateSource, $configDestination)) {
+        printError("Failed to copy config template.");
+        exit(1);
+    }
+    
+    chmod($configDestination, 0644);
+    printSuccess("Created config-mcp.php");
+}
+
+// Step 5: Test the configuration
+echo "\n";
+printInfo("Testing MCP server configuration...");
+
+$testCommand = "cd " . escapeshellarg($projectRoot) . " && " .
+    "YII2_CONFIG_PATH=" . escapeshellarg($configDestination) . " " .
+    "YII2_APP_PATH=" . escapeshellarg($projectRoot) . " " .
+    "php " . escapeshellarg(__DIR__ . "/../examples/test-list-tables.php") . " 2>&1";
+
+exec($testCommand, $output, $exitCode);
+
+if ($exitCode === 0 && strpos(implode("\n", $output), "Successfully retrieved table information") !== false) {
+    printSuccess("MCP server is working correctly!");
+    
+    // Extract table count from output
+    if (preg_match('/Found (\d+) table\(s\)/', implode("\n", $output), $matches)) {
+        echo "  Found " . Colors::BOLD . $matches[1] . Colors::RESET . " database tables\n";
+    }
+} else {
+    printWarning("MCP server test failed. Please check your database configuration.");
+    if (askYesNo("Do you want to see the error details?", 'y')) {
+        echo "\n" . implode("\n", $output) . "\n";
+    }
+}
+
+// Step 6: Configure Firebender/Claude Desktop
+echo "\n";
+printHeader("MCP Client Configuration");
+
+echo "Where do you want to use the MCP server?\n\n";
+echo "  1) Firebender (PhpStorm/IntelliJ) - Project-specific\n";
+echo "  2) Firebender (PhpStorm/IntelliJ) - Global (all Yii2 projects)\n";
+echo "  3) Claude Desktop\n";
+echo "  4) Skip this step (configure manually later)\n\n";
+
+$clientChoice = askQuestion("Select option", "1");
+
+switch ($clientChoice) {
+    case "1":
+        // Project-specific Firebender config
+        printInfo("Creating project-specific Firebender configuration...");
+        
+        $firebenderConfigPath = $projectRoot . '/.firebender/firebender.json';
+        $firebenderDir = dirname($firebenderConfigPath);
+        
+        if (!is_dir($firebenderDir)) {
+            mkdir($firebenderDir, 0755, true);
+        }
+        
+        $firebenderConfig = [
+            'mcpServers' => [
+                'yii2-gii' => [
+                    'command' => 'php',
+                    'args' => [
+                        $projectRoot . '/vendor/took/yii2-gii-mcp/bin/yii2-gii-mcp'
+                    ],
+                    'env' => [
+                        'YII2_CONFIG_PATH' => $projectRoot . '/config-mcp.php',
+                        'YII2_APP_PATH' => $projectRoot
+                    ]
+                ]
+            ]
+        ];
+        
+        // Preserve existing config if present
+        if (file_exists($firebenderConfigPath)) {
+            $existing = json_decode(file_get_contents($firebenderConfigPath), true);
+            if (isset($existing['mcpServers'])) {
+                $firebenderConfig['mcpServers'] = array_merge(
+                    $existing['mcpServers'],
+                    $firebenderConfig['mcpServers']
+                );
+            }
+            // Preserve other settings
+            foreach ($existing as $key => $value) {
+                if ($key !== 'mcpServers') {
+                    $firebenderConfig[$key] = $value;
+                }
+            }
+        }
+        
+        file_put_contents(
+            $firebenderConfigPath,
+            json_encode($firebenderConfig, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . "\n"
+        );
+        
+        printSuccess("Created Firebender configuration at:");
+        echo "  " . $firebenderConfigPath . "\n";
+        break;
+        
+    case "2":
+        // Global Firebender config
+        printInfo("Configuring global Firebender settings...");
+        
+        $homeDir = getenv('HOME') ?: getenv('USERPROFILE');
+        $globalFirebenderConfig = $homeDir . '/.firebender/firebender.json';
+        $globalFirebenderDir = dirname($globalFirebenderConfig);
+        
+        if (!is_dir($globalFirebenderDir)) {
+            mkdir($globalFirebenderDir, 0755, true);
+        }
+        
+        $globalConfig = [
+            'mcpServers' => [
+                'yii2-gii' => [
+                    'command' => 'php',
+                    'args' => [
+                        '${workspaceFolder}/vendor/took/yii2-gii-mcp/bin/yii2-gii-mcp'
+                    ],
+                    'env' => [
+                        'YII2_CONFIG_PATH' => '${workspaceFolder}/config-mcp.php',
+                        'YII2_APP_PATH' => '${workspaceFolder}'
+                    ]
+                ]
+            ]
+        ];
+        
+        // Preserve existing config
+        if (file_exists($globalFirebenderConfig)) {
+            $existing = json_decode(file_get_contents($globalFirebenderConfig), true);
+            if (isset($existing['mcpServers'])) {
+                $globalConfig['mcpServers'] = array_merge(
+                    $existing['mcpServers'],
+                    $globalConfig['mcpServers']
+                );
+            }
+            foreach ($existing as $key => $value) {
+                if ($key !== 'mcpServers') {
+                    $globalConfig[$key] = $value;
+                }
+            }
+        }
+        
+        file_put_contents(
+            $globalFirebenderConfig,
+            json_encode($globalConfig, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . "\n"
+        );
+        
+        printSuccess("Updated global Firebender configuration at:");
+        echo "  " . $globalFirebenderConfig . "\n";
+        printInfo("This will work for all Yii2 projects with config-mcp.php");
+        break;
+        
+    case "3":
+        // Claude Desktop config
+        printInfo("Claude Desktop configuration...");
+        
+        $homeDir = getenv('HOME') ?: getenv('USERPROFILE');
+        $isWindows = DIRECTORY_SEPARATOR === '\\';
+        
+        if ($isWindows) {
+            $claudeConfigPath = $homeDir . '/AppData/Roaming/Claude/claude_desktop_config.json';
+        } else {
+            $claudeConfigPath = $homeDir . '/Library/Application Support/Claude/claude_desktop_config.json';
+        }
+        
+        echo "\nAdd this to your Claude Desktop config:\n";
+        echo Colors::YELLOW;
+        echo json_encode([
+            'mcpServers' => [
+                'yii2-gii' => [
+                    'command' => 'php',
+                    'args' => [
+                        $projectRoot . '/vendor/took/yii2-gii-mcp/bin/yii2-gii-mcp'
+                    ],
+                    'env' => [
+                        'YII2_CONFIG_PATH' => $projectRoot . '/config-mcp.php',
+                        'YII2_APP_PATH' => $projectRoot
+                    ]
+                ]
+            ]
+        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        echo Colors::RESET . "\n\n";
+        echo "Config file location: " . Colors::BOLD . $claudeConfigPath . Colors::RESET . "\n";
+        break;
+        
+    case "4":
+        printInfo("Skipping MCP client configuration");
+        break;
+}
+
+// Step 7: Final instructions
+printHeader("Setup Complete!");
+
+echo "✨ Your yii2-gii-mcp server is ready to use!\n\n";
+
+echo Colors::BOLD . "Quick Test:\n" . Colors::RESET;
+echo "  Try asking your AI assistant:\n";
+echo "  • \"List all database tables\"\n";
+echo "  • \"Show me the schema for the user table\"\n";
+echo "  • \"Generate a model for the party table\"\n\n";
+
+echo Colors::BOLD . "Manual Testing:\n" . Colors::RESET;
+echo "  cd " . $projectRoot . "\n";
+echo "  YII2_CONFIG_PATH=" . $configDestination . " \\\n";
+echo "    php vendor/took/yii2-gii-mcp/examples/test-list-tables.php\n\n";
+
+echo Colors::BOLD . "Documentation:\n" . Colors::RESET;
+echo "  • README: vendor/took/yii2-gii-mcp/README.md\n";
+echo "  • Quickstart: vendor/took/yii2-gii-mcp/QUICKSTART.md\n";
+echo "  • Setup docs: vendor/took/yii2-gii-mcp/docs/\n\n";
+
+if ($clientChoice === "1" || $clientChoice === "2") {
+    printInfo("Remember to restart PhpStorm/Firebender to load the new configuration!");
+}
+
+echo "\n" . Colors::GREEN . "Happy coding! 🚀" . Colors::RESET . "\n\n";

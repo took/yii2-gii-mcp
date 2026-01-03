@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "yii2-gii": {
+      "comment": "Container-based setup for Claude Desktop. Replace /absolute/path/ with your wrapper script path!",
+      "command": "/absolute/path/to/your/project/bin/yii2-gii-mcp-docker",
+      "args": [],
+      "env": {
+        "YII2_CONFIG_PATH": "/var/www/html/config-mcp.php",
+        "YII2_APP_PATH": "/var/www/html",
+        "comment": "Use container paths for env vars"
+      }
+    }
+  }
+}

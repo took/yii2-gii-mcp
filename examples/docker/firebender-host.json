@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "yii2-gii": {
+      "comment": "Host-based setup: MCP server runs on host, connects to Docker database",
+      "command": "php",
+      "args": [
+        "${workspaceFolder}/vendor/took/yii2-gii-mcp/bin/yii2-gii-mcp"
+      ],
+      "env": {
+        "YII2_CONFIG_PATH": "${workspaceFolder}/config-mcp.php",
+        "YII2_APP_PATH": "${workspaceFolder}"
+      }
+    }
+  }
+}

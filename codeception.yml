@@ -1,0 +1,21 @@
+namespace: Tests
+paths:
+  tests: tests
+  output: tests/_output
+  data: tests/_data
+  support: tests/_support
+  envs: tests/_envs
+settings:
+  shuffle: false
+  lint: true
+  colors: true
+extensions:
+  enabled:
+    - Codeception\Extension\RunFailed
+coverage:
+  enabled: true
+  include:
+    - src/*
+  exclude:
+    - tests/*
+    - vendor/*

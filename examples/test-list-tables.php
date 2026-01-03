@@ -1,0 +1,154 @@
+#!/usr/bin/env php
+<?php
+/**
+ * Test script to demonstrate MCP server usage: List database tables
+ * 
+ * This script shows how to:
+ * 1. Start the MCP server programmatically
+ * 2. Initialize the MCP protocol connection
+ * 3. Call the list-tables tool
+ * 4. Parse and display the results
+ * 
+ * Usage:
+ *   php examples/test-list-tables.php
+ * 
+ * Requirements:
+ *   - YII2_CONFIG_PATH environment variable must be set
+ *   - YII2_APP_PATH environment variable should be set (optional)
+ * 
+ * Example:
+ *   YII2_CONFIG_PATH=/path/to/config-mcp.php php examples/test-list-tables.php
+ */
+
+// Configuration
+$serverPath = __DIR__ . '/../bin/yii2-gii-mcp';
+$configPath = getenv('YII2_CONFIG_PATH');
+$appPath = getenv('YII2_APP_PATH') ?: dirname($configPath);
+
+// Validate configuration
+if (empty($configPath)) {
+    die("ERROR: YII2_CONFIG_PATH environment variable must be set.\n\n" .
+        "Example:\n" .
+        "  YII2_CONFIG_PATH=/path/to/config-mcp.php php examples/test-list-tables.php\n");
+}
+
+if (!file_exists($configPath)) {
+    die("ERROR: Configuration file not found: $configPath\n");
+}
+
+if (!file_exists($serverPath)) {
+    die("ERROR: MCP server executable not found: $serverPath\n");
+}
+
+echo "Starting MCP server test...\n";
+echo "Config: $configPath\n";
+echo "App Path: $appPath\n\n";
+
+// Start the MCP server process
+$descriptorspec = [
+    0 => ['pipe', 'r'],  // stdin
+    1 => ['pipe', 'w'],  // stdout
+    2 => ['pipe', 'w'],  // stderr
+];
+
+$env = [
+    'YII2_CONFIG_PATH' => $configPath,
+    'YII2_APP_PATH' => $appPath,
+];
+
+$process = proc_open("php $serverPath", $descriptorspec, $pipes, $appPath, $env);
+
+if (!is_resource($process)) {
+    die("ERROR: Failed to start MCP server\n");
+}
+
+// Step 1: Initialize the server
+echo "Sending initialize request...\n";
+$initRequest = json_encode([
+    'jsonrpc' => '2.0',
+    'id' => 1,
+    'method' => 'initialize',
+    'params' => [
+        'protocolVersion' => '2024-11-05',
+        'capabilities' => [],
+        'clientInfo' => [
+            'name' => 'test-client',
+            'version' => '1.0'
+        ]
+    ]
+]);
+
+fwrite($pipes[0], $initRequest . "\n");
+fflush($pipes[0]);
+
+// Read initialization response
+$initResponse = fgets($pipes[1]);
+$initData = json_decode($initResponse, true);
+
+if (isset($initData['error'])) {
+    echo "ERROR: Initialization failed\n";
+    echo "Error: " . json_encode($initData['error'], JSON_PRETTY_PRINT) . "\n";
+    fclose($pipes[0]);
+    fclose($pipes[1]);
+    fclose($pipes[2]);
+    proc_close($process);
+    exit(1);
+}
+
+echo "✓ Server initialized successfully\n";
+echo "  Server: {$initData['result']['serverInfo']['name']} v{$initData['result']['serverInfo']['version']}\n";
+echo "  Protocol: {$initData['result']['protocolVersion']}\n\n";
+
+// Step 2: Call list-tables tool
+echo "Calling list-tables tool...\n";
+$listTablesRequest = json_encode([
+    'jsonrpc' => '2.0',
+    'id' => 2,
+    'method' => 'tools/call',
+    'params' => [
+        'name' => 'list-tables',
+        'arguments' => [
+            'detailed' => true
+        ]
+    ]
+]);
+
+fwrite($pipes[0], $listTablesRequest . "\n");
+fflush($pipes[0]);
+
+// Read list-tables response
+$listTablesResponse = fgets($pipes[1]);
+$response = json_decode($listTablesResponse, true);
+
+if (isset($response['error'])) {
+    echo "ERROR: list-tables call failed\n";
+    echo "Error: " . json_encode($response['error'], JSON_PRETTY_PRINT) . "\n";
+} else {
+    echo "✓ Successfully retrieved table information\n\n";
+    echo str_repeat('=', 80) . "\n";
+    echo "DATABASE TABLES\n";
+    echo str_repeat('=', 80) . "\n\n";
+    
+    if (isset($response['result']['content'][0]['text'])) {
+        echo $response['result']['content'][0]['text'] . "\n";
+    } else {
+        echo json_encode($response['result'], JSON_PRETTY_PRINT) . "\n";
+    }
+}
+
+// Close pipes and process
+fclose($pipes[0]);
+fclose($pipes[1]);
+$stderr = stream_get_contents($pipes[2]);
+fclose($pipes[2]);
+
+if (!empty($stderr)) {
+    echo "\n" . str_repeat('=', 80) . "\n";
+    echo "SERVER DEBUG OUTPUT (stderr)\n";
+    echo str_repeat('=', 80) . "\n";
+    echo $stderr . "\n";
+}
+
+proc_close($process);
+
+echo "\nTest completed successfully!\n";

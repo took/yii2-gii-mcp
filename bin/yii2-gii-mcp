@@ -1,0 +1,154 @@
+#!/usr/bin/env php
+<?php
+
+/**
+ * Yii2 Gii MCP Server Executable
+ *
+ * This script starts the MCP server that enables AI agents to interact with Yii2 Gii
+ * for automated code generation and scaffolding.
+ *
+ * Usage:
+ *   # Start MCP server (reads from stdin, writes to stdout)
+ *   yii2-gii-mcp
+ *
+ *   # With demo mode
+ *   yii2-gii-mcp --demo
+ *
+ *   # With debug logging
+ *   DEBUG=1 yii2-gii-mcp
+ *
+ * Environment Variables:
+ *   YII2_CONFIG_PATH - Path to Yii2 configuration file
+ *   YII2_APP_PATH    - Path to Yii2 application directory
+ *   DEBUG            - Enable debug logging to stderr
+ */
+
+// Find autoloader
+$autoloadPaths = [
+        __DIR__ . '/../vendor/autoload.php',  // Installed as package
+        __DIR__ . '/../../../autoload.php',    // Installed as dependency
+];
+
+$autoloadFound = false;
+foreach ($autoloadPaths as $autoloadPath) {
+    if (file_exists($autoloadPath)) {
+        require_once $autoloadPath;
+        $autoloadFound = true;
+        break;
+    }
+}
+
+if (!$autoloadFound) {
+    fwrite(STDERR, "Error: Composer autoloader not found.\n");
+    fwrite(STDERR, "Please run: composer install\n");
+    exit(1);
+}
+
+use Took\Yii2GiiMCP\Config\ServerConfig;
+use Took\Yii2GiiMCP\Helpers\Yii2Bootstrap;
+use Took\Yii2GiiMCP\MCPServer;
+use Took\Yii2GiiMCP\ToolRegistry;
+use Took\Yii2GiiMCP\Tools\GenerateController;
+use Took\Yii2GiiMCP\Tools\GenerateCrud;
+use Took\Yii2GiiMCP\Tools\GenerateExtension;
+use Took\Yii2GiiMCP\Tools\GenerateForm;
+use Took\Yii2GiiMCP\Tools\GenerateModel;
+use Took\Yii2GiiMCP\Tools\GenerateModule;
+use Took\Yii2GiiMCP\Tools\InspectDatabase;
+use Took\Yii2GiiMCP\Tools\ListTables;
+
+// Parse command line arguments
+$debug = isset($_SERVER['DEBUG']) && $_SERVER['DEBUG'];
+$demo = in_array('--demo', $argv ?? []);
+
+// Display demo mode examples
+if ($demo) {
+    echo "=== Yii2 Gii MCP Server - Demo Mode ===\n\n";
+
+    echo "Configuration:\n";
+    echo "  Set environment variables before starting:\n";
+    echo "  - YII2_CONFIG_PATH=/path/to/config.php\n";
+    echo "  - YII2_APP_PATH=/path/to/yii2/app (optional)\n\n";
+
+    echo "Example 1: Initialize Request\n";
+    echo json_encode([
+                    'jsonrpc' => '2.0',
+                    'id' => 1,
+                    'method' => 'initialize',
+                    'params' => [
+                            'protocolVersion' => '2024-11-05',
+                            'capabilities' => [],
+                            'clientInfo' => ['name' => 'example-client', 'version' => '1.0.0'],
+                    ],
+            ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . "\n\n";
+
+    echo "Example 2: List Tools Request\n";
+    echo json_encode([
+                    'jsonrpc' => '2.0',
+                    'id' => 2,
+                    'method' => 'tools/list',
+                    'params' => [],
+            ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . "\n\n";
+
+    echo "Example 3: Tool Call Request (list-tables)\n";
+    echo json_encode([
+                    'jsonrpc' => '2.0',
+                    'id' => 3,
+                    'method' => 'tools/call',
+                    'params' => [
+                            'name' => 'list-tables',
+                            'arguments' => ['detailed' => true],
+                    ],
+            ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . "\n\n";
+
+    echo "To start server normally (not demo), run without --demo flag.\n";
+    exit(0);
+}
+
+// Load server configuration
+$config = new ServerConfig();
+
+// Create MCP server
+$server = new MCPServer(debug: $debug);
+
+// Register tools (only if Yii2 is configured)
+if ($config->isValid()) {
+    try {
+        $bootstrap = Yii2Bootstrap::getInstance($config);
+        $toolRegistry = new ToolRegistry();
+
+        // Register all available tools
+        $toolRegistry->register(new ListTables($bootstrap));
+        $toolRegistry->register(new InspectDatabase($bootstrap));
+        $toolRegistry->register(new GenerateModel($bootstrap));
+        $toolRegistry->register(new GenerateCrud($bootstrap));
+        $toolRegistry->register(new GenerateController($bootstrap));
+        $toolRegistry->register(new GenerateForm($bootstrap));
+        $toolRegistry->register(new GenerateModule($bootstrap));
+        $toolRegistry->register(new GenerateExtension($bootstrap));
+
+        // Set the tool registry on the server
+        $server->setToolRegistry($toolRegistry);
+
+        if ($debug) {
+            fwrite(STDERR, "[DEBUG] Registered 8 tools: list-tables, inspect-database, generate-model, generate-crud, generate-controller, generate-form, generate-module, generate-extension\n");
+        }
+    } catch (Exception $e) {
+        fwrite(STDERR, "[WARNING] Could not register tools: {$e->getMessage()}\n");
+        fwrite(STDERR, "[INFO] Server will start but tools will not be available\n");
+    }
+} else {
+    fwrite(STDERR, "[INFO] Yii2 configuration not found - tools will not be available\n");
+    fwrite(STDERR, "[INFO] Set YII2_CONFIG_PATH environment variable to enable tools\n");
+}
+
+// Start the server (reads from stdin, writes to stdout)
+try {
+    $server->start();
+} catch (Exception $e) {
+    fwrite(STDERR, "[ERROR] Server error: {$e->getMessage()}\n");
+    if ($debug) {
+        fwrite(STDERR, $e->getTraceAsString() . "\n");
+    }
+    exit(1);
+}

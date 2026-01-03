@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "yii2-gii": {
+      "comment": "Host-based setup for Claude Desktop. Replace /absolute/path/ with your actual project path!",
+      "command": "php",
+      "args": [
+        "/absolute/path/to/your/project/vendor/took/yii2-gii-mcp/bin/yii2-gii-mcp"
+      ],
+      "env": {
+        "YII2_CONFIG_PATH": "/absolute/path/to/your/project/config-mcp.php",
+        "YII2_APP_PATH": "/absolute/path/to/your/project",
+        "comment": "Claude requires absolute paths - ${workspaceFolder} won't work!"
+      }
+    }
+  }
+}

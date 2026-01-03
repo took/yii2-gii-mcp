@@ -1,0 +1,68 @@
+{
+  "name": "took/yii2-gii-mcp",
+  "description": "Model Context Protocol (MCP) server for Yii2 Gii scaffolding - enables AI agents to generate models and CRUD interfaces",
+  "type": "library",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "yii2",
+    "gii",
+    "scaffolding",
+    "code-generation",
+    "ai-tools",
+    "json-rpc",
+    "claude",
+    "anthropic"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Guido Pannenbecker",
+      "email": "info@sd-gp.de"
+    }
+  ],
+  "homepage": "https://github.com/took/yii2-gii-mcp",
+  "support": {
+    "issues": "https://github.com/took/yii2-gii-mcp/issues",
+    "source": "https://github.com/took/yii2-gii-mcp",
+    "docs": "https://github.com/took/yii2-gii-mcp#readme"
+  },
+  "require": {
+    "php": ">=8.2",
+    "justinrainbow/json-schema": "^5.2"
+  },
+  "require-dev": {
+    "codeception/codeception": "^5.0",
+    "codeception/module-asserts": "^3.0"
+  },
+  "suggest": {
+    "yiisoft/yii2": "Required for Yii2 integration. Usually provided by parent project.",
+    "yiisoft/yii2-gii": "Required for code generation. Usually provided by parent project."
+  },
+  "autoload": {
+    "psr-4": {
+      "Took\\Yii2GiiMCP\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "bin": [
+    "bin/yii2-gii-mcp"
+  ],
+  "scripts": {
+    "test": "codecept run",
+    "test-unit": "codecept run Unit",
+    "test-functional": "codecept run Functional",
+    "test-coverage": "codecept run --coverage --coverage-html"
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-main": "1.x-dev"
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}

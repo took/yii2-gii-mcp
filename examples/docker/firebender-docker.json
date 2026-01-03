@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "yii2-gii": {
+      "comment": "Container-based setup: MCP server runs inside Docker container",
+      "command": "${workspaceFolder}/bin/yii2-gii-mcp-docker",
+      "args": [],
+      "env": {
+        "YII2_CONFIG_PATH": "/var/www/html/config-mcp.php",
+        "YII2_APP_PATH": "/var/www/html",
+        "comment": "Note: Use container paths for env vars"
+      }
+    }
+  }
+}

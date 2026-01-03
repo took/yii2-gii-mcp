@@ -1,0 +1,46 @@
+#!/bin/bash
+#
+# Wrapper script to run yii2-gii-mcp inside a Docker container
+#
+# This script allows Firebender/Claude to communicate with the MCP server
+# running inside a Docker container via docker exec.
+#
+# Usage:
+#   1. Copy this to your project's bin/ directory
+#   2. Make executable: chmod +x bin/yii2-gii-mcp-docker
+#   3. Edit CONTAINER_NAME and PROJECT_PATH below
+#   4. Configure Firebender to use this script as command
+#
+
+# ============================================================================
+# CONFIGURATION - EDIT THESE VALUES
+# ============================================================================
+
+# Docker container name or ID (from: docker ps)
+CONTAINER_NAME="your-php-container"
+
+# Project path inside the container
+PROJECT_PATH="/var/www/html"
+
+# ============================================================================
+# SCRIPT - NO NEED TO EDIT BELOW
+# ============================================================================
+
+# Check if Docker is running
+if ! docker info > /dev/null 2>&1; then
+    echo "Error: Docker is not running" >&2
+    exit 1
+fi
+
+# Check if container exists and is running
+if ! docker ps --format '{{.Names}}' | grep -q "^${CONTAINER_NAME}$"; then
+    echo "Error: Container '${CONTAINER_NAME}' is not running" >&2
+    echo "Available containers:" >&2
+    docker ps --format 'table {{.Names}}\t{{.Status}}' >&2
+    exit 1
+fi
+
+# Execute MCP server inside container
+# -i flag keeps stdin open for JSON-RPC communication
+exec docker exec -i "${CONTAINER_NAME}" \
+    php "${PROJECT_PATH}/vendor/took/yii2-gii-mcp/bin/yii2-gii-mcp"
