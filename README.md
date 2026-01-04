@@ -122,6 +122,31 @@ Edit your Claude config file:
 
 **Note:** Use absolute paths for Claude Desktop!
 
+**For Claude Code (CLI):**
+
+Add the MCP server to your project:
+
+```bash
+claude mcp add yii2-gii-mcp --scope project \
+  -e YII2_CONFIG_PATH=/path/to/your/project/config-mcp.php \
+  -e YII2_APP_PATH=/path/to/your/project \
+  -- php /path/to/your/project/vendor/took/yii2-gii-mcp/bin/yii2-gii-mcp
+```
+
+Then add the allowed tools to your `.claude/settings.json`:
+
+```json
+{
+  "allowedTools": [
+    "mcp__yii2-gii-mcp:*"
+  ]
+}
+```
+
+This allows all yii2-gii-mcp tools to run without requiring manual approval for each call.
+
+**Note:** Use absolute paths! The `--scope project` option stores the configuration in `.mcp.json` in your project directory.
+
 ### 4. Docker Setup
 
 **If your Yii2 project runs in Docker Desktop**, see the Docker-specific guide:
@@ -170,10 +195,13 @@ YII2_CONFIG_PATH=config-mcp.php php vendor/took/yii2-gii-mcp/examples/test-list-
 Ask your AI assistant (Firebender, Claude, etc.):
 
 ```
-"List all database tables"
-"Show me the structure of the user table"
-"Generate an ActiveRecord model for the party table"
-"Create CRUD operations for the venue table"
+"List all database tables using yii2-gii-mcp inspect-database"
+"Show me the structure of the user table using yii2-gii-mcp list-tables user"
+"Generate a migration to create the table foo with some random fields"
+"Generate a migration to create the table bar with a bar_data text field where each bar has exactly one parent foo"
+"Generate ActiveRecord models for the foo and bar tables using yii2-gii-mcp (in /web or prefered in /common if available)"
+"Create CRUD operations (in the Backend/BackOffice if available) for the foo table using yii2-gii-mcp"
+"Update the controller and CRUD views for foo to support the relation to bar ("inline" update of bar_data/insert new bars)."
 ```
 
 The AI will use the MCP tools to inspect your database and generate code!
