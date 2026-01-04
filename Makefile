@@ -32,7 +32,7 @@ test-all: test
 
 # Generate HTML coverage report
 coverage:
-	vendor/bin/codecept run --coverage --coverage-html
+	vendor/bin/codecept run --coverage --coverage-html --coverage-xml
 	@echo ""
 	@echo "Coverage report generated in tests/_output/coverage/"
 
