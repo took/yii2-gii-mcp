@@ -9,8 +9,9 @@ use Took\Yii2GiiMCP\Tools\ListTables;
 /**
  * Test ListTables Tool
  *
- * Note: These tests use mocks and do not require Yii2 installation.
- * Some tests may fail initially (TDD approach) until full implementation.
+ * Tests focus on tool metadata and input schema validation.
+ * Execution tests (doExecute) require Yii2 dependencies due to strict return typing
+ * in Yii2Bootstrap::getDb(): yii\db\Connection, making mocking without Yii2 impossible.
  */
 class ListTablesTest extends Unit
 {
@@ -38,6 +39,7 @@ class ListTablesTest extends Unit
         $this->assertIsString($description);
         $this->assertStringContainsString('database', strtolower($description));
         $this->assertStringContainsString('table', strtolower($description));
+        $this->assertStringContainsString('read-only', strtolower($description));
     }
 
     /**
@@ -59,6 +61,14 @@ class ListTablesTest extends Unit
         $properties = $schema['properties'];
         $this->assertArrayHasKey('connection', $properties);
         $this->assertArrayHasKey('detailed', $properties);
+
+        // Verify connection property
+        $this->assertEquals('string', $properties['connection']['type']);
+        $this->assertEquals('db', $properties['connection']['default']);
+
+        // Verify detailed property
+        $this->assertEquals('boolean', $properties['detailed']['type']);
+        $this->assertTrue($properties['detailed']['default']);
     }
 
     /**
@@ -74,56 +84,90 @@ class ListTablesTest extends Unit
         // Validate basic JSON Schema structure
         $this->assertArrayHasKey('type', $schema);
         $this->assertArrayHasKey('properties', $schema);
+        $this->assertArrayHasKey('additionalProperties', $schema);
+        $this->assertFalse($schema['additionalProperties']);
 
         foreach ($schema['properties'] as $propName => $propSchema) {
             $this->assertArrayHasKey('type', $propSchema, "Property '{$propName}' should have 'type'");
             $this->assertArrayHasKey('description', $propSchema, "Property '{$propName}' should have 'description'");
+            $this->assertArrayHasKey('default', $propSchema, "Property '{$propName}' should have 'default'");
         }
     }
 
     /**
-     * Test execute with minimal parameters (mock)
-     *
-     * @skip This test requires Yii2 mocking infrastructure - to be implemented
+     * Test connection property has correct default
      */
-    public function testExecuteWithMinimalParameters()
+    public function testConnectionPropertyDefault()
     {
-        $this->markTestSkipped('Requires Yii2 database mocking - TDD placeholder');
+        $bootstrap = $this->createMock(Yii2Bootstrap::class);
+        $tool = new ListTables($bootstrap);
 
-        // TODO: Implement with mock database connection
-        // Expected behavior:
-        // - Should initialize Yii2 if not initialized
-        // - Should query database for table names
-        // - Should return formatted table list
+        $schema = $tool->getInputSchema();
+        $connectionProp = $schema['properties']['connection'];
+
+        $this->assertEquals('db', $connectionProp['default']);
+        $this->assertStringContainsString('connection component', strtolower($connectionProp['description']));
     }
 
     /**
-     * Test execute with detailed parameter (mock)
-     *
-     * @skip This test requires Yii2 mocking infrastructure - to be implemented
+     * Test detailed property has correct default
      */
-    public function testExecuteWithDetailedParameter()
+    public function testDetailedPropertyDefault()
     {
-        $this->markTestSkipped('Requires Yii2 database mocking - TDD placeholder');
+        $bootstrap = $this->createMock(Yii2Bootstrap::class);
+        $tool = new ListTables($bootstrap);
 
-        // TODO: Implement with mock database connection
-        // Expected behavior:
-        // - Should return detailed table information including columns
-        // - Should include column types, constraints, etc.
+        $schema = $tool->getInputSchema();
+        $detailedProp = $schema['properties']['detailed'];
+
+        $this->assertTrue($detailedProp['default']);
+        $this->assertStringContainsString('column', strtolower($detailedProp['description']));
     }
 
     /**
-     * Test execute with invalid connection
-     *
-     * @skip This test requires Yii2 mocking infrastructure - to be implemented
+     * Test schema does not allow additional properties
      */
-    public function testExecuteWithInvalidConnection()
+    public function testSchemaDisallowsAdditionalProperties()
     {
-        $this->markTestSkipped('Requires Yii2 database mocking - TDD placeholder');
+        $bootstrap = $this->createMock(Yii2Bootstrap::class);
+        $tool = new ListTables($bootstrap);
 
-        // TODO: Implement with mock bootstrap
-        // Expected behavior:
-        // - Should return error when connection not found
-        // - Error should include connection name
+        $schema = $tool->getInputSchema();
+
+        $this->assertArrayHasKey('additionalProperties', $schema);
+        $this->assertFalse($schema['additionalProperties']);
     }
+
+    /**
+     * Test tool instantiation
+     */
+    public function testToolInstantiation()
+    {
+        $bootstrap = $this->createMock(Yii2Bootstrap::class);
+        $tool = new ListTables($bootstrap);
+
+        $this->assertInstanceOf(ListTables::class, $tool);
+        $this->assertInstanceOf(\Took\Yii2GiiMCP\Tools\AbstractTool::class, $tool);
+        $this->assertInstanceOf(\Took\Yii2GiiMCP\Tools\ToolInterface::class, $tool);
+    }
+
+    /**
+     * Note on Execution Tests:
+     * 
+     * Testing doExecute() requires mocking yii\db\Connection which is not possible
+     * without Yii2 dependencies due to PHP's strict return type checking in 
+     * Yii2Bootstrap::getDb(): yii\db\Connection.
+     * 
+     * Full execution tests would verify:
+     * - Listing tables with minimal parameters
+     * - Detailed vs non-detailed output
+     * - Custom connection IDs
+     * - Empty database handling
+     * - Foreign key detection
+     * - Bootstrap initialization
+     * - Exception handling
+     * - Null schema handling
+     * 
+     * These scenarios require integration tests with actual Yii2/database setup.
+     */
 }
