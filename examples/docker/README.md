@@ -17,11 +17,13 @@ Example configurations for using yii2-gii-mcp with Docker Desktop.
 ### Option A: Host-Based (Recommended)
 
 1. **Copy Firebender config:**
+
 ```bash
 # Merge content from firebender-host.json into ~/.firebender/firebender.json
 ```
 
 2. **Create MCP config:**
+
 ```bash
 cp config-mcp-docker.php ../../config-mcp.php
 # Edit database credentials
@@ -32,6 +34,7 @@ cp config-mcp-docker.php ../../config-mcp.php
 ### Option B: Container-Based
 
 1. **Copy wrapper script:**
+
 ```bash
 cp yii2-gii-mcp-docker ../../bin/
 chmod +x ../../bin/yii2-gii-mcp-docker
@@ -39,11 +42,13 @@ chmod +x ../../bin/yii2-gii-mcp-docker
 ```
 
 2. **Copy Firebender config:**
+
 ```bash
 # Merge content from firebender-docker.json into ~/.firebender/firebender.json
 ```
 
 3. **Create MCP config in container:**
+
 ```bash
 docker exec -it your-php-container bash
 cd /var/www/html

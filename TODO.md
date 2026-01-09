@@ -10,31 +10,260 @@ Yii2 Gii for automated scaffolding and code generation.
 
 ---
 
+## Completed Work (Version 1.1.0 - Released January 10, 2026)
 
-## Phase 1-3
+### Phase 1-3: Core Infrastructure ✅
+- MCP server implementation with JSON-RPC 2.0 over stdio
+- Yii2 bootstrap and environment setup
+- Basic Gii integration with preview-first workflow
+- Tool registry system and abstract tool base
 
-Done
+### Phase 4-7: Code Generation & Migration Tools ✅
+- **8 Gii Code Generation Tools**: 
+  - `generate-model`: ActiveRecord models with relations
+  - `generate-crud`: Complete CRUD operations
+  - `generate-controller`: Custom controllers
+  - `generate-form`: Form models
+  - `generate-module`: Module scaffolding
+  - `generate-extension`: Extension boilerplate
+- **3 Migration Management Tools**: 
+  - `list-migrations`: List with status
+  - `create-migration`: Create with field definitions and advanced options (indexes, FKs, enums)
+  - `execute-migration`: Execute with SQL preview and safety confirmations
+- **2 Database Inspection Tools**: 
+  - `list-tables`: List all tables with metadata
+  - `inspect-database`: Detailed schema inspection
+- Template auto-detection (Basic/Advanced/Advanced+API)
+- Interactive setup wizard and diagnostic tools
+- Comprehensive documentation and Docker support
 
-## Phase 4: Advanced Features (FUTURE)
+### Phase 8-10: Analysis & Inspection Tools ✅
+- **Project Structure Detection** (`detect-application-structure`):
+  - Template type detection (Basic/Advanced/Advanced+API)
+  - Application and module discovery
+  - Environment analysis with init system support
+  - Entry point detection and configuration parsing
+  
+- **Component Inspection** (`inspect-components`):
+  - Controller analysis (actions, filters, behaviors, PHPDoc)
+  - Model analysis (attributes, rules, relations, scenarios)
+  - View discovery organized by controller
+  - Deep code analysis using PHP Reflection + nikic/php-parser
+  - Component type filtering and detail levels
+  
+- **Application Logging** (`read-logs`):
+  - Multi-source support (FileTarget and DbTarget)
+  - Multi-application log aggregation
+  - Advanced filtering (level, category, time range, search)
+  - Yii2 log format parsing with stack traces
+  - Statistics and summary generation
 
-### 4.1 Additional Read-Only Tools
+### Summary
+- **Total**: 14 production-ready tools
+- **Test Coverage**: 450+ automated tests, 60% code coverage
+- **Documentation**: Complete AI memory bank and user guides
+- **Setup Tools**: Interactive wizard and diagnostic utilities
+- **Safety Features**: Preview mode, confirmations, validation
 
-- [x] **Database Schema Inspection Tool** ✅
-    - File: `src/Tools/InspectDatabase.php`
-    - Query tables, columns, indexes, foreign keys, constraints
-    - Return structured JSON schema information
+---
+
+## Future Development
+
+### Debugging & Monitoring
+
+#### Debugger Integration
+- [ ] **Create DebuggerInspector Tool**
+    - File: `src/Tools/InspectDebugger.php`
+    - Integrate with Yii2 Debug module
+    - Show:
+        - Request/response data for recent requests
+        - Database queries with execution time and traces
+        - Logged messages (all severity levels)
+        - Application routes
+        - Performance profiling data
+        - Events triggered during request
+        - Asset bundles loaded
+    - Input schema:
+        - `requestId` (optional): Specific request to inspect
+        - `limit` (default: 10): Number of recent requests
+        - `category` (optional): Filter by 'db', 'log', 'routes', 'profile', 'all'
+    - Output: Structured debug data
     - Read-only operation
-    - Dependencies: AbstractTool, Yii2Bootstrap
+    - Dependencies: yiisoft/yii2-debug module, AbstractTool
+    - Note: Requires Debug module to be enabled in application config
 
-- [ ] **Model Inspection Tool** (Future)
-    - File: `src/Tools/InspectModel.php`
-    - Read existing model files
-    - Extract attributes, validation rules, relations
-    - Return structured model metadata
+### Routing & URL Management
+
+- [ ] **Create InspectRoutes Tool**
+    - File: `src/Tools/InspectRoutes.php`
+    - Analyze application routes and URL rules
+    - Features:
+        - List all available routes from controllers
+        - Show URL manager rules and patterns
+        - Test route matching (URL → route)
+        - Test URL creation (route → URL)
+        - List pretty URL rules
+        - Show route parameters and defaults
+    - Input schema:
+        - `application` (optional): Application name (frontend/backend/console)
+        - `pattern` (optional): Filter routes by pattern
+        - `testUrl` (optional): Test URL parsing
+        - `testRoute` (optional): Test URL creation
+    - Output: Routes list with controllers, actions, URL rules, test results
     - Read-only operation
-    - Dependencies: AbstractTool, PHP reflection
+    - Dependencies: AbstractTool, UrlManager, RouteAnalyzer helper
 
-### 4.2 Advanced Features
+- [ ] **Create RouteAnalyzer Helper**
+    - File: `src/Helpers/RouteAnalyzer.php`
+    - Utility methods for route inspection
+    - Methods:
+        - `getAllRoutes(string $appPath): array` - Scan controllers for routes
+        - `getUrlRules(): array` - Get configured URL rules
+        - `parseUrl(string $url): array` - Parse URL to route
+        - `createUrl(string $route, array $params): string` - Create URL from route
+        - `getControllerActions(string $controllerPath): array` - Extract actions
+    - Dependencies: Yii2 UrlManager
+
+### Internationalization (i18n)
+
+- [ ] **Create ExtractTranslations Tool**
+    - File: `src/Tools/ExtractTranslations.php`
+    - Extract translatable strings from source code
+    - Features:
+        - Scan PHP files for Yii::t() calls
+        - Extract categories and messages
+        - Show untranslated messages
+        - Generate missing translation entries
+        - Support multiple message sources (files, database)
+    - Input schema:
+        - `sourcePath` (required): Directory to scan
+        - `category` (optional): Filter by translation category
+        - `format` (default: 'php'): Output format (php/po)
+        - `languages` (optional): Target languages
+    - Output: Extracted messages with categories, source files, line numbers
+    - Read-only operation (or with writeFiles flag)
+    - Dependencies: AbstractTool, Yii2 i18n component
+
+- [ ] **Create InspectTranslations Tool**
+    - File: `src/Tools/InspectTranslations.php`
+    - Inspect existing translations and coverage
+    - Features:
+        - List all translation categories
+        - Show available languages
+        - Find missing translations (exist in source but not in target language)
+        - Find unused translations
+        - Translation coverage statistics
+        - Compare translations across languages
+    - Input schema:
+        - `category` (optional): Filter by category
+        - `language` (optional): Specific language
+        - `checkCoverage` (default: true): Calculate coverage stats
+    - Output: Translation inventory with coverage analysis
+    - Read-only operation
+    - Dependencies: AbstractTool, Yii2 i18n component
+
+- [ ] **Create TranslationHelper**
+    - File: `src/Helpers/TranslationHelper.php`
+    - Utility methods for translation management
+    - Methods:
+        - `scanForTranslations(string $path): array` - Find Yii::t() calls
+        - `getTranslationCategories(): array` - List categories
+        - `getLanguages(): array` - List configured languages
+        - `getMessageSource(string $category): object` - Get message source config
+        - `getMissingTranslations(string $category, string $language): array`
+        - `compareTranslations(string $category, array $languages): array`
+    - Dependencies: Yii2 i18n component, PHP token parser
+
+### RBAC & Permissions Testing
+
+- [ ] **Expand RbacInspector Helper** (from Phase 5.2)
+    - File: `src/Helpers/RbacInspector.php`
+    - Add permission testing methods:
+        - `canUserAccess(int $userId, string $permission): bool` - Test user permission
+        - `getUserRoles(int $userId): array` - Get user's assigned roles
+        - `testPermission(string $roleName, string $permission): bool` - Test role permission
+        - `simulateAccess(array $roleNames, string $route): array` - Simulate route access
+        - `getRoleHierarchy(string $role): array` - Get role inheritance tree
+    - Support both DbManager and PhpManager
+    - Dependencies: Yii2 RBAC component
+
+- [ ] **Create TestRbac Tool**
+    - File: `src/Tools/TestRbac.php`
+    - Interactive RBAC permission testing
+    - Features:
+        - Test if user can access specific routes/permissions
+        - Simulate role assignments
+        - Show permission inheritance chains
+        - Test RBAC rules execution
+        - Validate RBAC configuration
+    - Input schema:
+        - `userId` (optional): User ID to test
+        - `roleName` (optional): Role to simulate
+        - `permission` (required): Permission/route to test
+        - `params` (optional): Additional rule parameters
+    - Output: Access result with explanation, inheritance path, applicable rules
+    - Read-only operation
+    - Dependencies: AbstractTool, RbacInspector helper
+
+### Component Inspection & Analysis
+
+- [x] **Create InspectComponents Tool** ✅
+    - File: `src/Tools/InspectComponents.php`
+    - List and analyze components for specified application/module
+    - Implemented features:
+        - **Controllers**: List all controllers with actions, filters, behaviors
+        - **Models**: List ActiveRecord models, form models with attributes, rules, relations
+        - **Views**: List view files organized by controller
+    - Input schema:
+        - `application` (optional): Application name (frontend/backend/console/api)
+        - `module` (optional): Module name within application
+        - `componentType` (optional): Filter by type (controllers/models/views/all)
+        - `includeDetails` (default: true): Include detailed metadata
+    - Output: Structured JSON with component listings and metadata
+    - Read-only operation
+    - Dependencies: AbstractTool, PHP reflection, ComponentAnalyzer helper
+    - Full test coverage with unit tests
+
+- [x] **Create ComponentAnalyzer Helper** ✅
+    - File: `src/Helpers/ComponentAnalyzer.php`
+    - Analyze PHP class files to extract metadata
+    - Implemented methods:
+        - `analyzeController(string $filePath): array` - Extract actions, filters, behaviors
+        - `analyzeModel(string $filePath): array` - Extract attributes, rules, relations, scenarios
+        - `extractBehaviors(ReflectionClass $class): array` - Parse behaviors() method
+        - `extractValidationRules(ReflectionClass $class): array` - Parse rules() method
+        - `extractActions(ReflectionClass $class): array` - Find action methods
+        - `extractRelations(ReflectionClass $class): array` - Find ActiveRecord relations
+        - `parseMethodReturnValue(ReflectionMethod $method): mixed` - Use php-parser to extract return values
+    - Uses PHP reflection and nikic/php-parser for AST parsing
+    - Dependencies: PHP reflection, nikic/php-parser
+    - Full test coverage with unit tests
+
+- [ ] **Future Enhancement: Widget and Asset Analysis**
+    - Extend ComponentAnalyzer with:
+        - `analyzeWidget(string $filePath): array` - Extract widget properties and options
+        - `analyzeAssetBundle(string $filePath): array` - Extract CSS/JS dependencies
+    - Add widget/asset detection to InspectComponents tool
+
+### Server Environment Tools
+
+- [ ] **Create DetectServerEnvironment Tool**
+    - File: `src/Tools/DetectServerEnvironment.php`
+    - Auto-detect server environment and configuration
+    - Detect: Environment type, web server, PHP version/extensions, database, Docker
+    - Output: Structured environment information
+    - Read-only operation
+    - Dependencies: AbstractTool, PHP functions
+
+- [ ] **Create GenerateServerConfig Tool**
+    - File: `src/Tools/GenerateServerConfig.php`
+    - Generate server configuration files (Apache, Nginx, Docker)
+    - Include required PHP extensions, URL rewriting, best practices
+    - Input: configType, serverName, documentRoot, phpVersion, environment
+    - Output: Configuration file content with inline comments
+    - Dependencies: AbstractTool, ServerConfigHelper
+
+### Advanced Gii Features
 
 - [ ] **Custom Template Support**
     - Allow AI agents to specify custom Gii templates
@@ -51,242 +280,20 @@ Done
     - Export as DOT, PlantUML, or Mermaid format
     - File: `src/Tools/GenerateDiagram.php`
 
-## Phase 5: Project Structure Detection & Migration Tools (FUTURE)
+### Guides & Documentation
 
-### 5.1 Application Structure Detection
-
-- [ ] **Create DetectApplicationStructure Tool**
-    - File: `src/Tools/DetectApplicationStructure.php`
-    - Auto-detect Yii2 project template type (Basic/Advanced/Advanced+API)
-    - Identify available applications/entry points:
-        - **Advanced Template**: frontend, backend, console, common
-        - **Advanced+API**: Also detect api, backoffice (alternative to backend)
-        - **Basic Template**: web application
-    - Scan for modules within each application
-    - Detect environment configurations (dev/prod/staging from environments/ directory)
-    - Input schema: Optional base path (defaults to project root)
-    - Output: Structured JSON with template type, applications, modules, environments
-    - Read-only operation
-    - Methods in helper:
-        - `detectTemplateType(string $basePath): string` - Returns 'basic', 'advanced', or 'advanced-api'
-        - `detectApplications(string $basePath, string $templateType): array`
-        - `scanModules(string $appPath): array`
-        - `detectEnvironments(string $basePath): array`
-    - Dependencies: AbstractTool, filesystem scanning
-
-- [ ] **Create ProjectStructure Helper**
-    - File: `src/Helpers/ProjectStructureHelper.php`
-    - Utility methods for filesystem scanning and structure analysis
-    - Methods:
-        - `findApplicationDirs(string $basePath): array` - Find app directories
-        - `isYii2Application(string $path): bool` - Verify valid Yii2 app structure
-        - `getApplicationType(string $path): string` - Determine app type (web/console/api)
-        - `findModules(string $appPath): array` - Scan for modules in app
-        - `getModuleConfig(string $modulePath): array` - Parse module configuration
-    - Dependencies: None
-
-### 5.2 Component Inspection
-
-- [ ] **Create InspectComponents Tool**
-    - File: `src/Tools/InspectComponents.php`
-    - List and analyze components for specified application/module
-    - Discover:
-        - **Controllers**: List all controllers with actions, filters, behaviors
-        - **Models**: List ActiveRecord models, form models with attributes, rules, relations
-        - **Views**: List view files organized by controller
-        - **RBAC Items**: Roles, permissions, rules (if RBAC is configured)
-    - Input schema:
-        - `application` (optional): Application name (frontend/backend/console/api)
-        - `module` (optional): Module name within application
-        - `componentType` (optional): Filter by type (controllers/models/views/all)
-        - `includeDetails` (default: true): Include detailed metadata
-    - Output: Structured JSON with component listings and metadata
-    - Read-only operation
-    - Dependencies: AbstractTool, PHP reflection, ComponentAnalyzer helper
-
-- [ ] **Create ComponentAnalyzer Helper**
-    - File: `src/Helpers/ComponentAnalyzer.php`
-    - Analyze PHP class files to extract metadata
-    - Methods:
-        - `analyzeController(string $filePath): array` - Extract actions, filters, behaviors
-        - `analyzeModel(string $filePath): array` - Extract attributes, rules, relations, scenarios
-        - `analyzeModelRelations(string $modelClass): array` - Get related models
-        - `extractBehaviors(ReflectionClass $class): array` - Parse behaviors() method
-        - `extractValidationRules(ReflectionClass $class): array` - Parse rules() method
-        - `extractActions(ReflectionClass $class): array` - Find action methods
-    - Use PHP reflection and AST parsing
-    - Dependencies: PHP reflection, nikic/php-parser (optional)
-
-- [ ] **Create RbacInspector Helper**
-    - File: `src/Helpers/RbacInspector.php`
-    - Inspect RBAC (Role-Based Access Control) configuration
-    - Methods:
-        - `getRoles(): array` - List all defined roles
-        - `getPermissions(): array` - List all permissions
-        - `getRules(): array` - List all RBAC rules
-        - `getRoleAssignments(string $role): array` - Get role children/permissions
-        - `getModelRbacItems(string $modelClass): array` - Find RBAC items for model
-    - Support both DbManager and PhpManager
-    - Dependencies: Yii2 RBAC component
-
-### 5.3 Migration Management Tools
-
-- [ ] **Create ListMigrations Tool**
-    - File: `src/Tools/ListMigrations.php`
-    - List available migrations with status
-    - Show:
-        - Applied migrations (with timestamp)
-        - Pending migrations (not yet applied)
-        - Migration history
-    - Input schema:
-        - `status` (optional): Filter by 'applied', 'pending', or 'all'
-        - `limit` (optional): Limit number of results
-    - Output: Array of migrations with name, status, applied_time
-    - Read-only operation
-    - Dependencies: AbstractTool, Yii2 migration component
-
-- [ ] **Create PreviewMigration Tool**
-    - File: `src/Tools/PreviewMigration.php`
-    - Preview SQL that would be executed by migration
-    - Show up() and down() SQL without executing
-    - Input schema:
-        - `migrationName` (required): Name of migration to preview
-        - `direction` (default: 'up'): Direction 'up' or 'down'
-    - Output: SQL statements that would be executed
-    - Read-only operation
-    - Use Yii2's migration class with dry-run approach
-    - Dependencies: AbstractTool, Yii2 migration component
-
-- [ ] **Create ExecuteMigration Tool**
-    - File: `src/Tools/ExecuteMigration.php`
-    - Execute migration operations with mandatory human confirmation
-    - Supported operations:
-        - `up`: Apply pending migrations
-        - `down`: Revert migrations
-        - `create`: Create new migration file
-        - `fresh`: Drop all tables and re-apply all migrations
-        - `redo`: Revert and re-apply recent migration
-    - **CRITICAL SAFETY FEATURES**:
-        - ALWAYS require `confirmation` parameter with exact value "yes"
-        - For structure-changing operations (down/fresh), require additional `destructiveConfirmation` with value "I understand this will modify the database"
-        - Show preview of changes before execution
-        - Log all operations to stderr
-        - Return detailed execution results with affected tables
-    - Input schema:
-        - `operation` (required): One of 'up', 'down', 'create', 'fresh', 'redo'
-        - `migrationName` (optional): Specific migration (for down/redo)
-        - `migrationCount` (optional): Number of migrations (for up/down)
-        - `confirmation` (required): Must be exact string "yes"
-        - `destructiveConfirmation` (required for down/fresh): Must be exact string "I understand this will modify the database"
-        - `preview` (default: true): Show preview first
-    - Output: Execution results with applied migrations and SQL executed
-    - **WARNING**: Mark as potentially destructive operation
-    - Dependencies: AbstractTool, Yii2 migration component, MigrationHelper
-
-- [ ] **Create MigrationHelper**
-    - File: `src/Helpers/MigrationHelper.php`
-    - Wrapper for Yii2 migration operations
-    - Methods:
-        - `getMigrations(string $status = 'all'): array` - Get migrations by status
-        - `getMigrationHistory(int $limit = 10): array` - Get migration history
-        - `previewMigrationSql(string $name, string $direction): string` - Get SQL preview
-        - `executeMigration(string $operation, array $params): array` - Execute migration
-        - `createMigration(string $name, array $fields = []): string` - Create migration file
-        - `validateMigrationName(string $name): bool` - Validate migration exists
-    - Add comprehensive error handling
-    - Dependencies: Yii2 migration component
-
-### 5.4 Server Environment Detection
-
-- [ ] **Create DetectServerEnvironment Tool**
-    - File: `src/Tools/DetectServerEnvironment.php`
-    - Auto-detect server environment and configuration
-    - Detect:
-        - **Environment Type**: LAMP, WAMP, MAMP, LEMP, Docker, other
-        - **Web Server**: Apache, Nginx, version
-        - **PHP Version**: Current PHP version and available extensions
-        - **PHP Extensions**: List installed PHP modules
-        - **Database**: Type (MySQL/PostgreSQL), version, connection status
-        - **Docker**: Detect if running in Docker container
-    - Input schema: None (auto-detect)
-    - Output: Structured environment information
-    - Read-only operation
-    - Methods in helper:
-        - `detectWebServer(): array` - Identify web server type/version
-        - `detectPhpEnvironment(): array` - PHP version, SAPI, extensions
-        - `detectDatabaseEnvironment(): array` - Database type, version
-        - `isDockerEnvironment(): bool` - Check if running in Docker
-        - `getRequiredPhpExtensions(): array` - List Yii2 required extensions
-        - `getMissingExtensions(): array` - Extensions needed but not installed
-    - Dependencies: AbstractTool, PHP functions (phpinfo, get_loaded_extensions)
-
-- [ ] **Create GenerateServerConfig Tool**
-    - File: `src/Tools/GenerateServerConfig.php`
-    - Generate server configuration files for different environments
-    - Generate configs for:
-        - **Apache2**: Virtual host config with mod_rewrite for pretty URLs
-        - **Nginx**: Server block config with URL rewriting
-        - **Docker**: Dockerfile and docker-compose.yml for development
-        - **Docker CI/CD**: Optimized config for testing pipelines
-    - Include:
-        - Required PHP extensions installation commands (apt/yum)
-        - Apache module enablement (a2enmod commands)
-        - Nginx configuration equivalents
-        - Document root setup
-        - URL rewriting rules for Yii2
-        - PHP-FPM configuration (for Nginx)
-        - Environment-specific settings (dev/prod)
-    - Input schema:
-        - `configType` (required): One of 'apache', 'nginx', 'docker-dev', 'docker-ci'
-        - `serverName` (optional): Domain/hostname for virtual host
-        - `documentRoot` (optional): Path to web root
-        - `phpVersion` (optional): Target PHP version (default: current)
-        - `environment` (optional): 'dev' or 'prod' (affects settings)
-    - Output: Configuration file content with inline comments
-    - Read-only operation (generates content, doesn't write files)
-    - Dependencies: AbstractTool, ServerConfigHelper
-
-- [ ] **Create ServerConfigHelper**
-    - File: `src/Helpers/ServerConfigHelper.php`
-    - Template generation for server configurations
-    - Methods:
-        - `generateApacheConfig(array $params): string` - Apache virtual host
-        - `generateNginxConfig(array $params): string` - Nginx server block
-        - `generateDockerfile(array $params): string` - Docker image definition
-        - `generateDockerCompose(array $params): string` - Docker compose file
-        - `getPhpExtensionsCommands(string $phpVersion, string $os): array` - Installation commands
-        - `getApacheModules(): array` - Required Apache modules
-        - `getNginxModules(): array` - Required Nginx modules
-    - Include best practices for Yii2 deployment
-    - Dependencies: None
-
-### 5.5 Documentation Updates
-
-- [x] **Update README.md - Clarify Yii2 Scope**
-    - File: `README.md`
-    - Add prominent notice at the top of "Requirements" section:
-        - **Framework Support**: This MCP server is designed exclusively for **Yii2 framework projects**
-        - Yii1 is not supported (use Yii2 migration tools to upgrade)
-        - Yii3 is out of scope (different architecture)
-    - Update "Key Features" to mention "Yii2 projects"
-    - Dependencies: None
-
-- [x] **Update AI-MEMORY-BANK.md**
-    - File: `docs/AI-MEMORY-BANK.md`
-    - Add "Framework Scope" section to project overview
-    - Clarify: Yii2 only, no Yii1/Yii3 support
-    - Document reasons: MCP server uses Yii2 Gii generators specifically
-    - Dependencies: None
-
-- [ ] **Add Framework Notice to MCPServer Initialization**
-    - File: `src/MCPServer.php`
-    - In `initialize()` method response, add server info:
-        - Server name: "yii2-gii-mcp"
-        - Description: "MCP server for Yii2 framework projects (Yii2 only)"
-        - Version: Current version
-        - Framework support: "Yii2"
-    - Add to server capabilities metadata
-    - Dependencies: None
+- [ ] **Create Developer Guide/Cookbook**
+    - File: `docs/DEVELOPER-GUIDE.md` or `docs/COOKBOOK.md`
+    - Common workflows and recipes:
+        - Setting up a new Yii2 project from scratch
+        - Creating a complete module (models, CRUD, migrations)
+        - Implementing RBAC from database design to access control
+        - Setting up i18n and managing translations
+        - Debugging common issues
+        - Performance optimization patterns
+        - Testing strategies for Yii2 applications
+    - Step-by-step examples with MCP tool usage
+    - Best practices and gotchas
 
 - [ ] **Create FAQ Documentation**
     - File: `docs/FAQ.md`
@@ -295,7 +302,15 @@ Done
         - "What about Yii3?" → Not yet, different architecture
         - "How to migrate from Yii1 to Yii2?" → Link to official Yii2 upgrade guide
         - "Which Yii2 templates are supported?" → Basic, Advanced, Advanced+API
-    - Dependencies: None
+        - Troubleshooting common setup issues
+        - MCP client compatibility questions
+
+### Documentation Enhancements
+
+- [ ] **Add Framework Notice to MCPServer Initialization**
+    - File: `src/MCPServer.php`
+    - In `initialize()` method response, add server info with framework support metadata
+    - Add to server capabilities metadata
 
 ---
 
@@ -309,3 +324,5 @@ Done
 - **PSR-12**: Follow PSR-12 coding standards for all PHP code
 - **Dependencies**: Minimize external dependencies, leverage Yii2 and Gii built-in functionality
 - **Framework**: This MCP server is exclusively for Yii2 projects (no Yii1, no Yii3)
+- **Read-only first**: Prefer read-only inspection tools before write operations
+- **Safety confirmations**: All destructive operations require explicit user confirmation

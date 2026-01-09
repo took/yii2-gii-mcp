@@ -186,6 +186,7 @@ class ValidationHelper
         foreach ($names as $name) {
             $results[$name] = self::validateTableName($name);
         }
+
         return $results;
     }
 

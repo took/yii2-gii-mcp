@@ -33,7 +33,10 @@
   },
   "require-dev": {
     "codeception/codeception": "^5.0",
-    "codeception/module-asserts": "^3.0"
+    "codeception/module-asserts": "^3.0",
+    "friendsofphp/php-cs-fixer": "^3.64",
+    "nikic/php-parser": "^4.18",
+    "phpstan/phpstan": "^1.12"
   },
   "suggest": {
     "yiisoft/yii2": "Required for Yii2 integration. Usually provided by parent project.",
@@ -56,7 +59,10 @@
     "test": "codecept run",
     "test-unit": "codecept run Unit",
     "test-functional": "codecept run Functional",
-    "test-coverage": "codecept run --coverage --coverage-html"
+    "test-coverage": "codecept run --coverage --coverage-html",
+    "cs-check": "php-cs-fixer fix --dry-run --diff --verbose",
+    "cs-fix": "php-cs-fixer fix",
+    "phpstan": "phpstan analyse --no-progress"
   },
   "extra": {
     "branch-alias": {

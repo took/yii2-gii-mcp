@@ -85,6 +85,7 @@ class MCPServerTest extends Unit
                 $this->assertArrayHasKey('protocolVersion', $result);
                 $this->assertArrayHasKey('serverInfo', $result);
                 $this->assertArrayHasKey('capabilities', $result);
+
                 return true;
             }));
 
@@ -116,14 +117,14 @@ class MCPServerTest extends Unit
     public function testHandleInitializeThrowsOnDoubleInitialization(): void
     {
         $transport = $this->createMock(StdioTransport::class);
-        
+
         // First call should succeed, second call should write error
         $transport->expects($this->exactly(2))
             ->method('writeMessage')
             ->willReturnCallback(function ($response) {
                 static $callCount = 0;
                 $callCount++;
-                
+
                 if ($callCount === 1) {
                     // First call should be success
                     $this->assertInstanceOf(Response::class, $response);
@@ -164,6 +165,7 @@ class MCPServerTest extends Unit
             ->method('writeMessage')
             ->with($this->callback(function ($response) {
                 $this->assertInstanceOf(ErrorResponse::class, $response);
+
                 return true;
             }));
 
@@ -184,14 +186,14 @@ class MCPServerTest extends Unit
     public function testHandleToolsListWithEmptyRegistry(): void
     {
         $transport = $this->createMock(StdioTransport::class);
-        
+
         // Expect two write messages: initialize response and tools/list response
         $transport->expects($this->exactly(2))
             ->method('writeMessage')
             ->willReturnCallback(function ($response) {
                 static $callCount = 0;
                 $callCount++;
-                
+
                 if ($callCount === 2) {
                     // Second call is tools/list
                     $result = $response->getResult();
@@ -225,13 +227,13 @@ class MCPServerTest extends Unit
     public function testHandleToolsListWithTools(): void
     {
         $transport = $this->createMock(StdioTransport::class);
-        
+
         $transport->expects($this->exactly(2))
             ->method('writeMessage')
             ->willReturnCallback(function ($response) {
                 static $callCount = 0;
                 $callCount++;
-                
+
                 if ($callCount === 2) {
                     // Second call is tools/list
                     $result = $response->getResult();
@@ -242,7 +244,7 @@ class MCPServerTest extends Unit
             });
 
         $server = new MCPServer($transport);
-        
+
         // Create registry with a tool
         $registry = new ToolRegistry();
         $tool = new MockSimpleTool('test-tool', 'Test tool description');
@@ -275,6 +277,7 @@ class MCPServerTest extends Unit
             ->method('writeMessage')
             ->with($this->callback(function ($response) {
                 $this->assertInstanceOf(ErrorResponse::class, $response);
+
                 return true;
             }));
 
@@ -298,13 +301,13 @@ class MCPServerTest extends Unit
     public function testHandleToolsCallWithMissingName(): void
     {
         $transport = $this->createMock(StdioTransport::class);
-        
+
         $transport->expects($this->exactly(2))
             ->method('writeMessage')
             ->willReturnCallback(function ($response) {
                 static $callCount = 0;
                 $callCount++;
-                
+
                 if ($callCount === 2) {
                     // Second call should be error
                     $this->assertInstanceOf(ErrorResponse::class, $response);
@@ -339,13 +342,13 @@ class MCPServerTest extends Unit
     public function testHandleToolsCallWithNonExistentTool(): void
     {
         $transport = $this->createMock(StdioTransport::class);
-        
+
         $transport->expects($this->exactly(2))
             ->method('writeMessage')
             ->willReturnCallback(function ($response) {
                 static $callCount = 0;
                 $callCount++;
-                
+
                 if ($callCount === 2) {
                     // Second call should be error
                     $this->assertInstanceOf(ErrorResponse::class, $response);
@@ -381,13 +384,13 @@ class MCPServerTest extends Unit
     public function testHandleToolsCallSuccess(): void
     {
         $transport = $this->createMock(StdioTransport::class);
-        
+
         $transport->expects($this->exactly(2))
             ->method('writeMessage')
             ->willReturnCallback(function ($response) {
                 static $callCount = 0;
                 $callCount++;
-                
+
                 if ($callCount === 2) {
                     // Second call should be success response
                     $this->assertInstanceOf(Response::class, $response);
@@ -398,7 +401,7 @@ class MCPServerTest extends Unit
             });
 
         $server = new MCPServer($transport);
-        
+
         // Create registry with a tool
         $registry = new ToolRegistry();
         $tool = new MockSimpleTool('test-tool', 'Test tool');
@@ -434,6 +437,7 @@ class MCPServerTest extends Unit
             ->method('writeMessage')
             ->with($this->callback(function ($response) {
                 $this->assertInstanceOf(ErrorResponse::class, $response);
+
                 return true;
             }));
 
@@ -454,11 +458,11 @@ class MCPServerTest extends Unit
     public function testHandleNotification(): void
     {
         $transport = $this->createMock(StdioTransport::class);
-        
+
         // Should not write any message for notifications
         $transport->expects($this->never())
             ->method('writeMessage');
-        
+
         $transport->expects($this->once())
             ->method('log')
             ->with($this->stringContains('notification'));
@@ -485,6 +489,7 @@ class MCPServerTest extends Unit
             ->method('writeError')
             ->with($this->callback(function ($error) {
                 $this->assertInstanceOf(ErrorResponse::class, $error);
+
                 return true;
             }));
 
@@ -503,7 +508,7 @@ class MCPServerTest extends Unit
     public function testClientCapabilitiesStored(): void
     {
         $transport = $this->createMock(StdioTransport::class);
-        
+
         $server = new MCPServer($transport);
 
         $clientCapabilities = [
@@ -530,11 +535,11 @@ class MCPServerTest extends Unit
     public function testInitializeWithDifferentProtocolVersion(): void
     {
         $transport = $this->createMock(StdioTransport::class);
-        
+
         // Expect writeMessage to be called (for the initialize response)
         $transport->expects($this->once())
             ->method('writeMessage');
-        
+
         // Also expect log to be called with warning about protocol version
         $transport->expects($this->atLeastOnce())
             ->method('log');
@@ -550,7 +555,7 @@ class MCPServerTest extends Unit
         $method->setAccessible(true);
 
         $method->invoke($server, $request->toJson());
-        
+
         $this->assertTrue($server->isInitialized());
     }
 
@@ -560,13 +565,13 @@ class MCPServerTest extends Unit
     public function testHandleToolsCallWithInvalidArgumentsType(): void
     {
         $transport = $this->createMock(StdioTransport::class);
-        
+
         $transport->expects($this->exactly(2))
             ->method('writeMessage')
             ->willReturnCallback(function ($response) {
                 static $callCount = 0;
                 $callCount++;
-                
+
                 if ($callCount === 2) {
                     $this->assertInstanceOf(ErrorResponse::class, $response);
                 }
@@ -601,13 +606,13 @@ class MCPServerTest extends Unit
     public function testHandleToolsCallWithoutRegistry(): void
     {
         $transport = $this->createMock(StdioTransport::class);
-        
+
         $transport->expects($this->exactly(2))
             ->method('writeMessage')
             ->willReturnCallback(function ($response) {
                 static $callCount = 0;
                 $callCount++;
-                
+
                 if ($callCount === 2) {
                     $this->assertInstanceOf(ErrorResponse::class, $response);
                 }
@@ -641,7 +646,7 @@ class MCPServerTest extends Unit
     public function testInitializeStoresClientInfo(): void
     {
         $transport = $this->createMock(StdioTransport::class);
-        
+
         $transport->expects($this->atLeastOnce())
             ->method('log')
             ->with($this->stringContains('test-client'));
@@ -666,11 +671,12 @@ class MCPServerTest extends Unit
     public function testHandleMessageWithThrowableError(): void
     {
         $transport = $this->createMock(StdioTransport::class);
-        
+
         $transport->expects($this->once())
             ->method('writeError')
             ->with($this->callback(function ($error) {
                 $this->assertInstanceOf(ErrorResponse::class, $error);
+
                 return true;
             }));
 
@@ -690,20 +696,20 @@ class MCPServerTest extends Unit
     public function testHandleToolsCallWithToolValidationError(): void
     {
         $transport = $this->createMock(StdioTransport::class);
-        
+
         $transport->expects($this->exactly(2))
             ->method('writeMessage')
             ->willReturnCallback(function ($response) {
                 static $callCount = 0;
                 $callCount++;
-                
+
                 if ($callCount === 2) {
                     $this->assertInstanceOf(ErrorResponse::class, $response);
                 }
             });
 
         $server = new MCPServer($transport);
-        
+
         // Create mock tool that throws InvalidArgumentException
         $tool = $this->createMock(\Took\Yii2GiiMCP\Tools\ToolInterface::class);
         $tool->method('getName')->willReturn('failing-tool');
@@ -712,7 +718,7 @@ class MCPServerTest extends Unit
         $tool->method('execute')->willThrowException(
             new InvalidArgumentException('Invalid parameters')
         );
-        
+
         $registry = new ToolRegistry();
         $registry->register($tool);
         $server->setToolRegistry($registry);
@@ -742,20 +748,20 @@ class MCPServerTest extends Unit
     public function testHandleToolsCallWithToolExecutionError(): void
     {
         $transport = $this->createMock(StdioTransport::class);
-        
+
         $transport->expects($this->exactly(2))
             ->method('writeMessage')
             ->willReturnCallback(function ($response) {
                 static $callCount = 0;
                 $callCount++;
-                
+
                 if ($callCount === 2) {
                     $this->assertInstanceOf(ErrorResponse::class, $response);
                 }
             });
 
         $server = new MCPServer($transport);
-        
+
         // Create mock tool that throws generic exception
         $tool = $this->createMock(\Took\Yii2GiiMCP\Tools\ToolInterface::class);
         $tool->method('getName')->willReturn('error-tool');
@@ -764,7 +770,7 @@ class MCPServerTest extends Unit
         $tool->method('execute')->willThrowException(
             new RuntimeException('Execution failed')
         );
-        
+
         $registry = new ToolRegistry();
         $registry->register($tool);
         $server->setToolRegistry($registry);

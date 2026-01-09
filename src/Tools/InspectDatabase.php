@@ -107,17 +107,17 @@ class InspectDatabase extends AbstractTool
                     // Support both SQL LIKE patterns (%, _) and shell glob patterns (*, ?)
                     // First convert glob to SQL LIKE if needed
                     $sqlPattern = str_replace(['*', '?'], ['%', '_'], $tablePattern);
-                    
+
                     // Convert SQL LIKE pattern to regex
                     // We need to escape regex special chars but preserve % and _
                     // Strategy: Replace % and _ with unique markers (using non-conflicting chars), escape, then replace markers
                     $percentMarker = '§§PERCENT§§';  // Using § which won't appear in table names
                     $underscoreMarker = '§§UNDERSCORE§§';
-                    
+
                     $sqlPattern = str_replace(['%', '_'], [$percentMarker, $underscoreMarker], $sqlPattern);
                     $regexPattern = preg_quote($sqlPattern, '/');
                     $regexPattern = str_replace([$percentMarker, $underscoreMarker], ['.*', '.'], $regexPattern);
-                    
+
                     return preg_match("/^{$regexPattern}$/", $tableName) === 1;
                 });
             }
@@ -217,6 +217,7 @@ class InspectDatabase extends AbstractTool
 
         if ($count === 0) {
             $output .= "No tables found.\n";
+
             return $output;
         }
 

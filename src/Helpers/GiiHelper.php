@@ -242,6 +242,7 @@ class GiiHelper
                     'status' => 'skipped',
                     'operation' => $file->operation,
                 ];
+
                 continue;
             }
 
@@ -333,12 +334,15 @@ class GiiHelper
         // Set required attributes
         $generator->modelClass = $modelClass;
 
-        // Set optional attributes from options
-        $generator->controllerClass = $options['controllerClass'] ?? $this->guessControllerClass($modelClass);
-        $generator->viewPath = $options['viewPath'] ?? null;
+        // Get component if specified
+        $component = $options['component'] ?? null;
+
+        // Set optional attributes from options with template-aware defaults
+        $generator->controllerClass = $options['controllerClass'] ?? $this->guessControllerClass($modelClass, $component);
+        $generator->searchModelClass = $options['searchModelClass'] ?? $this->guessSearchModelClass($modelClass, $component);
+        $generator->viewPath = $options['viewPath'] ?? $this->guessViewPath($modelClass, $component);
         $generator->baseControllerClass = $options['baseControllerClass'] ?? 'yii\\web\\Controller';
         $generator->indexWidgetType = $options['indexWidgetType'] ?? 'grid';
-        $generator->searchModelClass = $options['searchModelClass'] ?? $modelClass . 'Search';
 
         if (isset($options['enableI18N'])) {
             $generator->enableI18N = $options['enableI18N'];
@@ -351,15 +355,120 @@ class GiiHelper
      * Guess controller class name from model class
      *
      * @param string $modelClass Model class name
+     * @param string|null $component Component name for Advanced Template (frontend/backend/api/common)
      * @return string Controller class name
      */
-    private function guessControllerClass(string $modelClass): string
+    private function guessControllerClass(string $modelClass, ?string $component = null): string
     {
         // Extract base class name (without namespace)
         $baseName = basename(str_replace('\\', '/', $modelClass));
 
-        // Add Controller suffix
+        // Detect template type
+        $templateType = $this->bootstrap->detectTemplateType();
+
+        if ($templateType === 'advanced') {
+            // For Advanced Template, determine component
+            if ($component === null) {
+                // Try to detect from model namespace
+                $component = $this->detectComponentFromModel($modelClass);
+            }
+
+            // Generate controller class name for Advanced Template
+            return $component . '\\controllers\\' . $baseName . 'Controller';
+        }
+
+        // For Basic Template, use app\controllers
         return 'app\\controllers\\' . $baseName . 'Controller';
+    }
+
+    /**
+     * Detect component from model class namespace
+     *
+     * @param string $modelClass Model class name
+     * @return string Component name (frontend/backend/api/common, defaults to frontend)
+     */
+    private function detectComponentFromModel(string $modelClass): string
+    {
+        // Check if model is in common\models (shared models)
+        if (str_starts_with($modelClass, 'common\\models\\')) {
+            // For common models, default to frontend
+            return 'frontend';
+        }
+
+        // Check if model is in specific component
+        if (str_starts_with($modelClass, 'frontend\\models\\')) {
+            return 'frontend';
+        }
+
+        if (str_starts_with($modelClass, 'backend\\models\\')) {
+            return 'backend';
+        }
+
+        if (str_starts_with($modelClass, 'api\\models\\')) {
+            return 'api';
+        }
+
+        // Default to frontend for Advanced Template
+        return 'frontend';
+    }
+
+    /**
+     * Guess search model class name
+     *
+     * @param string $modelClass Model class name
+     * @param string|null $component Component name for Advanced Template
+     * @return string Search model class name
+     */
+    private function guessSearchModelClass(string $modelClass, ?string $component = null): string
+    {
+        // Extract base class name (without namespace)
+        $baseName = basename(str_replace('\\', '/', $modelClass));
+
+        // Detect template type
+        $templateType = $this->bootstrap->detectTemplateType();
+
+        if ($templateType === 'advanced') {
+            // For Advanced Template, determine component
+            if ($component === null) {
+                $component = $this->detectComponentFromModel($modelClass);
+            }
+
+            // Search model goes in the same component as controller
+            return $component . '\\models\\' . $baseName . 'Search';
+        }
+
+        // For Basic Template, search model goes in app\models
+        return 'app\\models\\' . $baseName . 'Search';
+    }
+
+    /**
+     * Guess view path for CRUD
+     *
+     * @param string $modelClass Model class name
+     * @param string|null $component Component name for Advanced Template
+     * @return string|null View path (null for default)
+     */
+    private function guessViewPath(string $modelClass, ?string $component = null): ?string
+    {
+        // Detect template type
+        $templateType = $this->bootstrap->detectTemplateType();
+
+        if ($templateType === 'advanced') {
+            // For Advanced Template, determine component
+            if ($component === null) {
+                $component = $this->detectComponentFromModel($modelClass);
+            }
+
+            // Extract base class name and convert to lowercase with dashes
+            $baseName = basename(str_replace('\\', '/', $modelClass));
+            $viewName = strtolower(preg_replace('/([a-z])([A-Z])/', '$1-$2', $baseName));
+
+            // Return view path as @component/views/model-name
+            return '@' . $component . '/views/' . $viewName;
+        }
+
+        // For Basic Template, use default (null)
+        return null;
     }
 
     /**

@@ -1,27 +1,28 @@
 <?php
+
 /**
  * MCP Server Configuration for Yii2 Templates
- * 
+ *
  * This is a smart configuration file for the yii2-gii-mcp server.
  * It automatically detects your Yii2 project structure and loads
  * the appropriate configuration files.
- * 
+ *
  * Supported Templates:
  * - Basic Template: Single /app directory with /config
  * - Advanced Template: /common, /console, /frontend, /backend directories
  * - Advanced + API: Advanced template with additional /api directory
- * 
+ *
  * Usage:
  * 1. Copy this file to your Yii2 application root directory
  * 2. Rename it to config-mcp.php (or any name you prefer)
  * 3. Set YII2_CONFIG_PATH to point to this file
  * 4. Set YII2_APP_PATH to your application root directory
- * 
+ *
  * Example:
  *   YII2_CONFIG_PATH=/path/to/your/app/config-mcp.php \
  *   YII2_APP_PATH=/path/to/your/app \
  *   php vendor/bin/yii2-gii-mcp
- * 
+ *
  * Note: This file loads the Composer autoloader so that config files
  * can reference any required classes, but it does NOT bootstrap Yii2.
  * The MCP server handles Yii2 bootstrapping.
@@ -34,7 +35,8 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 // Simple array merge function (don't need Yii for this)
 if (!function_exists('mergeYii2Config')) {
-    function mergeYii2Config(...$arrays) {
+    function mergeYii2Config(...$arrays)
+    {
         $result = [];
         foreach ($arrays as $array) {
             foreach ($array as $key => $value) {
@@ -45,18 +47,22 @@ if (!function_exists('mergeYii2Config')) {
                 }
             }
         }
+
         return $result;
     }
 }
 
 // Helper function to safely load config files
 if (!function_exists('loadConfigIfExists')) {
-    function loadConfigIfExists($path) {
+    function loadConfigIfExists($path)
+    {
         if (file_exists($path)) {
             fwrite(STDERR, "[MCP Config] Loading: $path\n");
+
             return require $path;
         }
         fwrite(STDERR, "[MCP Config] Skipping (not found): $path\n");
+
         return [];
     }
 }
@@ -90,31 +96,31 @@ if ($isBasicTemplate) {
     } else {
         fwrite(STDERR, "\n");
     }
-    
+
     // Always load common config
     $configFiles = [
         __DIR__ . '/common/config/main.php',
         __DIR__ . '/common/config/main-local.php',
     ];
-    
+
     // Load console config (needed for Gii)
     $configFiles[] = __DIR__ . '/console/config/main.php';
     $configFiles[] = __DIR__ . '/console/config/main-local.php';
-    
+
     // Load frontend config if exists
     if ($hasFrontend) {
         fwrite(STDERR, "[MCP Config] Including: frontend\n");
         $configFiles[] = __DIR__ . '/frontend/config/main.php';
         $configFiles[] = __DIR__ . '/frontend/config/main-local.php';
     }
-    
+
     // Load backend config if exists
     if ($hasBackend) {
         fwrite(STDERR, "[MCP Config] Including: backend\n");
         $configFiles[] = __DIR__ . '/backend/config/main.php';
         $configFiles[] = __DIR__ . '/backend/config/main-local.php';
     }
-    
+
     // Load API config if exists
     if ($hasApiDirectory) {
         fwrite(STDERR, "[MCP Config] Including: api\n");
@@ -129,6 +135,7 @@ if ($isBasicTemplate) {
     fwrite(STDERR, "[MCP Config]   - Advanced Template: /common and /console directories\n");
     fwrite(STDERR, "[MCP Config] Current directory: " . __DIR__ . "\n");
     fwrite(STDERR, "[MCP Config] Please ensure this file is in your Yii2 application root.\n");
+
     throw new \RuntimeException('Could not detect Yii2 template structure');
 }
 
@@ -143,6 +150,7 @@ foreach ($configFiles as $configFile) {
 
 if (empty($loadedConfigs)) {
     fwrite(STDERR, "[MCP Config] ERROR: No configuration files could be loaded!\n");
+
     throw new \RuntimeException('No valid Yii2 configuration files found');
 }
 

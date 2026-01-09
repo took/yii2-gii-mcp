@@ -14,15 +14,16 @@ use Took\Yii2GiiMCP\Tools\ToolInterface;
  */
 class GenerateModuleEnhancedTest extends Unit
 {
-    private function getTool()
-    {
-        $bootstrap = $this->createMock(Yii2Bootstrap::class);
-        return new GenerateModule($bootstrap);
-    }
-
     public function testGetName()
     {
         $this->assertEquals('generate-module', $this->getTool()->getName());
+    }
+
+    private function getTool()
+    {
+        $bootstrap = $this->createMock(Yii2Bootstrap::class);
+
+        return new GenerateModule($bootstrap);
     }
 
     public function testGetDescriptionContainsKeywords()
@@ -85,7 +86,7 @@ class GenerateModuleEnhancedTest extends Unit
         $method->setAccessible(true);
 
         $validIDs = ['admin', 'api', 'v1', 'admin-panel', 'user_module', 'my-admin-module', 'backend'];
-        
+
         foreach ($validIDs as $id) {
             $this->assertTrue($method->invoke($tool, $id), "Module ID '{$id}' should be valid");
         }
@@ -105,7 +106,7 @@ class GenerateModuleEnhancedTest extends Unit
             'admin module',   // space
             'ADMIN',          // all uppercase
         ];
-        
+
         foreach ($invalidIDs as $id) {
             $this->assertFalse($method->invoke($tool, $id), "Module ID '{$id}' should be invalid");
         }
@@ -117,7 +118,7 @@ class GenerateModuleEnhancedTest extends Unit
     public function testFormatGiiResultWithSuccessInPreviewMode()
     {
         $tool = $this->getTool();
-        
+
         $result = [
             'success' => true,
             'fileCount' => 5,
@@ -173,7 +174,7 @@ class GenerateModuleEnhancedTest extends Unit
     public function testFormatGiiResultWithSuccessInGenerationMode()
     {
         $tool = $this->getTool();
-        
+
         $result = [
             'success' => true,
             'fileCount' => 5,
@@ -222,7 +223,7 @@ class GenerateModuleEnhancedTest extends Unit
     public function testFormatGiiResultGroupsFilesByType()
     {
         $tool = $this->getTool();
-        
+
         $result = [
             'success' => true,
             'fileCount' => 6,
@@ -268,7 +269,7 @@ class GenerateModuleEnhancedTest extends Unit
     public function testFormatGiiResultWithValidationErrors()
     {
         $tool = $this->getTool();
-        
+
         $result = [
             'success' => false,
             'error' => 'Validation failed',
@@ -301,7 +302,7 @@ class GenerateModuleEnhancedTest extends Unit
     public function testFormatGiiResultWithConflicts()
     {
         $tool = $this->getTool();
-        
+
         $result = [
             'success' => false,
             'error' => 'File conflicts detected',
@@ -334,7 +335,7 @@ class GenerateModuleEnhancedTest extends Unit
     public function testFormatGiiResultWithGenericError()
     {
         $tool = $this->getTool();
-        
+
         $result = [
             'success' => false,
             'error' => 'Failed to create module structure',
@@ -361,7 +362,7 @@ class GenerateModuleEnhancedTest extends Unit
     public function testPreviewModeShowsHelpfulInfo()
     {
         $tool = $this->getTool();
-        
+
         $result = [
             'success' => true,
             'fileCount' => 4,

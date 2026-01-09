@@ -41,9 +41,11 @@ class GenerateForm extends AbstractTool
     public function getDescription(): string
     {
         return 'Generate Yii2 form model for data collection and validation. ' .
+            'Automatically detects Basic or Advanced Template and uses appropriate defaults. ' .
+            'For Advanced Template, you can specify which component (frontend/backend/api) to generate into. ' .
             'By default, runs in preview mode (no files written). ' .
             'Set preview=false to write files to disk. ' .
-            'Form models are useful for forms that are not directly tied to database tables.';
+            'Form models are useful for forms that are not directly tied to database tables (e.g., ContactForm, LoginForm).';
     }
 
     /**
@@ -58,14 +60,19 @@ class GenerateForm extends AbstractTool
                     'type' => 'string',
                     'description' => 'Form model class name (e.g., "ContactForm", "LoginForm")',
                 ],
+                'component' => [
+                    'type' => 'string',
+                    'enum' => ['frontend', 'backend', 'api', 'common'],
+                    'description' => 'For Advanced Template: which component to generate form into (frontend/backend/api/common). Defaults to common for shared forms or frontend.',
+                ],
                 'namespace' => [
                     'type' => 'string',
-                    'description' => 'Namespace for the form model',
+                    'description' => 'Namespace for the form model. Defaults to app\\models for Basic Template or common\\models for Advanced Template (or {component}\\models if component specified).',
                     'default' => 'app\\models',
                 ],
                 'viewPath' => [
                     'type' => 'string',
-                    'description' => 'Path for view files',
+                    'description' => 'Path for view files. Defaults to @app/views for Basic Template or @{component}/views for Advanced Template.',
                     'default' => '@app/views',
                 ],
                 'viewName' => [
@@ -105,8 +112,13 @@ class GenerateForm extends AbstractTool
                 );
             }
 
+            // Determine defaults based on template type and component
+            $component = $this->getOptionalParam($arguments, 'component');
+            $defaultNamespace = $this->getDefaultNamespace($component);
+            $defaultViewPath = $this->getDefaultViewPath($component);
+            
             // Validate namespace if provided
-            $namespace = $this->getOptionalParam($arguments, 'namespace', 'app\\models');
+            $namespace = $this->getOptionalParam($arguments, 'namespace', $defaultNamespace);
             if (!ValidationHelper::validateNamespace($namespace)) {
                 return $this->createError(
                     ValidationHelper::getNamespaceError($namespace)
@@ -121,7 +133,7 @@ class GenerateForm extends AbstractTool
             // Prepare options for Gii
             $options = [
                 'namespace' => $namespace,
-                'viewPath' => $this->getOptionalParam($arguments, 'viewPath', '@app/views'),
+                'viewPath' => $this->getOptionalParam($arguments, 'viewPath', $defaultViewPath),
                 'scenarioName' => $this->getOptionalParam($arguments, 'scenarioName', 'default'),
             ];
 
@@ -155,6 +167,46 @@ class GenerateForm extends AbstractTool
     }
 
     /**
+     * Get default namespace based on template type and component
+     *
+     * @param string|null $component Component for Advanced Template
+     * @return string Default namespace
+     */
+    private function getDefaultNamespace(?string $component): string
+    {
+        $templateType = $this->bootstrap->detectTemplateType();
+
+        if ($templateType === 'advanced') {
+            // For Advanced Template, use component or default to common (shared forms)
+            $componentName = $component ?? 'common';
+            return $componentName . '\\models';
+        }
+
+        // For Basic Template, use app\models
+        return 'app\\models';
+    }
+
+    /**
+     * Get default view path based on template type and component
+     *
+     * @param string|null $component Component for Advanced Template
+     * @return string Default view path
+     */
+    private function getDefaultViewPath(?string $component): string
+    {
+        $templateType = $this->bootstrap->detectTemplateType();
+
+        if ($templateType === 'advanced') {
+            // For Advanced Template, use component or default to frontend
+            $componentName = $component ?? 'frontend';
+            return '@' . $componentName . '/views';
+        }
+
+        // For Basic Template, use @app/views
+        return '@app/views';
+    }
+
+    /**
      * Format Gii result for MCP response
      *
      * @param array $result Gii result
@@ -170,6 +222,7 @@ class GenerateForm extends AbstractTool
                 foreach ($result['validationErrors'] as $field => $fieldErrors) {
                     $errors[] = "{$field}: " . implode(', ', $fieldErrors);
                 }
+
                 return $this->createError(
                     $result['error'] ?? 'Validation failed',
                     ['validationErrors' => $errors]
@@ -179,6 +232,7 @@ class GenerateForm extends AbstractTool
             // Handle conflicts
             if (isset($result['conflicts'])) {
                 $conflicts = array_map(fn($c) => $c['path'], $result['conflicts']);
+
                 return $this->createError(
                     $result['error'] ?? 'File conflicts',
                     [

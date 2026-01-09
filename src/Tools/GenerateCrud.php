@@ -40,7 +40,10 @@ class GenerateCrud extends AbstractTool
      */
     public function getDescription(): string
     {
-        return 'Generate Yii2 CRUD scaffolding (controller and views) for an existing model. ' .
+        return 'Generate Yii2 CRUD scaffolding (controller, search model, and views) for an existing model. ' .
+            'Automatically detects Basic or Advanced Template and uses appropriate defaults. ' .
+            'For Advanced Template, you can specify which component (frontend/backend/api) to generate into, ' .
+            'or it will auto-detect from the model namespace. ' .
             'By default, runs in preview mode (no files written). ' .
             'Set preview=false to write files to disk. ' .
             'This tool will check for file conflicts and validate inputs before generation. ' .
@@ -57,11 +60,16 @@ class GenerateCrud extends AbstractTool
             'properties' => [
                 'modelClass' => [
                     'type' => 'string',
-                    'description' => 'Full model class name (e.g., app\\models\\User)',
+                    'description' => 'Full model class name (e.g., app\\models\\User or common\\models\\User)',
+                ],
+                'component' => [
+                    'type' => 'string',
+                    'enum' => ['frontend', 'backend', 'api', 'common'],
+                    'description' => 'For Advanced Template: which component to generate CRUD into (frontend/backend/api/common). If not specified, auto-detects from model namespace or uses frontend as default.',
                 ],
                 'controllerClass' => [
                     'type' => 'string',
-                    'description' => 'Controller class name (optional, auto-generated from model if not provided)',
+                    'description' => 'Controller class name (optional, auto-generated based on model and component)',
                 ],
                 'viewPath' => [
                     'type' => 'string',
@@ -153,6 +161,7 @@ class GenerateCrud extends AbstractTool
 
             // Prepare options for Gii
             $options = [
+                'component' => $this->getOptionalParam($arguments, 'component'),
                 'controllerClass' => $this->getOptionalParam($arguments, 'controllerClass'),
                 'viewPath' => $this->getOptionalParam($arguments, 'viewPath'),
                 'baseControllerClass' => $this->getOptionalParam($arguments, 'baseControllerClass', 'yii\\web\\Controller'),
@@ -201,6 +210,7 @@ class GenerateCrud extends AbstractTool
                 foreach ($result['validationErrors'] as $field => $fieldErrors) {
                     $errors[] = "{$field}: " . implode(', ', $fieldErrors);
                 }
+
                 return $this->createError(
                     $result['error'] ?? 'Validation failed',
                     ['validationErrors' => $errors]
@@ -210,6 +220,7 @@ class GenerateCrud extends AbstractTool
             // Handle conflicts
             if (isset($result['conflicts'])) {
                 $conflicts = array_map(fn($c) => $c['path'], $result['conflicts']);
+
                 return $this->createError(
                     $result['error'] ?? 'File conflicts',
                     [

@@ -34,7 +34,7 @@ echo "ID: " . $parsed->getId() . "\n\n";
 echo "Test 3: Creating a JSON-RPC Response\n";
 $response = new Response(1, [
     'protocolVersion' => '2024-11-05',
-    'serverInfo' => ['name' => 'yii2-gii-mcp', 'version' => '1.0.0'],
+    'serverInfo' => ['name' => 'yii2-gii-mcp', 'version' => '1.1.0'],
 ]);
 echo $response->toJson() . "\n\n";
 

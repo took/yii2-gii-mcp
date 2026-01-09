@@ -68,14 +68,14 @@ class ValidationHelperTest extends Unit
     {
         $basePath = sys_get_temp_dir();
         $testDir = $basePath . '/test_validation_' . uniqid();
-        
+
         // Create test directory
         mkdir($testDir, 0755, true);
-        
+
         try {
             // Test with existing path
             $this->assertTrue(ValidationHelper::validatePath($testDir, $basePath));
-            
+
             // Test with non-existing subdirectory (parent exists)
             $subDir = $testDir . '/subdir';
             $this->assertTrue(ValidationHelper::validatePath($subDir, $basePath));
@@ -91,7 +91,7 @@ class ValidationHelperTest extends Unit
     public function testValidatePathWithTraversalAttempt(): void
     {
         $basePath = sys_get_temp_dir();
-        
+
         // Attempt to access parent directory
         $this->assertFalse(ValidationHelper::validatePath('/etc/passwd', $basePath));
         $this->assertFalse(ValidationHelper::validatePath('/root', $basePath));
@@ -153,7 +153,7 @@ class ValidationHelperTest extends Unit
         $this->assertEquals('user_profiles', ValidationHelper::sanitizeTableName('user_profiles'));
         $this->assertEquals('user123', ValidationHelper::sanitizeTableName('user123'));
         $this->assertEquals('schema.table_name', ValidationHelper::sanitizeTableName('schema.table_name')); // Dots are allowed
-        
+
         // Remove dangerous characters - they're removed but letters/numbers remain
         $this->assertEquals('usersDROPTABLEusers', ValidationHelper::sanitizeTableName('users; DROP TABLE users;'));
         $this->assertEquals('users', ValidationHelper::sanitizeTableName('users--'));
@@ -168,7 +168,7 @@ class ValidationHelperTest extends Unit
         $this->assertEquals('User', ValidationHelper::sanitizeClassName('User'));
         $this->assertEquals('UserModel', ValidationHelper::sanitizeClassName('UserModel'));
         $this->assertEquals('app\\models\\User', ValidationHelper::sanitizeClassName('app\\models\\User')); // Backslashes are allowed
-        
+
         // Remove dangerous characters - they're removed but letters/numbers remain
         $this->assertEquals('UserDROPTABLE', ValidationHelper::sanitizeClassName('User; DROP TABLE'));
         $this->assertEquals('Usercomment', ValidationHelper::sanitizeClassName('User--comment'));
@@ -185,7 +185,7 @@ class ValidationHelperTest extends Unit
         $this->assertTrue(ValidationHelper::hasPathTraversal('..\\windows\\system32'));
         $this->assertTrue(ValidationHelper::hasPathTraversal('/tmp/../etc/passwd'));
         $this->assertTrue(ValidationHelper::hasPathTraversal('C:\\temp\\..\\windows'));
-        
+
         // Test safe paths
         $this->assertFalse(ValidationHelper::hasPathTraversal('/var/www/html'));
         $this->assertFalse(ValidationHelper::hasPathTraversal('models/User.php'));
@@ -199,7 +199,7 @@ class ValidationHelperTest extends Unit
     {
         $names = ['users', 'posts', 'user_profiles', 'invalid-table'];
         $results = ValidationHelper::validateTableNames($names);
-        
+
         $this->assertIsArray($results);
         $this->assertCount(4, $results);
         $this->assertTrue($results['users']);
@@ -238,7 +238,7 @@ class ValidationHelperTest extends Unit
     public function testGetTableNameError(): void
     {
         $error = ValidationHelper::getTableNameError('invalid-table');
-        
+
         $this->assertIsString($error);
         $this->assertStringContainsString('invalid-table', $error);
         $this->assertStringContainsString('alphanumeric', strtolower($error));
@@ -250,7 +250,7 @@ class ValidationHelperTest extends Unit
     public function testGetClassNameError(): void
     {
         $error = ValidationHelper::getClassNameError('123Invalid');
-        
+
         $this->assertIsString($error);
         $this->assertStringContainsString('123Invalid', $error);
         $this->assertStringContainsString('letter', strtolower($error));
@@ -262,7 +262,7 @@ class ValidationHelperTest extends Unit
     public function testGetNamespaceError(): void
     {
         $error = ValidationHelper::getNamespaceError('invalid\\\\namespace');
-        
+
         $this->assertIsString($error);
         $this->assertStringContainsString('invalid\\\\namespace', $error);
         $this->assertStringContainsString('namespace', strtolower($error));
@@ -274,7 +274,7 @@ class ValidationHelperTest extends Unit
     public function testGetPathError(): void
     {
         $error = ValidationHelper::getPathError('/etc/passwd', '/var/www');
-        
+
         $this->assertIsString($error);
         $this->assertStringContainsString('/etc/passwd', $error);
         $this->assertStringContainsString('/var/www', $error);

@@ -12,14 +12,14 @@ use Took\Yii2GiiMCP\Tools\GenerateCrud;
  */
 class GenerateCrudTest extends Unit
 {
-    private function getTool()
-    {
-        return new GenerateCrud($this->createMock(Yii2Bootstrap::class));
-    }
-
     public function testGetName()
     {
         $this->assertEquals('generate-crud', $this->getTool()->getName());
+    }
+
+    private function getTool()
+    {
+        return new GenerateCrud($this->createMock(Yii2Bootstrap::class));
     }
 
     public function testGetDescription()
@@ -92,7 +92,7 @@ class GenerateCrudTest extends Unit
     public function testAllPropertiesHaveDescriptions()
     {
         $schema = $this->getTool()->getInputSchema();
-        
+
         foreach ($schema['properties'] as $name => $prop) {
             $this->assertArrayHasKey('description', $prop, "Property $name missing description");
             $this->assertNotEmpty($prop['description']);

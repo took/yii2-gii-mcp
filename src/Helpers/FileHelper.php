@@ -78,6 +78,7 @@ class FileHelper
         foreach ($paths as $path) {
             $results[$path] = self::canWrite($path);
         }
+
         return $results;
     }
 
@@ -99,6 +100,7 @@ class FileHelper
 
         // If file doesn't exist, check if parent directory is writable
         $dir = dirname($path);
+
         return is_dir($dir) && is_writable($dir);
     }
 
@@ -140,6 +142,7 @@ class FileHelper
         }
 
         $content = @file_get_contents($path);
+
         return $content !== false ? $content : null;
     }
 

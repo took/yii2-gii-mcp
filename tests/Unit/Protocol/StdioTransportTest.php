@@ -4,7 +4,6 @@ namespace Tests\Unit\Protocol;
 
 use Codeception\Test\Unit;
 use Took\Yii2GiiMCP\Protocol\ErrorResponse;
-use Took\Yii2GiiMCP\Protocol\Request;
 use Took\Yii2GiiMCP\Protocol\Response;
 use Took\Yii2GiiMCP\Protocol\StdioTransport;
 
@@ -19,7 +18,7 @@ class StdioTransportTest extends Unit
     public function testConstructorWithDefaults(): void
     {
         $transport = new StdioTransport();
-        
+
         $this->assertInstanceOf(StdioTransport::class, $transport);
     }
 

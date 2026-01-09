@@ -12,36 +12,6 @@ class FileHelperTest extends Unit
 {
     private string $testDir;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->testDir = sys_get_temp_dir() . '/filehelper_test_' . uniqid();
-        mkdir($this->testDir, 0755, true);
-    }
-
-    protected function tearDown(): void
-    {
-        // Clean up test directory
-        if (is_dir($this->testDir)) {
-            $this->rmdirRecursive($this->testDir);
-        }
-        parent::tearDown();
-    }
-
-    private function rmdirRecursive(string $dir): void
-    {
-        if (!is_dir($dir)) {
-            return;
-        }
-
-        $files = array_diff(scandir($dir), ['.', '..']);
-        foreach ($files as $file) {
-            $path = $dir . DIRECTORY_SEPARATOR . $file;
-            is_dir($path) ? $this->rmdirRecursive($path) : unlink($path);
-        }
-        rmdir($dir);
-    }
-
     /**
      * Test checkConflicts with no conflicts
      */
@@ -454,5 +424,35 @@ class FileHelperTest extends Unit
         $this->assertIsArray($results);
         $this->assertFalse($results[$paths[0]]);
         $this->assertFalse($results[$paths[1]]);
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->testDir = sys_get_temp_dir() . '/filehelper_test_' . uniqid();
+        mkdir($this->testDir, 0755, true);
+    }
+
+    protected function tearDown(): void
+    {
+        // Clean up test directory
+        if (is_dir($this->testDir)) {
+            $this->rmdirRecursive($this->testDir);
+        }
+        parent::tearDown();
+    }
+
+    private function rmdirRecursive(string $dir): void
+    {
+        if (!is_dir($dir)) {
+            return;
+        }
+
+        $files = array_diff(scandir($dir), ['.', '..']);
+        foreach ($files as $file) {
+            $path = $dir . DIRECTORY_SEPARATOR . $file;
+            is_dir($path) ? $this->rmdirRecursive($path) : unlink($path);
+        }
+        rmdir($dir);
     }
 }

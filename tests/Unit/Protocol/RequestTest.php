@@ -216,7 +216,7 @@ class RequestTest extends Unit
 
         $this->assertIsString($json);
         $data = json_decode($json, true);
-        
+
         $this->assertEquals('2.0', $data['jsonrpc']);
         $this->assertEquals(1, $data['id']);
         $this->assertEquals('test/method', $data['method']);
@@ -232,7 +232,7 @@ class RequestTest extends Unit
         $json = $request->toJson();
 
         $data = json_decode($json, true);
-        
+
         $this->assertArrayNotHasKey('params', $data);
     }
 
@@ -245,7 +245,7 @@ class RequestTest extends Unit
         $json = $request->toJson();
 
         $data = json_decode($json, true);
-        
+
         $this->assertArrayNotHasKey('id', $data);
         $this->assertEquals('test/notification', $data['method']);
     }
@@ -284,7 +284,7 @@ class RequestTest extends Unit
     public function testRoundTripSerialization(): void
     {
         $original = new Request(123, 'test/method', ['key' => 'value', 'nested' => ['data' => true]]);
-        
+
         $json = $original->toJson();
         $restored = Request::fromJson($json);
 

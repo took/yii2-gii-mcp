@@ -41,6 +41,9 @@ class GenerateModel extends AbstractTool
     public function getDescription(): string
     {
         return 'Generate Yii2 ActiveRecord model from a database table. ' .
+            'Automatically detects Basic or Advanced Template and uses appropriate default namespace ' .
+            '(common\\models for Advanced Template, app\\models for Basic Template). ' .
+            'For Advanced Template projects, you can specify frontend\\models, backend\\models, api\\models, or common\\models. ' .
             'By default, runs in preview mode (no files written). ' .
             'Set preview=false to write files to disk. ' .
             'This tool will check for file conflicts and validate inputs before generation.';
@@ -64,8 +67,8 @@ class GenerateModel extends AbstractTool
                 ],
                 'namespace' => [
                     'type' => 'string',
-                    'description' => 'Namespace for the model class',
-                    'default' => 'app\\models',
+                    'description' => 'Namespace for the model class. Defaults to common\\models for Advanced Template or app\\models for Basic Template. For Advanced Template, you can specify: common\\models (shared), frontend\\models, backend\\models, or api\\models depending on where the model should be used.',
+                    'default' => 'common\\models',
                 ],
                 'baseClass' => [
                     'type' => 'string',
@@ -117,7 +120,9 @@ class GenerateModel extends AbstractTool
             }
 
             // Validate namespace if provided
-            $namespace = $this->getOptionalParam($arguments, 'namespace', 'app\\models');
+            // Use dynamic default based on template type (common\models for Advanced, app\models for Basic)
+            $defaultNamespace = $this->bootstrap->getDefaultModelNamespace();
+            $namespace = $this->getOptionalParam($arguments, 'namespace', $defaultNamespace);
             if (!ValidationHelper::validateNamespace($namespace)) {
                 return $this->createError(
                     ValidationHelper::getNamespaceError($namespace)
@@ -200,6 +205,7 @@ class GenerateModel extends AbstractTool
                 foreach ($result['validationErrors'] as $field => $fieldErrors) {
                     $errors[] = "{$field}: " . implode(', ', $fieldErrors);
                 }
+
                 return $this->createError(
                     $result['error'] ?? 'Validation failed',
                     ['validationErrors' => $errors]
@@ -209,6 +215,7 @@ class GenerateModel extends AbstractTool
             // Handle conflicts
             if (isset($result['conflicts'])) {
                 $conflicts = array_map(fn($c) => $c['path'], $result['conflicts']);
+
                 return $this->createError(
                     $result['error'] ?? 'File conflicts',
                     [

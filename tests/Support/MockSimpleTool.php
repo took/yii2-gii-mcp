@@ -48,6 +48,7 @@ class MockSimpleTool extends AbstractTool
     protected function doExecute(array $arguments): array
     {
         $message = $this->getOptionalParam($arguments, 'message', 'Hello from mock tool');
+
         return $this->createResult("Mock tool executed: {$message}");
     }
 }

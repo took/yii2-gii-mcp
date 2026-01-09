@@ -2,9 +2,9 @@
 <?php
 /**
  * Diagnostic Tool for yii2-gii-mcp
- * 
+ *
  * Checks your setup and provides helpful troubleshooting information.
- * 
+ *
  * Usage:
  *   cd /path/to/your/yii2/project
  *   php vendor/took/yii2-gii-mcp/bin/diagnose
@@ -18,7 +18,8 @@ const C_RED = "\033[31m";
 const C_BLUE = "\033[34m";
 const C_BOLD = "\033[1m";
 
-function check($label, $passed, $message = '') {
+function check($label, $passed, $message = '')
+{
     $icon = $passed ? C_GREEN . "✓" : C_RED . "✗";
     echo $icon . " " . $label . C_RESET;
     if ($message) {
@@ -28,7 +29,8 @@ function check($label, $passed, $message = '') {
     return $passed;
 }
 
-function section($title) {
+function section($title)
+{
     echo "\n" . C_BOLD . C_BLUE . "=== " . $title . " ===" . C_RESET . "\n\n";
 }
 
@@ -61,12 +63,12 @@ if ($isBasic) {
     check("Template type", true, "Basic Template");
 } elseif ($isAdvanced) {
     check("Template type", true, "Advanced Template");
-    
+
     $parts = [];
     if (is_dir($projectRoot . '/frontend')) $parts[] = "frontend";
     if (is_dir($projectRoot . '/backend')) $parts[] = "backend";
     if (is_dir($projectRoot . '/api')) $parts[] = "api";
-    
+
     if (!empty($parts)) {
         echo "  Components: " . implode(", ", $parts) . "\n";
     }
@@ -96,7 +98,7 @@ $allChecks &= check("config-mcp.php exists", $hasConfig, $configPath);
 if ($hasConfig) {
     $isReadable = is_readable($configPath);
     check("Config is readable", $isReadable);
-    
+
     // Try to load it
     if ($isReadable) {
         try {
@@ -106,22 +108,22 @@ if ($hasConfig) {
             defined('YII_ENV_DEV') or define('YII_ENV_DEV', true);
             defined('YII_ENV_PROD') or define('YII_ENV_PROD', false);
             defined('YII_ENV_TEST') or define('YII_ENV_TEST', false);
-            
+
             ob_start();
             $loadedConfig = require $configPath;
             ob_end_clean();
-            
+
             $isArray = is_array($loadedConfig);
             check("Config returns array", $isArray);
-            
+
             if ($isArray) {
                 $hasComponents = isset($loadedConfig['components']);
                 check("Has 'components' key", $hasComponents);
-                
+
                 if ($hasComponents) {
                     $hasDb = isset($loadedConfig['components']['db']);
                     check("Has 'db' component", $hasDb);
-                    
+
                     if ($hasDb) {
                         $db = $loadedConfig['components']['db'];
                         if (is_array($db)) {
@@ -129,7 +131,7 @@ if ($hasConfig) {
                         }
                     }
                 }
-                
+
                 $hasGii = isset($loadedConfig['modules']['gii']);
                 check("Has 'gii' module", $hasGii);
             }
@@ -159,13 +161,13 @@ foreach ($requiredExtensions as $ext) {
 // Check 6: Database connection
 if ($hasConfig && isset($loadedConfig)) {
     section("Database Connection");
-    
+
     try {
         // Set up autoloader
         $autoloadPaths = [
-            $projectRoot . '/vendor/autoload.php',
+                $projectRoot . '/vendor/autoload.php',
         ];
-        
+
         $autoloaded = false;
         foreach ($autoloadPaths as $autoload) {
             if (file_exists($autoload)) {
@@ -174,37 +176,37 @@ if ($hasConfig && isset($loadedConfig)) {
                 break;
             }
         }
-        
+
         if ($autoloaded) {
             // Try to initialize Yii2
             defined('YII_DEBUG') or define('YII_DEBUG', true);
             defined('YII_ENV') or define('YII_ENV', 'dev');
-            
+
             require($projectRoot . '/vendor/yiisoft/yii2/Yii.php');
-            
+
             $app = new \yii\console\Application($loadedConfig);
-            
+
             // Try to connect to database
             $db = $app->db;
             $db->open();
-            
+
             check("Database connection", true, "Connected successfully");
-            
+
             // Get table count
             $tables = $db->schema->getTableNames();
             echo "  Tables found: " . C_BOLD . count($tables) . C_RESET . "\n";
-            
+
             if (!empty($tables)) {
                 $sample = array_slice($tables, 0, 5);
                 echo "  Sample: " . implode(", ", $sample);
                 if (count($tables) > 5) echo ", ...";
                 echo "\n";
             }
-            
+
         } else {
             check("Database connection", false, "Could not load autoloader");
         }
-        
+
     } catch (Exception $e) {
         check("Database connection", false, $e->getMessage());
     }
@@ -214,8 +216,8 @@ if ($hasConfig && isset($loadedConfig)) {
 section("Firebender Configuration");
 
 $firebenderPaths = [
-    $projectRoot . '/.firebender/firebender.json' => 'Project-specific',
-    (getenv('HOME') ?: getenv('USERPROFILE')) . '/.firebender/firebender.json' => 'Global'
+        $projectRoot . '/.firebender/firebender.json' => 'Project-specific',
+        (getenv('HOME') ?: getenv('USERPROFILE')) . '/.firebender/firebender.json' => 'Global'
 ];
 
 $foundFirebender = false;
@@ -223,7 +225,7 @@ foreach ($firebenderPaths as $path => $type) {
     if (file_exists($path)) {
         $foundFirebender = true;
         check("$type config", true, $path);
-        
+
         $config = json_decode(file_get_contents($path), true);
         if (isset($config['mcpServers']['yii2-gii'])) {
             echo "  " . C_GREEN . "✓" . C_RESET . " yii2-gii server configured\n";
@@ -242,14 +244,14 @@ section("Summary");
 if ($allChecks) {
     echo C_GREEN . C_BOLD . "✓ All checks passed!" . C_RESET . "\n";
     echo "Your yii2-gii-mcp server should be working correctly.\n\n";
-    
+
     echo "Test it with:\n";
     echo "  YII2_CONFIG_PATH=" . $configPath . " \\\n";
     echo "    php vendor/took/yii2-gii-mcp/examples/test-list-tables.php\n\n";
 } else {
     echo C_YELLOW . "⚠ Some checks failed." . C_RESET . "\n";
     echo "Please fix the issues above and run the diagnostic again.\n\n";
-    
+
     echo "Quick fixes:\n";
     echo "  • Run interactive setup: php vendor/took/yii2-gii-mcp/bin/interactive-setup\n";
     echo "  • Check documentation: vendor/took/yii2-gii-mcp/QUICKSTART.md\n\n";

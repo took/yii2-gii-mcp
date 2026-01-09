@@ -21,6 +21,7 @@ class Yii2Bootstrap
     private ?Application $app = null;
     private ServerConfig $config;
     private bool $initialized = false;
+    private ?string $templateType = null;
 
     /**
      * Private constructor for singleton pattern
@@ -122,6 +123,7 @@ class Yii2Bootstrap
         foreach ($possiblePaths as $path) {
             if (file_exists($path)) {
                 require_once $path;
+
                 return;
             }
         }
@@ -278,9 +280,10 @@ class Yii2Bootstrap
      * @return Application Application instance
      * @throws RuntimeException If not initialized
      */
-    public function getApp(): Application
+    public function getApp()
     {
         $this->ensureInitialized();
+
         return $this->app;
     }
 
@@ -292,5 +295,69 @@ class Yii2Bootstrap
     public function isInitialized(): bool
     {
         return $this->initialized;
+    }
+
+    /**
+     * Detect Yii2 template type (Basic or Advanced)
+     *
+     * @return string 'basic' or 'advanced'
+     */
+    public function detectTemplateType(): string
+    {
+        // Return cached result if already detected
+        if ($this->templateType !== null) {
+            return $this->templateType;
+        }
+
+        $appPath = $this->config->getYii2AppPath();
+
+        // Check for Advanced Template structure
+        // Advanced Template has /common and /console directories
+        if (is_dir($appPath . '/common') && is_dir($appPath . '/console')) {
+            $this->templateType = 'advanced';
+            return $this->templateType;
+        }
+
+        // Check for Basic Template structure
+        // Basic Template has /app and /config directories
+        if (is_dir($appPath . '/app') && is_dir($appPath . '/config')) {
+            $this->templateType = 'basic';
+            return $this->templateType;
+        }
+
+        // Default to basic if structure is unclear
+        // This provides a safe fallback for non-standard structures
+        $this->templateType = 'basic';
+        return $this->templateType;
+    }
+
+    /**
+     * Get default model namespace based on detected template type
+     *
+     * For Advanced Template: Returns 'common\models' (shared models)
+     * For Basic Template: Returns 'app\models'
+     *
+     * @return string Default namespace for models
+     */
+    public function getDefaultModelNamespace(): string
+    {
+        $templateType = $this->detectTemplateType();
+
+        return $templateType === 'advanced' ? 'common\\models' : 'app\\models';
+    }
+
+    /**
+     * Get default controller namespace based on detected template type
+     *
+     * For Advanced Template: Returns 'frontend\controllers' (most common entry point)
+     * For Basic Template: Returns 'app\controllers'
+     *
+     * @return string Default namespace for controllers
+     */
+    public function getDefaultControllerNamespace(): string
+    {
+        $templateType = $this->detectTemplateType();
+
+        return $templateType === 'advanced' ? 'frontend\\controllers' : 'app\\controllers';
     }
 }

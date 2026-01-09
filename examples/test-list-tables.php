@@ -1,21 +1,22 @@
 #!/usr/bin/env php
 <?php
+
 /**
  * Test script to demonstrate MCP server usage: List database tables
- * 
+ *
  * This script shows how to:
  * 1. Start the MCP server programmatically
  * 2. Initialize the MCP protocol connection
  * 3. Call the list-tables tool
  * 4. Parse and display the results
- * 
+ *
  * Usage:
  *   php examples/test-list-tables.php
- * 
+ *
  * Requirements:
  *   - YII2_CONFIG_PATH environment variable must be set
  *   - YII2_APP_PATH environment variable should be set (optional)
- * 
+ *
  * Example:
  *   YII2_CONFIG_PATH=/path/to/config-mcp.php php examples/test-list-tables.php
  */
@@ -28,8 +29,8 @@ $appPath = getenv('YII2_APP_PATH') ?: dirname($configPath);
 // Validate configuration
 if (empty($configPath)) {
     die("ERROR: YII2_CONFIG_PATH environment variable must be set.\n\n" .
-        "Example:\n" .
-        "  YII2_CONFIG_PATH=/path/to/config-mcp.php php examples/test-list-tables.php\n");
+            "Example:\n" .
+            "  YII2_CONFIG_PATH=/path/to/config-mcp.php php examples/test-list-tables.php\n");
 }
 
 if (!file_exists($configPath)) {
@@ -46,14 +47,14 @@ echo "App Path: $appPath\n\n";
 
 // Start the MCP server process
 $descriptorspec = [
-    0 => ['pipe', 'r'],  // stdin
-    1 => ['pipe', 'w'],  // stdout
-    2 => ['pipe', 'w'],  // stderr
+        0 => ['pipe', 'r'],  // stdin
+        1 => ['pipe', 'w'],  // stdout
+        2 => ['pipe', 'w'],  // stderr
 ];
 
 $env = [
-    'YII2_CONFIG_PATH' => $configPath,
-    'YII2_APP_PATH' => $appPath,
+        'YII2_CONFIG_PATH' => $configPath,
+        'YII2_APP_PATH' => $appPath,
 ];
 
 $process = proc_open("php $serverPath", $descriptorspec, $pipes, $appPath, $env);
@@ -65,17 +66,17 @@ if (!is_resource($process)) {
 // Step 1: Initialize the server
 echo "Sending initialize request...\n";
 $initRequest = json_encode([
-    'jsonrpc' => '2.0',
-    'id' => 1,
-    'method' => 'initialize',
-    'params' => [
-        'protocolVersion' => '2024-11-05',
-        'capabilities' => [],
-        'clientInfo' => [
-            'name' => 'test-client',
-            'version' => '1.0'
-        ]
-    ]
+        'jsonrpc' => '2.0',
+        'id' => 1,
+        'method' => 'initialize',
+        'params' => [
+                'protocolVersion' => '2024-11-05',
+                'capabilities' => [],
+                'clientInfo' => [
+                        'name' => 'test-client',
+                        'version' => '1.0',
+                ],
+        ],
 ]);
 
 fwrite($pipes[0], $initRequest . "\n");
@@ -102,15 +103,15 @@ echo "  Protocol: {$initData['result']['protocolVersion']}\n\n";
 // Step 2: Call list-tables tool
 echo "Calling list-tables tool...\n";
 $listTablesRequest = json_encode([
-    'jsonrpc' => '2.0',
-    'id' => 2,
-    'method' => 'tools/call',
-    'params' => [
-        'name' => 'list-tables',
-        'arguments' => [
-            'detailed' => true
-        ]
-    ]
+        'jsonrpc' => '2.0',
+        'id' => 2,
+        'method' => 'tools/call',
+        'params' => [
+                'name' => 'list-tables',
+                'arguments' => [
+                        'detailed' => true,
+                ],
+        ],
 ]);
 
 fwrite($pipes[0], $listTablesRequest . "\n");
@@ -128,7 +129,7 @@ if (isset($response['error'])) {
     echo str_repeat('=', 80) . "\n";
     echo "DATABASE TABLES\n";
     echo str_repeat('=', 80) . "\n\n";
-    
+
     if (isset($response['result']['content'][0]['text'])) {
         echo $response['result']['content'][0]['text'] . "\n";
     } else {

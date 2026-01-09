@@ -183,7 +183,7 @@ class GenerateExtensionTest extends Unit
         $method->setAccessible(true);
 
         $validNames = ['yiisoft', 'mycompany', 'my-company', 'test123', 'vendor-name-with-dashes'];
-        
+
         foreach ($validNames as $name) {
             $result = $method->invoke($tool, $name);
             $this->assertTrue($result, "Name '{$name}' should be valid");
@@ -203,7 +203,7 @@ class GenerateExtensionTest extends Unit
         $method->setAccessible(true);
 
         $invalidNames = ['MyCompany', 'vendor_name', 'vendor.name', '123vendor', '-vendor', 'vendor name'];
-        
+
         foreach ($invalidNames as $name) {
             $result = $method->invoke($tool, $name);
             $this->assertFalse($result, "Name '{$name}' should be invalid");

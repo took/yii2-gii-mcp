@@ -2,7 +2,10 @@
 
 **MCP server for AI-powered Yii2 code generation and scaffolding**
 
-yii2-gii-mcp is a PHP-based [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server that enables AI assistants (Firebender, Claude Desktop, Cline, etc.) to interact with **Yii2's Gii code generator**. This allows AI agents to inspect your database, generate ActiveRecord models, create CRUD interfaces, and scaffold complete application components—all through natural language conversations.
+yii2-gii-mcp is a PHP-based [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server that enables AI
+assistants (Firebender, Claude Desktop, Cline, etc.) to interact with **Yii2's Gii code generator**. This allows AI
+agents to inspect your database, generate ActiveRecord models, create CRUD interfaces, and scaffold complete application
+components—all through natural language conversations.
 
 > **Note:** This MCP server works exclusively with **Yii2 framework projects**. Yii1 and Yii3 are not supported.
 
@@ -15,6 +18,10 @@ yii2-gii-mcp is a PHP-based [Model Context Protocol (MCP)](https://modelcontextp
 - **Form Generation** - Generate form models for data collection and validation
 - **Module Scaffolding** - Create complete Yii2 modules with directory structure
 - **Extension Scaffolding** - Generate extension boilerplate with Composer packaging
+- **Migration Management** - List, preview, and execute database migrations with safety confirmations
+- **Project Structure Detection** - Auto-detect template type, applications, modules, and environment configuration
+- **Component Inspection** - Analyze controllers, models, and views with detailed metadata extraction
+- **Log Reading** - Read and filter application logs from files and database with advanced filtering
 - **Preview-First Workflow** - Review all code before writing to disk (safety built-in)
 - **Full MCP Support** - JSON-RPC 2.0 over stdio, works with any MCP client
 
@@ -25,7 +32,9 @@ yii2-gii-mcp is a PHP-based [Model Context Protocol (MCP)](https://modelcontextp
 - **Yii2 framework** (provided by your project)
 - Yii2 Gii module (provided by your project)
 
-**Important:** This MCP server is designed exclusively for **Yii2 framework projects**. Yii1 and Yii3 are not supported. If you're using Yii1, please migrate to Yii2 first using the [official Yii2 upgrade guide](https://www.yiiframework.com/doc/guide/2.0/en/intro-upgrade-from-v1).
+**Important:** This MCP server is designed exclusively for **Yii2 framework projects**. Yii1 and Yii3 are not supported.
+If you're using Yii1, please migrate to Yii2 first using
+the [official Yii2 upgrade guide](https://www.yiiframework.com/doc/guide/2.0/en/intro-upgrade-from-v1).
 
 ## Quick Start
 
@@ -47,6 +56,7 @@ php vendor/took/yii2-gii-mcp/bin/interactive-setup
 ```
 
 This wizard will:
+
 - Detect your Yii2 project structure (Basic/Advanced Template)
 - Create `config-mcp.php` configuration file
 - Test your database connection
@@ -99,6 +109,7 @@ Edit `~/.firebender/firebender.json`:
 **For Claude Desktop:**
 
 Edit your Claude config file:
+
 - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
 - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
 - **Linux**: `~/.config/Claude/claude_desktop_config.json`
@@ -145,7 +156,8 @@ Then add the allowed tools to your `.claude/settings.json`:
 
 This allows all yii2-gii-mcp tools to run without requiring manual approval for each call.
 
-**Note:** Use absolute paths! The `--scope project` option stores the configuration in `.mcp.json` in your project directory.
+**Note:** Use absolute paths! The `--scope project` option stores the configuration in `.mcp.json` in your project
+directory.
 
 ### 4. Docker Setup
 
@@ -154,6 +166,7 @@ This allows all yii2-gii-mcp tools to run without requiring manual approval for 
 **→ [docs/DOCKER.md](docs/DOCKER.md)**
 
 This covers:
+
 - Two setup options: MCP on host (recommended) or inside container
 - Database connection configuration for Docker
 - Firebender and Claude Desktop configs for Docker
@@ -195,6 +208,11 @@ YII2_CONFIG_PATH=config-mcp.php php vendor/took/yii2-gii-mcp/examples/test-list-
 Ask your AI assistant (Firebender, Claude, etc.):
 
 ```
+"Detect my Yii2 project structure and show me what template type I'm using"
+"What environment is currently configured in my Yii2 application?"
+"Show me the last 50 error logs from all applications"
+"Read warning and error logs from the frontend application from the last 24 hours"
+"Search for 'database connection' errors in console logs"
 "List all database tables using yii2-gii-mcp inspect-database"
 "Show me the structure of the user table using yii2-gii-mcp list-tables user"
 "Generate a migration to create the table foo with some random fields"
@@ -243,18 +261,49 @@ AI: [Uses generate-crud] "Generated:
 
 ## Available Tools
 
-| Tool | Purpose | Safety |
-|------|---------|--------|
-| `list-tables` | List all database tables | ✅ Read-only |
-| `inspect-database` | Detailed schema inspection | ✅ Read-only |
-| `generate-model` | Generate ActiveRecord models | ⚠️ Writes files |
-| `generate-crud` | Generate CRUD operations | ⚠️ Writes files |
-| `generate-controller` | Generate controllers | ⚠️ Writes files |
-| `generate-form` | Generate form models | ⚠️ Writes files |
-| `generate-module` | Generate modules | ⚠️ Writes files |
-| `generate-extension` | Generate extensions | ⚠️ Writes files |
+### Code Generation & Scaffolding
 
-All generation tools default to **preview mode** for safety.
+| Tool                  | Purpose                      | Safety          |
+|-----------------------|------------------------------|-----------------|
+| `list-tables`         | List all database tables     | ✅ Read-only     |
+| `inspect-database`    | Detailed schema inspection   | ✅ Read-only     |
+| `generate-model`      | Generate ActiveRecord models | ⚠️ Writes files |
+| `generate-crud`       | Generate CRUD operations     | ⚠️ Writes files |
+| `generate-controller` | Generate controllers         | ⚠️ Writes files |
+| `generate-form`       | Generate form models         | ⚠️ Writes files |
+| `generate-module`     | Generate modules             | ⚠️ Writes files |
+| `generate-extension`  | Generate extensions          | ⚠️ Writes files |
+
+### Migration Management
+
+| Tool                | Purpose                                                           | Safety               |
+|---------------------|-------------------------------------------------------------------|----------------------|
+| `list-migrations`   | List migrations with status (applied/pending)                     | ✅ Read-only          |
+| `create-migration`  | Create new migration files with field definitions                 | ⚠️ Writes files      |
+| `execute-migration` | Execute migration operations (up/down/redo/fresh) and preview SQL | 🔴 Modifies database |
+
+### Project Analysis
+
+| Tool                           | Purpose                                                      | Safety       |
+|--------------------------------|--------------------------------------------------------------|--------------|
+| `detect-application-structure` | Detect project structure, template type, apps, and environments | ✅ Read-only |
+
+### Code Analysis & Inspection
+
+| Tool                | Purpose                                                          | Safety       |
+|---------------------|------------------------------------------------------------------|--------------|
+| `inspect-components` | List and analyze controllers, models, views with metadata      | ✅ Read-only |
+
+### Logging & Debugging
+
+| Tool        | Purpose                                                                  | Safety       |
+|-------------|--------------------------------------------------------------------------|--------------|
+| `read-logs` | Read and filter logs from files and database (level, category, search) | ✅ Read-only |
+
+**Total: 14 production-ready tools**
+
+All generation tools default to **preview mode** for safety. The `execute-migration` tool requires **explicit
+confirmations** for all operations.
 
 ## Troubleshooting
 
@@ -339,14 +388,19 @@ MIT - See LICENSE file for details.
 
 ## Project Status
 
-**Phase 1-4 Complete** 🎉
+**Version 1.1.0 Released** 🎉
 
 - ✅ Full MCP protocol implementation (JSON-RPC 2.0 over stdio)
-- ✅ 8 production-ready Gii generator tools
-- ✅ Comprehensive test suite (50+ tests)
+- ✅ 14 production-ready tools (8 Gii generators + 3 migration tools + 3 analysis/inspection tools)
+- ✅ Comprehensive test suite (450+ tests, 60% coverage)
 - ✅ Interactive setup wizard and diagnostic tools
 - ✅ Complete documentation for humans and AI agents
+- ✅ Migration management with safety features
+- ✅ Project structure detection and analysis
+- ✅ Component inspection with metadata extraction
+- ✅ Application log reading and filtering
+- ✅ Code consolidation (DRY principle applied)
 
-**Next Phase**: Custom Gii templates, code inspection tools, advanced features
+**Next Phase**: Routing inspection, i18n tools, RBAC testing, custom templates
 
 See `TODO.md` for detailed roadmap.

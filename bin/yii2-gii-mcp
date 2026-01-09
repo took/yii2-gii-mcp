@@ -48,14 +48,20 @@ use Took\Yii2GiiMCP\Config\ServerConfig;
 use Took\Yii2GiiMCP\Helpers\Yii2Bootstrap;
 use Took\Yii2GiiMCP\MCPServer;
 use Took\Yii2GiiMCP\ToolRegistry;
+use Took\Yii2GiiMCP\Tools\CreateMigration;
+use Took\Yii2GiiMCP\Tools\DetectApplicationStructure;
+use Took\Yii2GiiMCP\Tools\ExecuteMigration;
 use Took\Yii2GiiMCP\Tools\GenerateController;
 use Took\Yii2GiiMCP\Tools\GenerateCrud;
 use Took\Yii2GiiMCP\Tools\GenerateExtension;
 use Took\Yii2GiiMCP\Tools\GenerateForm;
 use Took\Yii2GiiMCP\Tools\GenerateModel;
 use Took\Yii2GiiMCP\Tools\GenerateModule;
+use Took\Yii2GiiMCP\Tools\InspectComponents;
 use Took\Yii2GiiMCP\Tools\InspectDatabase;
+use Took\Yii2GiiMCP\Tools\ListMigrations;
 use Took\Yii2GiiMCP\Tools\ListTables;
+use Took\Yii2GiiMCP\Tools\ReadLogs;
 
 // Parse command line arguments
 $debug = isset($_SERVER['DEBUG']) && $_SERVER['DEBUG'];
@@ -78,7 +84,7 @@ if ($demo) {
                     'params' => [
                             'protocolVersion' => '2024-11-05',
                             'capabilities' => [],
-                            'clientInfo' => ['name' => 'example-client', 'version' => '1.0.0'],
+                            'clientInfo' => ['name' => 'example-client', 'version' => '1.1.0'],
                     ],
             ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . "\n\n";
 
@@ -120,18 +126,24 @@ if ($config->isValid()) {
         // Register all available tools
         $toolRegistry->register(new ListTables($bootstrap));
         $toolRegistry->register(new InspectDatabase($bootstrap));
+        $toolRegistry->register(new ListMigrations($bootstrap));
+        $toolRegistry->register(new CreateMigration($bootstrap));
+        $toolRegistry->register(new ExecuteMigration($bootstrap));
         $toolRegistry->register(new GenerateModel($bootstrap));
         $toolRegistry->register(new GenerateCrud($bootstrap));
         $toolRegistry->register(new GenerateController($bootstrap));
         $toolRegistry->register(new GenerateForm($bootstrap));
         $toolRegistry->register(new GenerateModule($bootstrap));
         $toolRegistry->register(new GenerateExtension($bootstrap));
+        $toolRegistry->register(new DetectApplicationStructure($bootstrap));
+        $toolRegistry->register(new InspectComponents($bootstrap));
+        $toolRegistry->register(new ReadLogs($bootstrap));
 
         // Set the tool registry on the server
         $server->setToolRegistry($toolRegistry);
 
         if ($debug) {
-            fwrite(STDERR, "[DEBUG] Registered 8 tools: list-tables, inspect-database, generate-model, generate-crud, generate-controller, generate-form, generate-module, generate-extension\n");
+            fwrite(STDERR, "[DEBUG] Registered 14 tools: list-tables, inspect-database, list-migrations, create-migration, execute-migration, generate-model, generate-crud, generate-controller, generate-form, generate-module, generate-extension, detect-application-structure, inspect-components, read-logs\n");
         }
     } catch (Exception $e) {
         fwrite(STDERR, "[WARNING] Could not register tools: {$e->getMessage()}\n");

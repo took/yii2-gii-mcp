@@ -21,7 +21,7 @@ class MCPServer
 {
     private const PROTOCOL_VERSION = '2024-11-05';
     private const SERVER_NAME = 'yii2-gii-mcp';
-    private const SERVER_VERSION = '1.0.0';
+    private const SERVER_VERSION = '1.1.0';
 
     private StdioTransport $transport;
     private ?ToolRegistry $toolRegistry = null;
@@ -79,6 +79,7 @@ class MCPServer
                 $this->transport->writeError(
                     ErrorResponse::internalError(null, $e->getMessage())
                 );
+
                 break;
             }
         }
@@ -101,6 +102,7 @@ class MCPServer
             // Handle notification (no response expected)
             if ($request->isNotification()) {
                 $this->transport->log("Received notification: " . $request->getMethod());
+
                 return;
             }
 
@@ -148,6 +150,7 @@ class MCPServer
             return ErrorResponse::invalidParams($id, $e->getMessage());
         } catch (Throwable $e) {
             $this->transport->log("Error handling request: " . $e->getMessage(), true);
+
             return ErrorResponse::internalError($id, $e->getMessage());
         }
     }
@@ -274,6 +277,7 @@ class MCPServer
             return ErrorResponse::invalidParams($id, $e->getMessage());
         } catch (Throwable $e) {
             $this->transport->log("Tool execution error: " . $e->getMessage(), true);
+
             return ErrorResponse::internalError($id, "Tool execution failed: " . $e->getMessage());
         }
     }

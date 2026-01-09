@@ -10,7 +10,7 @@ use Took\Yii2GiiMCP\Protocol\Response;
 
 /**
  * Test Message base class functionality
- * 
+ *
  * Tests are performed through concrete implementations (Request/Response)
  * since Message is an abstract class.
  */
@@ -40,7 +40,7 @@ class MessageTest extends Unit
 
         // Test through Request::fromJson which uses Message::parseJson
         $request = Request::fromJson($json);
-        
+
         $this->assertInstanceOf(Request::class, $request);
     }
 
@@ -50,7 +50,7 @@ class MessageTest extends Unit
     public function testParseJsonWithInvalidSyntax(): void
     {
         $this->expectException(JsonException::class);
-        
+
         Request::fromJson('{invalid: json}');
     }
 
@@ -61,20 +61,20 @@ class MessageTest extends Unit
     {
         $this->expectException(JsonException::class);
         $this->expectExceptionMessage('Invalid JSON-RPC message format');
-        
+
         Request::fromJson('"just a string"');
     }
 
     /**
      * Test parseJson with JSON array (not object)
-     * 
+     *
      * JSON arrays decode successfully but fail version validation
      */
     public function testParseJsonWithJsonArray(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid JSON-RPC version');
-        
+
         Request::fromJson('[1, 2, 3]');
     }
 
@@ -90,7 +90,7 @@ class MessageTest extends Unit
         ]);
 
         $request = Request::fromJson($json);
-        
+
         $this->assertInstanceOf(Request::class, $request);
     }
 
@@ -101,7 +101,7 @@ class MessageTest extends Unit
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid JSON-RPC version');
-        
+
         $json = json_encode([
             'id' => 1,
             'method' => 'test',
@@ -117,7 +117,7 @@ class MessageTest extends Unit
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid JSON-RPC version');
-        
+
         $json = json_encode([
             'jsonrpc' => '1.0',
             'id' => 1,
@@ -133,7 +133,7 @@ class MessageTest extends Unit
     public function testValidateVersionWithNumericVersion(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        
+
         $json = json_encode([
             'jsonrpc' => 2.0, // numeric instead of string
             'id' => 1,
@@ -153,7 +153,7 @@ class MessageTest extends Unit
 
         $this->assertIsString($json);
         $this->assertJson($json);
-        
+
         $decoded = json_decode($json, true);
         $this->assertEquals('2.0', $decoded['jsonrpc']);
     }
@@ -168,7 +168,7 @@ class MessageTest extends Unit
 
         $this->assertIsString($json);
         $this->assertJson($json);
-        
+
         $decoded = json_decode($json, true);
         $this->assertEquals('2.0', $decoded['jsonrpc']);
     }
@@ -206,7 +206,7 @@ class MessageTest extends Unit
     {
         $request = new Request(1, 'test', ['text' => 'Hello 世界 🌍']);
         $json = $request->toJson();
-        
+
         $decoded = json_decode($json, true);
         $this->assertEquals('Hello 世界 🌍', $decoded['params']['text']);
     }
@@ -249,11 +249,11 @@ class MessageTest extends Unit
                 'level2' => [
                     'level3' => [
                         'level4' => [
-                            'data' => 'deep value'
-                        ]
-                    ]
-                ]
-            ]
+                            'data' => 'deep value',
+                        ],
+                    ],
+                ],
+            ],
         ];
 
         $response = new Response(1, $deepData);

@@ -41,6 +41,8 @@ class GenerateController extends AbstractTool
     public function getDescription(): string
     {
         return 'Generate Yii2 controller with custom actions. ' .
+            'Automatically detects Basic or Advanced Template and uses appropriate default namespace. ' .
+            'For Advanced Template, you can specify which component (frontend/backend/api) to generate into. ' .
             'By default, runs in preview mode (no files written). ' .
             'Set preview=false to write files to disk. ' .
             'You can specify multiple actions as a comma-separated string (e.g., "index,view,create").';
@@ -58,6 +60,11 @@ class GenerateController extends AbstractTool
                     'type' => 'string',
                     'description' => 'Controller ID (e.g., "user", "post", "admin/user")',
                 ],
+                'component' => [
+                    'type' => 'string',
+                    'enum' => ['frontend', 'backend', 'api', 'common'],
+                    'description' => 'For Advanced Template: which component to generate controller into (frontend/backend/api/common). If not specified, defaults to frontend for Advanced Template.',
+                ],
                 'actions' => [
                     'type' => 'string',
                     'description' => 'Comma-separated list of action IDs (e.g., "index,view,create,update,delete")',
@@ -65,7 +72,7 @@ class GenerateController extends AbstractTool
                 ],
                 'namespace' => [
                     'type' => 'string',
-                    'description' => 'Namespace for the controller',
+                    'description' => 'Namespace for the controller. Defaults to app\\controllers for Basic Template or {component}\\controllers for Advanced Template. Can be overridden to specify custom namespace.',
                     'default' => 'app\\controllers',
                 ],
                 'baseClass' => [
@@ -102,8 +109,11 @@ class GenerateController extends AbstractTool
                 );
             }
 
-            // Validate namespace if provided
-            $namespace = $this->getOptionalParam($arguments, 'namespace', 'app\\controllers');
+            // Determine namespace based on template type and component
+            $component = $this->getOptionalParam($arguments, 'component');
+            $defaultNamespace = $this->getDefaultNamespace($component);
+            $namespace = $this->getOptionalParam($arguments, 'namespace', $defaultNamespace);
+            
             if (!ValidationHelper::validateNamespace($namespace)) {
                 return $this->createError(
                     ValidationHelper::getNamespaceError($namespace)
@@ -155,6 +165,26 @@ class GenerateController extends AbstractTool
     }
 
     /**
+     * Get default namespace based on template type and component
+     *
+     * @param string|null $component Component for Advanced Template
+     * @return string Default namespace
+     */
+    private function getDefaultNamespace(?string $component): string
+    {
+        $templateType = $this->bootstrap->detectTemplateType();
+
+        if ($templateType === 'advanced') {
+            // For Advanced Template, use component-specific namespace
+            $componentName = $component ?? 'frontend';
+            return $componentName . '\\controllers';
+        }
+
+        // For Basic Template, use app\controllers
+        return 'app\\controllers';
+    }
+
+    /**
      * Validate controller ID
      *
      * @param string $controllerID Controller ID
@@ -181,6 +211,7 @@ class GenerateController extends AbstractTool
                 return false;
             }
         }
+
         return true;
     }
 
@@ -200,6 +231,7 @@ class GenerateController extends AbstractTool
                 foreach ($result['validationErrors'] as $field => $fieldErrors) {
                     $errors[] = "{$field}: " . implode(', ', $fieldErrors);
                 }
+
                 return $this->createError(
                     $result['error'] ?? 'Validation failed',
                     ['validationErrors' => $errors]
@@ -209,6 +241,7 @@ class GenerateController extends AbstractTool
             // Handle conflicts
             if (isset($result['conflicts'])) {
                 $conflicts = array_map(fn($c) => $c['path'], $result['conflicts']);
+
                 return $this->createError(
                     $result['error'] ?? 'File conflicts',
                     [

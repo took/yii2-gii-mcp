@@ -191,6 +191,7 @@ class GenerateExtension extends AbstractTool
                 foreach ($result['validationErrors'] as $field => $fieldErrors) {
                     $errors[] = "{$field}: " . implode(', ', $fieldErrors);
                 }
+
                 return $this->createError(
                     $result['error'] ?? 'Validation failed',
                     ['validationErrors' => $errors]
@@ -200,6 +201,7 @@ class GenerateExtension extends AbstractTool
             // Handle conflicts
             if (isset($result['conflicts'])) {
                 $conflicts = array_map(fn($c) => $c['path'], $result['conflicts']);
+
                 return $this->createError(
                     $result['error'] ?? 'File conflicts',
                     [

@@ -215,7 +215,7 @@ class GenerateControllerTest extends Unit
         $this->assertTrue($method->invoke($tool, 'post'));
         $this->assertTrue($method->invoke($tool, 'user-profile'));
         $this->assertTrue($method->invoke($tool, 'blog-post'));
-        
+
         // Valid with path
         $this->assertTrue($method->invoke($tool, 'admin/user'));
         $this->assertTrue($method->invoke($tool, 'backend/post'));
@@ -237,15 +237,15 @@ class GenerateControllerTest extends Unit
         // Invalid - starts with uppercase
         $this->assertFalse($method->invoke($tool, 'User'));
         $this->assertFalse($method->invoke($tool, 'Post'));
-        
+
         // Invalid - starts with number
         $this->assertFalse($method->invoke($tool, '1user'));
-        
+
         // Invalid - contains special characters
         $this->assertFalse($method->invoke($tool, 'user_profile'));
         $this->assertFalse($method->invoke($tool, 'user.profile'));
         $this->assertFalse($method->invoke($tool, 'user profile'));
-        
+
         // Invalid - empty
         $this->assertFalse($method->invoke($tool, ''));
     }
@@ -266,15 +266,15 @@ class GenerateControllerTest extends Unit
         $this->assertTrue($method->invoke($tool, 'index'));
         $this->assertTrue($method->invoke($tool, 'view'));
         $this->assertTrue($method->invoke($tool, 'create'));
-        
+
         // Valid camelCase actions
         $this->assertTrue($method->invoke($tool, 'actionIndex'));
         $this->assertTrue($method->invoke($tool, 'myAction'));
-        
+
         // Valid multiple actions
         $this->assertTrue($method->invoke($tool, 'index,view'));
         $this->assertTrue($method->invoke($tool, 'index,view,create,update,delete'));
-        
+
         // Valid with spaces (trimmed)
         $this->assertTrue($method->invoke($tool, 'index, view, create'));
     }
@@ -293,22 +293,22 @@ class GenerateControllerTest extends Unit
 
         // Invalid - starts with uppercase
         $this->assertFalse($method->invoke($tool, 'Index'));
-        
+
         // Invalid - starts with number
         $this->assertFalse($method->invoke($tool, '1action'));
-        
+
         // Invalid - contains hyphen
         $this->assertFalse($method->invoke($tool, 'my-action'));
-        
+
         // Invalid - contains underscore
         $this->assertFalse($method->invoke($tool, 'my_action'));
-        
+
         // Invalid - contains space
         $this->assertFalse($method->invoke($tool, 'my action'));
-        
+
         // Invalid - one bad action in list
         $this->assertFalse($method->invoke($tool, 'index,My-Action,create'));
-        
+
         // Invalid - empty
         $this->assertFalse($method->invoke($tool, ''));
     }
@@ -505,10 +505,15 @@ class GenerateControllerTest extends Unit
         $schema = $tool->getInputSchema();
 
         foreach ($schema['properties'] as $propName => $propSchema) {
-            $this->assertArrayHasKey('description', $propSchema, 
-                "Property '{$propName}' should have 'description'");
-            $this->assertNotEmpty($propSchema['description'], 
-                "Property '{$propName}' description should not be empty");
+            $this->assertArrayHasKey(
+                'description',
+                $propSchema,
+                "Property '{$propName}' should have 'description'"
+            );
+            $this->assertNotEmpty(
+                $propSchema['description'],
+                "Property '{$propName}' description should not be empty"
+            );
         }
     }
 

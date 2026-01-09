@@ -112,7 +112,10 @@ class GenerateModelTest extends Unit
         $schema = $tool->getInputSchema();
         $properties = $schema['properties'];
 
-        $this->assertEquals('app\\models', $properties['namespace']['default']);
+        // Default namespace is 'common\models' for Advanced Template (used in most projects)
+        // Default namespace is 'web\models' for Basic Template (default template)
+        // The actual runtime default is determined by bootstrap->getDefaultModelNamespace()
+        $this->assertContains($properties['namespace']['default'], ['common\\models', 'web\\models']);
         $this->assertEquals('yii\\db\\ActiveRecord', $properties['baseClass']['default']);
         $this->assertEquals('db', $properties['db']['default']);
         $this->assertEquals('all', $properties['generateRelations']['default']);

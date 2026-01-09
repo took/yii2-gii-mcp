@@ -153,11 +153,11 @@ class ListTablesTest extends Unit
 
     /**
      * Note on Execution Tests:
-     * 
+     *
      * Testing doExecute() requires mocking yii\db\Connection which is not possible
-     * without Yii2 dependencies due to PHP's strict return type checking in 
+     * without Yii2 dependencies due to PHP's strict return type checking in
      * Yii2Bootstrap::getDb(): yii\db\Connection.
-     * 
+     *
      * Full execution tests would verify:
      * - Listing tables with minimal parameters
      * - Detailed vs non-detailed output
@@ -167,7 +167,7 @@ class ListTablesTest extends Unit
      * - Bootstrap initialization
      * - Exception handling
      * - Null schema handling
-     * 
+     *
      * These scenarios require integration tests with actual Yii2/database setup.
      */
 }

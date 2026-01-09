@@ -1,0 +1,43 @@
+includes:
+    - phpstan-baseline.neon
+
+parameters:
+    level: 6
+    paths:
+        - src
+        - tests
+    excludePaths:
+        - tests/_output/*
+        - tests/_support/_generated/*
+        - vendor/*
+    
+    # Check PHP 8.2+ compatibility
+    phpVersion: 80200
+    
+    # Bootstrap file for autoloading
+    bootstrapFiles:
+        - vendor/autoload.php
+    
+    # Ignore specific errors or patterns
+    ignoreErrors:
+        # Allow dynamic properties in tests
+        - '#Access to an undefined property Tests\\#'
+        - '#Call to an undefined method Tests\\#'
+        
+        # Codeception specific
+        - '#PHPDoc tag @var has invalid value#'
+        - '#Method .* has parameter \$.*tester with no type specified#'
+        
+        # Ignore missing type hints
+        -
+            identifier: missingType.iterableValue
+        -
+            identifier: missingType.generics
+    
+    # Report progress
+    reportUnmatchedIgnoredErrors: false
+    
+    # Additional checks
+    checkTooWideReturnTypesInProtectedAndPublicMethods: true
+    checkUninitializedProperties: true
+    checkDynamicProperties: true

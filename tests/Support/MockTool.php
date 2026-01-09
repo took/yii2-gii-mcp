@@ -68,6 +68,7 @@ class MockTool extends AbstractTool
     protected function doExecute(array $arguments): array
     {
         $param = $this->getRequiredParam($arguments, 'testParam');
+
         return $this->createResult("Executed with: {$param}");
     }
 }

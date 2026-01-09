@@ -39,7 +39,7 @@ class MCPProtocolCest
                 'protocolVersion' => '2024-11-05',
                 'clientInfo' => [
                     'name' => 'test-client',
-                    'version' => '1.0.0',
+                    'version' => '1.1.0',
                 ],
                 'capabilities' => [],
             ],
@@ -179,7 +179,7 @@ class MCPProtocolCest
         $tool1 = new MockSimpleTool();
 
         // Create second mock inline
-        $tool2 = new class extends AbstractTool {
+        $tool2 = new class () extends AbstractTool {
             public function getName(): string
             {
                 return 'mock-two';

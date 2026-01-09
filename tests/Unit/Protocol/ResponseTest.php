@@ -209,7 +209,7 @@ class ResponseTest extends Unit
 
         $this->assertIsString($json);
         $data = json_decode($json, true);
-        
+
         $this->assertEquals('2.0', $data['jsonrpc']);
         $this->assertEquals(1, $data['id']);
         $this->assertEquals(['data' => 'value'], $data['result']);
@@ -224,7 +224,7 @@ class ResponseTest extends Unit
         $json = $response->toJson();
 
         $data = json_decode($json, true);
-        
+
         $this->assertArrayHasKey('result', $data);
         $this->assertNull($data['result']);
     }
@@ -290,7 +290,7 @@ class ResponseTest extends Unit
                 'count' => 2,
             ],
         ]);
-        
+
         $json = $original->toJson();
         $restored = Response::fromJson($json);
 

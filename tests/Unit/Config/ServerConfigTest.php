@@ -76,7 +76,7 @@ class ServerConfigTest extends Unit
 
         $env = ['DEBUG' => 'no'];
         $this->assertFalse((new ServerConfig($env))->isDebugMode());
-        
+
         // Test GII_ENABLED
         $env = ['GII_ENABLED' => 'false'];
         $this->assertFalse((new ServerConfig($env))->isGiiEnabled());

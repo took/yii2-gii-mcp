@@ -4,7 +4,6 @@ namespace Tests\Unit\Tools;
 
 use Codeception\Test\Unit;
 use ReflectionClass;
-use stdClass;
 use Took\Yii2GiiMCP\Helpers\Yii2Bootstrap;
 use Took\Yii2GiiMCP\Tools\InspectDatabase;
 use Took\Yii2GiiMCP\Tools\ToolInterface;
@@ -152,7 +151,7 @@ class InspectDatabaseTest extends Unit
 
     /**
      * Test formatTableInfo method structure
-     * 
+     *
      * Note: Full testing requires yii\db\TableSchema which needs Yii2.
      * This test verifies the method exists and is accessible.
      */
@@ -162,12 +161,12 @@ class InspectDatabaseTest extends Unit
         $tool = new InspectDatabase($bootstrap);
 
         $reflection = new ReflectionClass($tool);
-        
+
         $this->assertTrue($reflection->hasMethod('formatTableInfo'));
-        
+
         $method = $reflection->getMethod('formatTableInfo');
         $this->assertTrue($method->isPrivate());
-        
+
         // Verify the method signature expects yii\db\TableSchema
         $params = $method->getParameters();
         $this->assertCount(1, $params);
@@ -257,7 +256,7 @@ class InspectDatabaseTest extends Unit
         $tool = new InspectDatabase($bootstrap);
 
         $description = $tool->getDescription();
-        
+
         $this->assertStringContainsString('read-only', strtolower($description));
         $this->assertStringContainsString('does not modify', strtolower($description));
     }

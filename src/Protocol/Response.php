@@ -32,6 +32,7 @@ class Response extends Message
     public static function fromJson(string $json): self
     {
         $data = self::parseJson($json);
+
         return self::fromArray($data);
     }
 

@@ -117,6 +117,7 @@ class StdioTransport
 
             if ($result === false) {
                 $this->log("Failed to write message to stdout", true);
+
                 return false;
             }
 
@@ -126,6 +127,7 @@ class StdioTransport
             return true;
         } catch (Throwable $e) {
             $this->log("Error writing message: " . $e->getMessage(), true);
+
             return false;
         }
     }

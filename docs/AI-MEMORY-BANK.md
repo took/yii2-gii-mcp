@@ -2,10 +2,12 @@
 
 **Complete Technical Reference for AI Agents**
 
-This document serves as a comprehensive memory bank for AI coding assistants working with the yii2-gii-mcp project. It contains complete technical specifications, architecture details, configuration options, tool documentation, and historical context.
+This document serves as a comprehensive memory bank for AI coding assistants working with the yii2-gii-mcp project. It
+contains complete technical specifications, architecture details, configuration options, tool documentation, and
+historical context.
 
-**Last Updated**: January 4, 2026  
-**Project Version**: Phase 1-6 Complete (60% Test Coverage Achieved)  
+**Last Updated**: January 9, 2026  
+**Project Version**: Phase 1-10 Complete (60% Test Coverage, 14 Production Tools)  
 **MCP Protocol Version**: 2024-11-05
 
 ---
@@ -34,7 +36,9 @@ This document serves as a comprehensive memory bank for AI coding assistants wor
 
 ### Purpose
 
-yii2-gii-mcp is a PHP-based MCP (Model Context Protocol) server that enables AI agents to interact with Yii2's Gii code generator for automated scaffolding and code generation. It bridges the gap between AI assistants and Yii2 development workflows.
+yii2-gii-mcp is a PHP-based MCP (Model Context Protocol) server that enables AI agents to interact with Yii2's Gii code
+generator for automated scaffolding and code generation. It bridges the gap between AI assistants and Yii2 development
+workflows.
 
 ### Goals
 
@@ -70,7 +74,8 @@ yii2-gii-mcp is a PHP-based MCP (Model Context Protocol) server that enables AI 
 
 **Migration Guidance:**
 
-- **From Yii1**: Use the [official Yii2 upgrade guide](https://www.yiiframework.com/doc/guide/2.0/en/intro-upgrade-from-v1)
+- **From Yii1**: Use
+  the [official Yii2 upgrade guide](https://www.yiiframework.com/doc/guide/2.0/en/intro-upgrade-from-v1)
 - **To Yii3**: Wait for Yii3 stable release, then consider a separate MCP server implementation
 
 ---
@@ -102,9 +107,15 @@ yii2-gii-mcp is a PHP-based MCP (Model Context Protocol) server that enables AI 
 └─────────────────────────────────────────┘
                  ↕
 ┌─────────────────────────────────────────┐
-│         Tools (8 total)                 │
+│         Tools (14 total)                │
 │  - ListTables (read-only)               │
 │  - InspectDatabase (read-only)          │
+│  - ListMigrations (read-only)           │
+│  - CreateMigration (with preview)       │
+│  - ExecuteMigration (with safety+SQL)   │
+│  - DetectApplicationStructure (read)    │
+│  - InspectComponents (read-only)        │
+│  - ReadLogs (read-only)                 │
 │  - GenerateModel (with preview)         │
 │  - GenerateCrud (with preview)          │
 │  - GenerateController (with preview)    │
@@ -126,12 +137,14 @@ yii2-gii-mcp is a PHP-based MCP (Model Context Protocol) server that enables AI 
 #### 1. MCPServer (`src/MCPServer.php`)
 
 **Responsibilities**:
+
 - JSON-RPC 2.0 message handling
 - stdio transport management (read from stdin, write to stdout)
 - Method routing (`initialize`, `tools/list`, `tools/call`)
 - Error handling and logging (to stderr only)
 
 **Key Methods**:
+
 - `start()`: Main event loop reading from stdin
 - `handleRequest(Request $request)`: Route requests to appropriate handlers
 - `handleInitialize(array $params)`: MCP protocol initialization
@@ -141,6 +154,7 @@ yii2-gii-mcp is a PHP-based MCP (Model Context Protocol) server that enables AI 
 #### 2. Protocol Layer (`src/Protocol/`)
 
 **Classes**:
+
 - `Message.php`: Base message class
 - `Request.php`: Request message (id, method, params)
 - `Response.php`: Success response (id, result)
@@ -148,6 +162,7 @@ yii2-gii-mcp is a PHP-based MCP (Model Context Protocol) server that enables AI 
 - `StdioTransport.php`: I/O handling for stdin/stdout
 
 **JSON-RPC 2.0 Compliance**:
+
 - All messages are JSON objects
 - Requests have: `jsonrpc`, `id`, `method`, `params`
 - Responses have: `jsonrpc`, `id`, `result` (or `error`)
@@ -158,6 +173,7 @@ yii2-gii-mcp is a PHP-based MCP (Model Context Protocol) server that enables AI 
 **Purpose**: Manage and discover available tools
 
 **Methods**:
+
 - `register(ToolInterface $tool)`: Add tool to registry
 - `get(string $name)`: Retrieve tool by name
 - `list()`: Get all tools with metadata
@@ -169,6 +185,7 @@ Tools are registered in `bin/yii2-gii-mcp` executable during server initializati
 #### 4. Tool Interface (`src/Tools/ToolInterface.php`)
 
 **Contract**:
+
 ```php
 interface ToolInterface
 {
@@ -180,6 +197,7 @@ interface ToolInterface
 ```
 
 **AbstractTool** (`src/Tools/AbstractTool.php`):
+
 - Base implementation with common functionality
 - Input validation using JSON Schema
 - Helper methods: `createResult()`, `createError()`, `formatTable()`
@@ -200,6 +218,7 @@ This server implements MCP protocol version **2024-11-05**.
 **Purpose**: Initialize MCP connection and negotiate capabilities
 
 **Request**:
+
 ```json
 {
   "jsonrpc": "2.0",
@@ -210,13 +229,14 @@ This server implements MCP protocol version **2024-11-05**.
     "capabilities": {},
     "clientInfo": {
       "name": "Firebender",
-      "version": "1.0.0"
+      "version": "1.1.0"
     }
   }
 }
 ```
 
 **Response**:
+
 ```json
 {
   "jsonrpc": "2.0",
@@ -228,7 +248,7 @@ This server implements MCP protocol version **2024-11-05**.
     },
     "serverInfo": {
       "name": "yii2-gii-mcp",
-      "version": "1.0.0"
+      "version": "1.1.0"
     }
   }
 }
@@ -239,6 +259,7 @@ This server implements MCP protocol version **2024-11-05**.
 **Purpose**: Get list of available tools with schemas
 
 **Request**:
+
 ```json
 {
   "jsonrpc": "2.0",
@@ -248,6 +269,7 @@ This server implements MCP protocol version **2024-11-05**.
 ```
 
 **Response**:
+
 ```json
 {
   "jsonrpc": "2.0",
@@ -277,6 +299,7 @@ This server implements MCP protocol version **2024-11-05**.
 **Purpose**: Execute a specific tool
 
 **Request**:
+
 ```json
 {
   "jsonrpc": "2.0",
@@ -292,6 +315,7 @@ This server implements MCP protocol version **2024-11-05**.
 ```
 
 **Response**:
+
 ```json
 {
   "jsonrpc": "2.0",
@@ -310,6 +334,7 @@ This server implements MCP protocol version **2024-11-05**.
 ### Error Responses
 
 **Standard Error Codes**:
+
 - `-32700`: Parse error (invalid JSON)
 - `-32600`: Invalid request
 - `-32601`: Method not found
@@ -318,6 +343,7 @@ This server implements MCP protocol version **2024-11-05**.
 - `-32000` to `-32099`: Server-defined errors
 
 **Example Error**:
+
 ```json
 {
   "jsonrpc": "2.0",
@@ -335,11 +361,13 @@ This server implements MCP protocol version **2024-11-05**.
 ### Transport
 
 **stdio Transport**:
+
 - **stdin**: Read JSON-RPC requests line by line
 - **stdout**: Write JSON-RPC responses (one per line)
 - **stderr**: Debug logging (never protocol messages)
 
 **Message Format**:
+
 - Each message is a single line of JSON
 - Messages are newline-terminated
 - No length prefixing (rely on newline delimiter)
@@ -355,6 +383,7 @@ This server implements MCP protocol version **2024-11-05**.
 **Type**: Read-only (safe)
 
 **Input Schema**:
+
 ```json
 {
   "type": "object",
@@ -372,6 +401,7 @@ This server implements MCP protocol version **2024-11-05**.
 ```
 
 **Example Usage**:
+
 ```json
 {
   "name": "list-tables",
@@ -383,6 +413,7 @@ This server implements MCP protocol version **2024-11-05**.
 ```
 
 **Output**:
+
 - Table names
 - Column information (name, type, size, nullable, default)
 - Primary keys
@@ -397,6 +428,7 @@ This server implements MCP protocol version **2024-11-05**.
 **Type**: Read-only (safe)
 
 **Input Schema**:
+
 ```json
 {
   "type": "object",
@@ -418,6 +450,7 @@ This server implements MCP protocol version **2024-11-05**.
 ```
 
 **Output**:
+
 - Complete table schemas
 - Column definitions (type, size, precision, scale)
 - Indexes (type, columns, unique)
@@ -425,6 +458,7 @@ This server implements MCP protocol version **2024-11-05**.
 - Constraints (check, unique, default)
 
 **Use Cases**:
+
 - Before model generation (understand relationships)
 - Database documentation
 - Schema analysis
@@ -437,7 +471,10 @@ This server implements MCP protocol version **2024-11-05**.
 
 **Type**: Writes files (preview mode default)
 
+**Template Support**: Automatically detects Basic or Advanced Template and uses appropriate defaults
+
 **Input Schema**:
+
 ```json
 {
   "type": "object",
@@ -452,7 +489,7 @@ This server implements MCP protocol version **2024-11-05**.
     },
     "namespace": {
       "type": "string",
-      "description": "Namespace for model (default: 'app\\models')"
+      "description": "Namespace for model (default: 'common\\models' for Advanced Template, 'app\\models' for Basic Template). For Advanced Template, you can specify: common\\models, frontend\\models, backend\\models, or api\\models"
     },
     "baseClass": {
       "type": "string",
@@ -481,12 +518,61 @@ This server implements MCP protocol version **2024-11-05**.
 ```
 
 **Workflow**:
-1. Validate table exists
-2. Generate model code using Gii
-3. If preview=true: Return code preview
-4. If preview=false: Write files, return status
+
+1. Detect template type (Basic or Advanced)
+2. Set default namespace based on template type
+3. Validate table exists
+4. Generate model code using Gii
+5. If preview=true: Return code preview
+6. If preview=false: Write files, return status
+
+**Usage Examples**:
+
+Generate model in common/models (Advanced Template default):
+```json
+{
+  "tableName": "users",
+  "preview": true
+}
+```
+
+Generate model in frontend/models (Advanced Template):
+```json
+{
+  "tableName": "users",
+  "namespace": "frontend\\models",
+  "preview": true
+}
+```
+
+Generate model in backend/models (Advanced Template):
+```json
+{
+  "tableName": "users",
+  "namespace": "backend\\models",
+  "preview": true
+}
+```
+
+Generate model in api/models (Advanced Template with API):
+```json
+{
+  "tableName": "users",
+  "namespace": "api\\models",
+  "preview": true
+}
+```
+
+Generate model in app/models (Basic Template):
+```json
+{
+  "tableName": "users",
+  "preview": true
+}
+```
 
 **Output (preview=true)**:
+
 ```json
 {
   "content": [
@@ -499,6 +585,7 @@ This server implements MCP protocol version **2024-11-05**.
 ```
 
 **Output (preview=false)**:
+
 ```json
 {
   "content": [
@@ -511,6 +598,7 @@ This server implements MCP protocol version **2024-11-05**.
 ```
 
 **Safety Features**:
+
 - Defaults to preview mode
 - File conflict detection
 - Table existence validation
@@ -524,22 +612,30 @@ This server implements MCP protocol version **2024-11-05**.
 
 **Type**: Writes files (preview mode default)
 
+**Template Support**: Automatically detects Basic or Advanced Template and uses appropriate defaults
+
 **Input Schema**:
+
 ```json
 {
   "type": "object",
   "properties": {
     "modelClass": {
       "type": "string",
-      "description": "Full model class name (e.g., 'app\\models\\User') (required)"
+      "description": "Full model class name (e.g., 'app\\models\\User' or 'common\\models\\User') (required)"
+    },
+    "component": {
+      "type": "string",
+      "enum": ["frontend", "backend", "api", "common"],
+      "description": "For Advanced Template: which component to generate CRUD into. If not specified, auto-detects from model namespace or defaults to frontend."
     },
     "controllerClass": {
       "type": "string",
-      "description": "Controller class name (optional, auto-generated)"
+      "description": "Controller class name (optional, auto-generated based on model and component)"
     },
     "viewPath": {
       "type": "string",
-      "description": "View path (optional, default: @app/views/<controller>)"
+      "description": "View path (optional, auto-generated: @app/views/<controller> for Basic, @{component}/views/<model> for Advanced)"
     },
     "baseControllerClass": {
       "type": "string",
@@ -568,23 +664,77 @@ This server implements MCP protocol version **2024-11-05**.
 ```
 
 **Generated Files**:
+
 - Controller (e.g., `UserController.php`)
 - Search model (e.g., `UserSearch.php`)
 - Views:
-  - `index.php` (list with GridView/ListView)
-  - `view.php` (detail view)
-  - `create.php` (create form)
-  - `update.php` (update form)
-  - `_form.php` (shared form partial)
-  - `_search.php` (search form partial)
+    - `index.php` (list with GridView/ListView)
+    - `view.php` (detail view)
+    - `create.php` (create form)
+    - `update.php` (update form)
+    - `_form.php` (shared form partial)
+    - `_search.php` (search form partial)
 
 **Workflow**:
-1. Validate model class exists
-2. Generate all CRUD files
-3. If preview=true: Return file list with code
-4. If preview=false: Write files, return status
+
+1. Detect template type (Basic or Advanced)
+2. Auto-detect component from model namespace or use specified component
+3. Validate model class exists
+4. Generate all CRUD files with template-aware paths
+5. If preview=true: Return file list
+6. If preview=false: Write files, return status
+
+**Usage Examples**:
+
+Generate CRUD for common model (Advanced Template, auto-detects frontend):
+```json
+{
+  "modelClass": "common\\models\\User",
+  "preview": true
+}
+```
+Result: Controller in `frontend\controllers\UserController`, Search in `frontend\models\UserSearch`, Views in `@frontend/views/user`
+
+Generate CRUD in backend component (Advanced Template):
+```json
+{
+  "modelClass": "common\\models\\User",
+  "component": "backend",
+  "preview": true
+}
+```
+Result: Controller in `backend\controllers\UserController`, Search in `backend\models\UserSearch`, Views in `@backend/views/user`
+
+Generate CRUD in api component (Advanced Template):
+```json
+{
+  "modelClass": "common\\models\\Product",
+  "component": "api",
+  "preview": true
+}
+```
+Result: Controller in `api\controllers\ProductController`, Search in `api\models\ProductSearch`, Views in `@api/views/product`
+
+Generate CRUD for model already in specific component (Advanced Template):
+```json
+{
+  "modelClass": "backend\\models\\AdminSettings",
+  "preview": true
+}
+```
+Result: Auto-detects backend component from model namespace
+
+Generate CRUD for Basic Template:
+```json
+{
+  "modelClass": "app\\models\\Post",
+  "preview": true
+}
+```
+Result: Controller in `app\controllers\PostController`, Search in `app\models\PostSearch`, default views path
 
 **Safety Features**:
+
 - Model class existence check
 - File conflict detection
 - Preview mode default
@@ -597,7 +747,10 @@ This server implements MCP protocol version **2024-11-05**.
 
 **Type**: Writes files (preview mode default)
 
+**Template Support**: Automatically detects Basic or Advanced Template and uses appropriate defaults
+
 **Input Schema**:
+
 ```json
 {
   "type": "object",
@@ -606,13 +759,18 @@ This server implements MCP protocol version **2024-11-05**.
       "type": "string",
       "description": "Controller ID (e.g., 'post', 'admin/user') (required)"
     },
+    "component": {
+      "type": "string",
+      "enum": ["frontend", "backend", "api", "common"],
+      "description": "For Advanced Template: which component to generate controller into. Defaults to frontend."
+    },
     "actions": {
       "type": "string",
       "description": "Comma-separated action IDs (e.g., 'index,view,create')"
     },
     "namespace": {
       "type": "string",
-      "description": "Namespace (default: 'app\\controllers')"
+      "description": "Namespace (default: 'app\\controllers' for Basic, '{component}\\controllers' for Advanced)"
     },
     "baseClass": {
       "type": "string",
@@ -627,12 +785,43 @@ This server implements MCP protocol version **2024-11-05**.
 }
 ```
 
-**Example**:
+**Usage Examples**:
+
+Generate controller in frontend (Advanced Template default):
 ```json
 {
   "controllerID": "post",
   "actions": "index,view,create,update,delete",
-  "namespace": "app\\controllers"
+  "preview": true
+}
+```
+
+Generate controller in backend (Advanced Template):
+```json
+{
+  "controllerID": "admin-user",
+  "component": "backend",
+  "actions": "index,view,create,update,delete",
+  "preview": true
+}
+```
+
+Generate controller in api (Advanced Template):
+```json
+{
+  "controllerID": "product",
+  "component": "api",
+  "actions": "index,view,create",
+  "preview": true
+}
+```
+
+Generate controller in Basic Template:
+```json
+{
+  "controllerID": "post",
+  "actions": "index,view",
+  "preview": true
 }
 ```
 
@@ -646,22 +835,30 @@ This server implements MCP protocol version **2024-11-05**.
 
 **Type**: Writes files (preview mode default)
 
+**Template Support**: Automatically detects Basic or Advanced Template and uses appropriate defaults
+
 **Input Schema**:
+
 ```json
 {
   "type": "object",
   "properties": {
     "modelClass": {
       "type": "string",
-      "description": "Form model class name (e.g., 'ContactForm') (required)"
+      "description": "Form model class name (e.g., 'ContactForm', 'LoginForm') (required)"
+    },
+    "component": {
+      "type": "string",
+      "enum": ["frontend", "backend", "api", "common"],
+      "description": "For Advanced Template: which component to generate form into. Defaults to common for shared forms."
     },
     "namespace": {
       "type": "string",
-      "description": "Namespace (default: 'app\\models')"
+      "description": "Namespace (default: 'app\\models' for Basic, 'common\\models' for Advanced)"
     },
     "viewPath": {
       "type": "string",
-      "description": "View path (optional)"
+      "description": "View path (default: '@app/views' for Basic, '@{component}/views' for Advanced)"
     },
     "viewName": {
       "type": "string",
@@ -680,11 +877,49 @@ This server implements MCP protocol version **2024-11-05**.
 }
 ```
 
+**Usage Examples**:
+
+Generate form in common (Advanced Template, shared across components):
+```json
+{
+  "modelClass": "ContactForm",
+  "preview": true
+}
+```
+
+Generate form in frontend (Advanced Template):
+```json
+{
+  "modelClass": "NewsletterForm",
+  "component": "frontend",
+  "preview": true
+}
+```
+
+Generate form in backend (Advanced Template):
+```json
+{
+  "modelClass": "SettingsForm",
+  "component": "backend",
+  "preview": true
+}
+```
+
+Generate form in Basic Template:
+```json
+{
+  "modelClass": "ContactForm",
+  "preview": true
+}
+```
+
 **Generated Files**:
+
 - Form model class with attributes and validation rules
 - Optional view file
 
 **Use Cases**:
+
 - Contact forms
 - Registration forms
 - Custom data entry forms
@@ -698,6 +933,7 @@ This server implements MCP protocol version **2024-11-05**.
 **Type**: Writes files (preview mode default)
 
 **Input Schema**:
+
 ```json
 {
   "type": "object",
@@ -720,6 +956,7 @@ This server implements MCP protocol version **2024-11-05**.
 ```
 
 **Generated Structure**:
+
 ```
 modules/admin/
 ├── Module.php
@@ -733,6 +970,7 @@ modules/admin/
 ```
 
 **Use Cases**:
+
 - Admin panels
 - API modules
 - Modular application structure
@@ -746,6 +984,7 @@ modules/admin/
 **Type**: Writes files (preview mode default)
 
 **Input Schema**:
+
 ```json
 {
   "type": "object",
@@ -796,6 +1035,7 @@ modules/admin/
 ```
 
 **Generated Structure**:
+
 ```
 yii2-widget/
 ├── composer.json
@@ -807,6 +1047,1041 @@ yii2-widget/
 
 **Implementation**: `src/Tools/GenerateExtension.php`
 
+### 9. list-migrations
+
+**Purpose**: List all database migrations with their status
+
+**Type**: Read-only (safe)
+
+**Input Schema**:
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": ["all", "applied", "pending"],
+      "default": "all",
+      "description": "Filter migrations by status"
+    },
+    "limit": {
+      "type": "integer",
+      "default": 10,
+      "description": "Limit number of results (0 for all)"
+    }
+  }
+}
+```
+
+**Output**:
+
+- Migration names
+- Status (applied/pending)
+- Applied timestamps (for applied migrations)
+- Summary counts
+
+**Use Cases**:
+
+- Check migration status before applying
+- Review migration history
+- Identify pending migrations
+
+**Implementation**: `src/Tools/ListMigrations.php`
+
+### 10. create-migration
+
+**Purpose**: Create new migration files with comprehensive options
+
+**Type**: Writes files (preview mode default)
+
+**Input Schema**:
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Migration name (e.g., 'create_users_table', 'add_status_to_posts')"
+    },
+    "fields": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Field definitions (e.g., ['name:string(255):notNull', 'email:string:notNull:unique'])"
+    },
+    "migrationType": {
+      "type": "string",
+      "enum": ["create", "add", "drop", "junction", "custom"],
+      "default": "custom",
+      "description": "Type of migration"
+    },
+    "tableName": {
+      "type": "string",
+      "description": "Explicit table name (optional, extracted from name)"
+    },
+    "junctionTable1": {
+      "type": "string",
+      "description": "First table for junction type (e.g., 'users')"
+    },
+    "junctionTable2": {
+      "type": "string",
+      "description": "Second table for junction type (e.g., 'posts')"
+    },
+    "migrationPath": {
+      "type": "string",
+      "description": "Custom migration directory path"
+    },
+    "migrationNamespace": {
+      "type": "string",
+      "description": "Migration namespace (e.g., 'app\\migrations')"
+    },
+    "templateFile": {
+      "type": "string",
+      "description": "Custom template file path"
+    },
+    "useTablePrefix": {
+      "type": "boolean",
+      "default": true,
+      "description": "Use table prefix from db config"
+    },
+    "addTimestamps": {
+      "type": "boolean",
+      "default": false,
+      "description": "Add created_at and updated_at columns"
+    },
+    "addSoftDelete": {
+      "type": "boolean",
+      "default": false,
+      "description": "Add deleted_at column for soft deletes"
+    },
+    "addForeignKeys": {
+      "type": "boolean",
+      "default": false,
+      "description": "Auto-generate FKs for fields ending with _id"
+    },
+    "onDeleteCascade": {
+      "type": "boolean",
+      "default": false,
+      "description": "Use CASCADE for ON DELETE (default: RESTRICT)"
+    },
+    "comment": {
+      "type": "string",
+      "description": "Table comment"
+    },
+    "indexes": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Index definitions (e.g., ['email'], ['user_id,post_id'])"
+    },
+    "foreignKeys": {
+      "type": "array",
+      "items": {"type": "object"},
+      "description": "Explicit FK definitions with custom actions"
+    },
+    "preview": {
+      "type": "boolean",
+      "default": true,
+      "description": "Preview mode (default: true)"
+    }
+  },
+  "required": ["name"]
+}
+```
+
+**Migration Types**:
+
+- **create**: Create table migration with field definitions
+- **add**: Add columns to existing table
+- **drop**: Drop table or columns
+- **junction**: Create junction table for many-to-many relationships
+- **custom**: Empty migration with safeUp/safeDown methods
+
+**Field Definition Format**:
+
+- Basic: `name:type` (e.g., `name:string`)
+- With size: `name:string(255)` or `price:decimal(10,2)`
+- With modifiers: `name:string:notNull:unique`
+- With default: `status:integer:defaultValue(1)`
+- Complex: `email:string(255):notNull:unique:comment('User email address')`
+- Enum: `status:enum('draft','published','archived'):notNull:defaultValue('draft')`
+
+**Supported Types**:
+
+- string, text, smallint, integer, bigint
+- float, double, decimal
+- datetime, timestamp, time, date
+- binary, boolean, money, json
+- enum (e.g., enum('value1','value2','value3'))
+
+**Supported Modifiers**:
+
+- notNull, unique, unsigned
+- defaultValue(value)
+- comment('text')
+- check('condition')
+- append('RAW SQL')
+
+**Advanced Features**:
+
+- **Auto timestamps**: Adds created_at/updated_at columns
+- **Soft deletes**: Adds deleted_at column
+- **Auto foreign keys**: Detects _id fields and creates FK constraints
+- **Custom indexes**: Generate indexes for specific columns (single or composite)
+- **Custom FK actions**: Full control over ON DELETE/ON UPDATE (CASCADE, RESTRICT, SET NULL, SET DEFAULT, NO ACTION)
+- **Junction tables**: Creates many-to-many relationship tables
+- **Custom namespaces**: Support for modular migrations
+- **Table prefixes**: Respects Yii2 table prefix configuration
+
+**Example Usage**:
+
+Create table migration:
+
+```json
+{
+  "name": "create_users_table",
+  "migrationType": "create",
+  "fields": [
+    "username:string(255):notNull:unique",
+    "email:string(255):notNull:unique",
+    "status:integer:defaultValue(1)",
+    "role_id:integer:notNull"
+  ],
+  "addTimestamps": true,
+  "addForeignKeys": true
+}
+```
+
+Add columns migration:
+
+```json
+{
+  "name": "add_profile_fields_to_users",
+  "migrationType": "add",
+  "tableName": "users",
+  "fields": [
+    "bio:text:null",
+    "avatar:string(255):null",
+    "last_login:timestamp:null"
+  ]
+}
+```
+
+Junction table migration:
+
+```json
+{
+  "name": "create_user_post_junction",
+  "migrationType": "junction",
+  "junctionTable1": "users",
+  "junctionTable2": "posts"
+}
+```
+
+Enum field migration:
+
+```json
+{
+  "name": "create_posts_table",
+  "migrationType": "create",
+  "fields": [
+    "title:string(255):notNull",
+    "content:text:notNull",
+    "status:enum('draft','published','archived'):notNull:defaultValue('draft')",
+    "priority:enum('low','medium','high'):defaultValue('medium')"
+  ],
+  "addTimestamps": true
+}
+```
+
+Migration with custom indexes:
+
+```json
+{
+  "name": "create_posts_table",
+  "migrationType": "create",
+  "fields": [
+    "title:string(255):notNull",
+    "user_id:integer:notNull",
+    "status:string(20):notNull",
+    "created_at:timestamp:notNull"
+  ],
+  "indexes": ["user_id", "status", "user_id,created_at"],
+  "addTimestamps": false
+}
+```
+
+Migration with custom FK actions:
+
+```json
+{
+  "name": "create_posts_table",
+  "migrationType": "create",
+  "fields": [
+    "title:string(255):notNull",
+    "user_id:integer:notNull",
+    "category_id:integer:null"
+  ],
+  "foreignKeys": [
+    {
+      "field": "user_id",
+      "table": "users",
+      "onDelete": "CASCADE",
+      "onUpdate": "RESTRICT"
+    },
+    {
+      "field": "category_id",
+      "table": "categories",
+      "onDelete": "SET NULL",
+      "onUpdate": "CASCADE"
+    }
+  ]
+}
+```
+
+**Use Cases**:
+
+- Create complex table migrations with full schema
+- Add columns with proper constraints and foreign keys
+- Generate junction tables for relationships
+- Use custom templates for organization standards
+- Support for modular Yii2 applications with namespaces
+
+**Implementation**: `src/Tools/CreateMigration.php`
+
+### 11. execute-migration
+
+**Purpose**: Execute migration operations with mandatory safety confirmations, and preview SQL for existing migrations
+
+**Type**: Modifies database (requires confirmations) / Read-only for SQL preview
+
+**Input Schema**:
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "operation": {
+      "type": "string",
+      "enum": ["up", "down", "create", "redo", "fresh"],
+      "description": "Migration operation (required)"
+    },
+    "migrationName": {
+      "type": "string",
+      "description": "Migration name (required for down/redo; for create: new name). For SQL preview: name of existing migration to preview."
+    },
+    "direction": {
+      "type": "string",
+      "enum": ["up", "down"],
+      "default": "up",
+      "description": "Migration direction for SQL preview (up or down). Only used when preview=true and migrationName is provided."
+    },
+    "migrationCount": {
+      "type": "integer",
+      "default": 1,
+      "description": "Number of migrations (for up/down)"
+    },
+    "fields": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Field definitions for create (e.g., ['name:string:notNull', 'email:string:unique'])"
+    },
+    "confirmation": {
+      "type": "string",
+      "description": "REQUIRED: Must be exact string 'yes'"
+    },
+    "destructiveConfirmation": {
+      "type": "string",
+      "description": "REQUIRED for down/fresh/redo: Must be 'I understand this will modify the database'"
+    },
+    "preview": {
+      "type": "boolean",
+      "default": true,
+      "description": "Preview mode (default: true). Set migrationName to preview SQL for existing migration."
+    }
+  },
+  "required": ["operation", "confirmation"]
+}
+```
+
+**Operations**:
+
+- **up**: Apply pending migrations
+- **down**: Revert applied migrations
+- **create**: Create new migration file (with optional field definitions)
+- **redo**: Revert and re-apply recent migration
+- **fresh**: Drop all tables and re-apply all migrations
+
+**SQL Preview Mode**:
+When `preview=true` and `migrationName` is provided (without operation 'create'), this tool shows the SQL statements
+that would be executed by that migration:
+
+- Set `migrationName` to the name of an existing migration
+- Set `direction` to 'up' or 'down' (default: 'up')
+- Returns SQL preview without executing anything (read-only, safe)
+- Example:
+  `{"operation": "up", "migrationName": "m240107_create_users", "direction": "up", "confirmation": "yes", "preview": true}`
+
+**Safety Features**:
+
+- Preview mode enabled by default
+- `confirmation="yes"` required for all operations
+- `destructiveConfirmation="I understand this will modify the database"` required for down/fresh/redo
+- All operations logged to stderr
+- Detailed execution results returned
+
+**Field Definition Format** (for create operation):
+
+```
+name:type[:modifier[:modifier...]]
+
+Examples:
+- "name:string:notNull"
+- "email:string:notNull:unique"
+- "status:integer:defaultValue(1)"
+- "price:decimal(10,2):notNull"
+- "created_at:timestamp:notNull"
+```
+
+**Workflow**:
+
+1. AI calls with preview=true to show what will happen
+2. User reviews and approves
+3. AI calls with preview=false and required confirmations
+4. Tool executes and returns results
+
+**Use Cases**:
+
+- Apply pending migrations
+- Create new migrations with field definitions
+- Revert migrations (with safety confirmations)
+- Fresh database setup
+
+**⚠️ WARNING**: This tool can modify database structure. Always preview first!
+
+**Implementation**: `src/Tools/ExecuteMigration.php`
+
+### 12. detect-application-structure
+
+**Purpose**: Auto-detect Yii2 project structure, template type, applications, modules, and environment configuration
+
+**Type**: Read-only (safe)
+
+**Input Schema**:
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "basePath": {
+      "type": "string",
+      "description": "Base path to scan (defaults to project root from configuration)",
+      "default": ""
+    }
+  }
+}
+```
+
+**Output Structure**:
+
+```json
+{
+  "templateType": "basic|advanced|advanced-api",
+  "basePath": "/path/to/project",
+  "applications": [
+    {
+      "name": "frontend|backend|console|api|app",
+      "path": "/full/path",
+      "type": "web|console|api",
+      "hasWeb": true,
+      "entryPoints": [
+        {
+          "file": "web/index.php",
+          "env": "dev",
+          "debug": true
+        }
+      ],
+      "modules": [
+        {
+          "id": "admin",
+          "path": "/path/to/module",
+          "class": null
+        }
+      ]
+    }
+  ],
+  "environments": {
+    "available": ["dev", "prod", "index"],
+    "current": "dev",
+    "currentDetails": {
+      "YII_ENV": "dev",
+      "YII_DEBUG": true,
+      "detectedFrom": "frontend/web/index.php"
+    },
+    "sources": ["environments-folder", "index-files", "config-files", "env-files"]
+  }
+}
+```
+
+**Features**:
+
+**Template Detection**:
+- Basic Template: Detects `/app` and `/config` directories
+- Advanced Template: Detects `/common` and `/console` directories
+- Advanced+API: Detects Advanced structure plus `/api` directory
+
+**Application Discovery**:
+- Scans for application directories (frontend, backend, console, api)
+- Identifies application type (web, console, api)
+- Detects entry points (index.php, index-test.php, yii)
+- Parses YII_ENV and YII_DEBUG constants from entry files
+
+**Module Detection**:
+- Scans `/modules` directories in each application
+- Checks for Module.php files
+- Returns module IDs and paths
+
+**Environment Analysis**:
+- **Init System**: Scans `environments/` folder for available environments
+- **Current Environment**: Compares actual index.php files with environment templates
+- **Config Files**: Detects *-local.php, *-prod.php, *-dev.php patterns
+- **.env Files**: Checks for .env, .env.local, .env.prod, etc.
+- **YII_ENV Constants**: Parses defined environment constants
+
+**Use Cases**:
+
+1. **Project Discovery**: Understand unfamiliar Yii2 project structure
+2. **Environment Verification**: Check which environment is currently configured
+3. **Module Inventory**: List all available modules across applications
+4. **Setup Validation**: Verify init system is properly configured
+5. **Documentation**: Generate project structure documentation
+
+**Example Usage**:
+
+Detect structure of current project:
+
+```json
+{
+  "name": "detect-application-structure",
+  "arguments": {}
+}
+```
+
+Analyze specific path:
+
+```json
+{
+  "name": "detect-application-structure",
+  "arguments": {
+    "basePath": "/path/to/yii2/project"
+  }
+}
+```
+
+**Implementation**:
+- Tool: `src/Tools/DetectApplicationStructure.php`
+- Helper: `src/Helpers/ProjectStructureHelper.php`
+
+**Helper Methods** (`ProjectStructureHelper`):
+
+- `detectTemplateType(string $basePath): string` - Returns 'basic', 'advanced', or 'advanced-api'
+- `findApplicationDirs(string $basePath): array` - Find all application directories
+- `isYii2Application(string $path): bool` - Verify valid Yii2 app structure
+- `getApplicationType(string $path): string` - Determine app type (web/console/api)
+- `findModules(string $appPath): array` - Scan for modules in application
+- `detectEnvironments(string $basePath): array` - Comprehensive environment detection
+- `scanEnvironmentsFolder(string $basePath): array` - Get available environments from environments/
+- `detectCurrentEnvironment(string $basePath): ?array` - Detect currently configured environment
+- `parseIndexPhpFile(string $filePath): array` - Parse YII_ENV and YII_DEBUG from index.php
+- `compareIndexFiles(string $actualFile, string $basePath): ?string` - Match with environment templates
+- `detectEnvironmentsFromConfigFiles(string $basePath): array` - Find environments from config patterns
+- `hasEnvFiles(string $basePath): bool` - Check for .env files
+
+**Advanced Environment Detection**:
+
+The tool implements a comprehensive multi-source environment detection strategy:
+
+1. **Primary Detection** (Advanced Template Init System):
+   - Scans `environments/` folder for available environment configurations (dev, prod, index, etc.)
+   - Reads actual `index.php` files from `frontend/web/`, `backend/web/`, `api/web/`
+   - Parses YII_ENV and YII_DEBUG constants using regex
+   - Reads template `index.php` files from `environments/dev/`, `environments/prod/`, etc.
+   - Compares actual files with templates to determine current environment
+   - Reports matched environment with high confidence
+
+2. **Secondary Detection** (Config File Patterns):
+   - Scans config directories for patterns: `*-local.php`, `*-prod.php`, `*-dev.php`, `*-test.php`, `*-staging.php`
+   - Searches in: `config/`, `common/config/`, `frontend/config/`, `backend/config/`, `console/config/`, `api/config/`
+   - Adds detected environments to available list
+
+3. **Tertiary Detection** (.env Files):
+   - Checks for: `.env`, `.env.local`, `.env.prod`, `.env.dev`, `.env.test`, `.env.staging`
+   - Indicates modern environment configuration approach
+   - Added as detection source for completeness
+
+4. **Result Aggregation**:
+   - Available: Combined list from all sources (deduplicated)
+   - Current: Best match from init system comparison or YII_ENV constant value
+   - Details: YII_ENV, YII_DEBUG values, source file
+   - Sources: List of detection methods used
+
+**Output Format**:
+
+Human-readable text with:
+- Template type and base path
+- Application listings with details
+- Entry points with environment constants
+- Module inventories
+- Environment analysis
+- JSON representation for programmatic access
+
+**⚠️ Notes**:
+
+- Read-only operation (no modifications)
+- Handles missing directories gracefully
+- Falls back to basic template if structure unclear
+- Works without Yii2 initialization (filesystem only)
+
+### 13. read-logs
+
+**Purpose**: Read and filter Yii2 application logs from files and database with advanced filtering capabilities
+
+**Type**: Read-only (safe)
+
+**Input Schema**:
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "application": {
+      "type": "string",
+      "description": "Specific application (frontend/backend/console/api/app) or empty for all",
+      "default": ""
+    },
+    "source": {
+      "type": "string",
+      "enum": ["file", "db", "both"],
+      "description": "Log source: file (runtime/logs), db (log table), or both",
+      "default": "both"
+    },
+    "level": {
+      "type": "string",
+      "enum": ["error", "warning", "info", "trace"],
+      "description": "Filter by log level (optional)"
+    },
+    "category": {
+      "type": "string",
+      "description": "Filter by category (supports wildcards: application.*, yii\\db\\*)",
+      "default": ""
+    },
+    "since": {
+      "type": "string",
+      "description": "Start datetime (ISO 8601: 2024-01-09T12:00:00 or YYYY-MM-DD HH:MM:SS)",
+      "default": ""
+    },
+    "until": {
+      "type": "string",
+      "description": "End datetime (ISO 8601: 2024-01-09T18:00:00 or YYYY-MM-DD HH:MM:SS)",
+      "default": ""
+    },
+    "search": {
+      "type": "string",
+      "description": "Full-text search in messages (case-insensitive)",
+      "default": ""
+    },
+    "limit": {
+      "type": "integer",
+      "description": "Maximum entries to return (default: 100)",
+      "default": 100
+    }
+  }
+}
+```
+
+**Features**:
+
+**Multi-Source Support**:
+- FileTarget: Reads from `runtime/logs/app.log` in each application
+- DbTarget: Queries log table in database
+- Both: Aggregates logs from files and database
+
+**Multi-Application Support**:
+- Auto-discovers logs across all applications (frontend, backend, console, api)
+- Aggregates logs from multiple applications with application name prefix
+- Sorts by timestamp (newest first)
+- Option to filter by specific application
+
+**Advanced Filtering**:
+- **Level**: error, warning, info, trace
+- **Category**: Exact match or wildcard patterns (e.g., `application.*`, `yii\db\*`)
+- **Time Range**: Filter by since/until timestamps
+- **Full-Text Search**: Case-insensitive search in message and trace
+- **Limit**: Control number of results returned
+
+**Log Format Parsing**:
+- Yii2 format: `YYYY-MM-DD HH:MM:SS [IP][userId][sessionId][level][category] message`
+- Multi-line stack trace handling
+- Extracts: timestamp, IP, userId, sessionId, level, category, message, trace
+
+**Output**:
+- Human-readable summary with statistics
+- Structured JSON with all log entries
+- Statistics by level and by application
+- Total and returned counts
+
+**Example Usage**:
+
+Show last 50 errors from all applications:
+
+```json
+{
+  "name": "read-logs",
+  "arguments": {
+    "level": "error",
+    "limit": 50
+  }
+}
+```
+
+Search for database errors in frontend:
+
+```json
+{
+  "name": "read-logs",
+  "arguments": {
+    "application": "frontend",
+    "search": "database",
+    "level": "error"
+  }
+}
+```
+
+Get warnings from last 24 hours:
+
+```json
+{
+  "name": "read-logs",
+  "arguments": {
+    "level": "warning",
+    "since": "2024-01-08 12:00:00",
+    "limit": 100
+  }
+}
+```
+
+Filter by category with wildcard:
+
+```json
+{
+  "name": "read-logs",
+  "arguments": {
+    "category": "yii\\db\\*",
+    "level": "error"
+  }
+}
+```
+
+**Common Log Locations**:
+- Basic Template: `{basePath}/runtime/logs/app.log`
+- Advanced Template: 
+  - `{basePath}/frontend/runtime/logs/app.log`
+  - `{basePath}/backend/runtime/logs/app.log`
+  - `{basePath}/console/runtime/logs/app.log`
+  - `{basePath}/api/runtime/logs/app.log`
+
+**Database Log Table**:
+- Table name: typically `log`, `logs`, or `yii_log`
+- Columns: id, level, category, log_time, prefix, message
+- Level mapping: 1=error, 2=warning, 4=info, 8=trace
+
+**Implementation**:
+- Tool: `src/Tools/ReadLogs.php`
+- Helper: `src/Helpers/LogReaderHelper.php`
+
+**Helper Methods** (`LogReaderHelper`):
+
+- `findLogFiles(string $basePath, ?string $application): array` - Find log directories
+- `readLogFile(string $filePath, array $filters): array` - Read and parse log file
+- `parseLogLine(string $line): ?array` - Parse single log line
+- `readDbLogs(Connection $db, array $filters): array` - Read from database
+- `getLogTableName(Connection $db): ?string` - Find log table name
+- `applyFilters(array $logs, array $filters): array` - Apply all filters
+- `mapLogLevel(mixed $level): string` - Convert numeric to string level
+- `logLevelToNumber(string $level): int` - Convert string to numeric level
+- `aggregateLogs(array $logsByApp, array $filters): array` - Merge and sort logs
+
+**Use Cases**:
+
+1. **Error Monitoring**: Quickly find recent errors across all applications
+2. **Debugging**: Search for specific error messages or exceptions
+3. **Performance Analysis**: Filter by category (e.g., database queries)
+4. **Audit Trail**: Review logs from specific time periods
+5. **Application Health**: Check warning and error trends
+6. **Development**: Monitor console application logs during development
+
+**⚠️ Notes**:
+
+- Read-only operation (no log modifications)
+- Handles missing log files gracefully
+- Database logs require DbTarget configuration
+- Large log files may take time to parse
+- Limit parameter prevents memory issues with large result sets
+- Case-insensitive full-text search
+
+### 14. inspect-components
+
+**Purpose**: List and analyze application components including controllers, models, and views with detailed metadata extraction
+
+**Type**: Read-only (safe)
+
+**Input Schema**:
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "application": {
+      "type": "string",
+      "description": "Application name (frontend/backend/console/api). Empty for current application.",
+      "default": ""
+    },
+    "module": {
+      "type": "string",
+      "description": "Module name within application. Empty for main application.",
+      "default": ""
+    },
+    "componentType": {
+      "type": "string",
+      "enum": ["controllers", "models", "views", "all"],
+      "description": "Filter by component type",
+      "default": "all"
+    },
+    "includeDetails": {
+      "type": "boolean",
+      "description": "Include detailed metadata (actions, rules, relations, etc.)",
+      "default": true
+    }
+  }
+}
+```
+
+**Features**:
+
+**Controller Analysis**:
+- Lists all controller classes in application/module
+- Extracts action methods (actionXxx) and inline actions
+- Parses behaviors configuration
+- Identifies filters (AccessControl, VerbFilter, etc.)
+- Extracts action parameters and PHPDoc comments
+- Shows parent controller class
+
+**Model Analysis**:
+- Lists all model classes (ActiveRecord and form models)
+- Extracts attributes from rules and public properties
+- Parses validation rules with complete configuration
+- Identifies scenarios configuration
+- For ActiveRecord: extracts table name and relations
+- Shows parent model class
+
+**View Discovery**:
+- Lists view files organized by controller
+- Scans view directories for .php files
+- Groups views by their corresponding controller
+
+**Component Type Filtering**:
+- `all`: Shows controllers, models, and views (default)
+- `controllers`: Shows only controllers
+- `models`: Shows only models
+- `views`: Shows only view files
+
+**Detail Levels**:
+- `includeDetails: true`: Full analysis with metadata (actions, rules, relations, etc.)
+- `includeDetails: false`: Basic listing with names and files only
+
+**Output**:
+- Human-readable summary with statistics
+- Detailed component listings with metadata
+- JSON representation for programmatic access
+
+**Example Usage**:
+
+Inspect all components in current application:
+
+```json
+{
+  "name": "inspect-components",
+  "arguments": {
+    "componentType": "all"
+  }
+}
+```
+
+List only controllers in backend application:
+
+```json
+{
+  "name": "inspect-components",
+  "arguments": {
+    "application": "backend",
+    "componentType": "controllers",
+    "includeDetails": true
+  }
+}
+```
+
+Analyze models in a specific module:
+
+```json
+{
+  "name": "inspect-components",
+  "arguments": {
+    "application": "frontend",
+    "module": "shop",
+    "componentType": "models"
+  }
+}
+```
+
+Quick view list without details:
+
+```json
+{
+  "name": "inspect-components",
+  "arguments": {
+    "componentType": "views",
+    "includeDetails": false
+  }
+}
+```
+
+**Sample Output Structure**:
+
+```json
+{
+  "application": "backend",
+  "module": null,
+  "basePath": "/path/to/backend",
+  "controllers": [
+    {
+      "type": "controller",
+      "class": "backend\\controllers\\UserController",
+      "shortName": "UserController",
+      "namespace": "backend\\controllers",
+      "file": "/path/to/controllers/UserController.php",
+      "parent": "yii\\web\\Controller",
+      "actions": [
+        {
+          "id": "index",
+          "method": "actionIndex",
+          "parameters": [],
+          "comment": "Lists all users"
+        },
+        {
+          "id": "view",
+          "method": "actionView",
+          "parameters": [
+            {"name": "id", "type": "int", "optional": false}
+          ]
+        }
+      ],
+      "behaviors": [
+        {
+          "name": "access",
+          "class": "yii\\filters\\AccessControl"
+        }
+      ],
+      "filters": [
+        {
+          "name": "access",
+          "class": "yii\\filters\\AccessControl"
+        }
+      ]
+    }
+  ],
+  "models": [
+    {
+      "type": "model",
+      "class": "backend\\models\\User",
+      "shortName": "User",
+      "namespace": "backend\\models",
+      "file": "/path/to/models/User.php",
+      "parent": "yii\\db\\ActiveRecord",
+      "tableName": "{{%user}}",
+      "attributes": ["id", "username", "email", "status"],
+      "rules": [
+        [["username", "email"], "required"],
+        ["email", "email"],
+        ["status", "integer"]
+      ],
+      "relations": [
+        {
+          "name": "profile",
+          "method": "getProfile",
+          "comment": "@return \\yii\\db\\ActiveQuery"
+        }
+      ],
+      "scenarios": {
+        "create": ["username", "email", "status"],
+        "update": ["username", "email"]
+      }
+    }
+  ],
+  "views": {
+    "user": ["index.php", "view.php", "create.php", "update.php"],
+    "site": ["index.php", "error.php"]
+  }
+}
+```
+
+**Implementation**:
+- Tool: `src/Tools/InspectComponents.php`
+- Helper: `src/Helpers/ComponentAnalyzer.php`
+
+**Helper Methods** (`ComponentAnalyzer`):
+
+- `analyzeController(string $filePath): ?array` - Extract controller metadata
+- `analyzeModel(string $filePath): ?array` - Extract model metadata
+- `extractActions(ReflectionClass $class): array` - Find action methods
+- `extractBehaviors(ReflectionClass $class): array` - Parse behaviors() method
+- `extractFilters(ReflectionClass $class): array` - Extract filter behaviors
+- `extractValidationRules(ReflectionClass $class): array` - Parse rules() method
+- `extractRelations(ReflectionClass $class): array` - Find ActiveRecord relations
+- `extractScenarios(ReflectionClass $class): array` - Parse scenarios() method
+- `extractAttributes(ReflectionClass $class): array` - Get model attributes
+- `extractTableName(ReflectionClass $class): ?string` - Get ActiveRecord table name
+- `parseMethodReturnValue(ReflectionMethod $method): mixed` - Use php-parser for AST analysis
+- `getClassFromFile(string $filePath): ?ReflectionClass` - Load class via reflection
+- `isController(string $className): bool` - Check if class is a controller
+- `isModel(string $className): bool` - Check if class is a model
+- `isActiveRecord(string $className): bool` - Check if class extends ActiveRecord
+
+**Technology**:
+- Uses PHP Reflection API for class introspection
+- Uses nikic/php-parser for AST parsing of method return values
+- Combines reflection with static analysis for accurate results
+
+**Use Cases**:
+
+1. **Code Discovery**: Understand unfamiliar codebase structure and components
+2. **API Documentation**: Generate component inventory for documentation
+3. **Code Review**: Analyze controllers for action coverage and filters
+4. **Refactoring Planning**: Identify models and their dependencies (relations)
+5. **Testing Coverage**: List all actions that need test coverage
+6. **Module Analysis**: Inspect components within specific modules
+7. **View Inventory**: Find all view files and their controllers
+8. **Route Planning**: Discover available controller actions for routing
+
+**⚠️ Notes**:
+
+- Read-only operation (no file modifications)
+- Requires PHP files to be syntactically valid
+- Automatically handles missing directories gracefully
+- Works with Basic and Advanced template structures
+- Supports module-level component analysis
+- Uses php-parser for deeper code analysis (requires nikic/php-parser dependency)
+- Reflection requires class files to be loadable (autoloading must work)
+
 ---
 
 ## Configuration
@@ -815,13 +2090,13 @@ yii2-widget/
 
 The MCP server is configured via environment variables:
 
-| Variable | Description | Required | Default |
-|----------|-------------|----------|---------|
-| `YII2_CONFIG_PATH` | Path to Yii2 config file | **Yes** | - |
-| `YII2_APP_PATH` | Path to Yii2 application root | No | Inferred from config |
-| `GII_ENABLED` | Enable Gii module | No | `true` |
-| `DB_CONNECTION` | Database connection component ID | No | `db` |
-| `DEBUG` | Enable debug logging to stderr | No | `false` |
+| Variable           | Description                      | Required | Default              |
+|--------------------|----------------------------------|----------|----------------------|
+| `YII2_CONFIG_PATH` | Path to Yii2 config file         | **Yes**  | -                    |
+| `YII2_APP_PATH`    | Path to Yii2 application root    | No       | Inferred from config |
+| `GII_ENABLED`      | Enable Gii module                | No       | `true`               |
+| `DB_CONNECTION`    | Database connection component ID | No       | `db`                 |
+| `DEBUG`            | Enable debug logging to stderr   | No       | `false`              |
 
 ### Configuration File (config-mcp.php)
 
@@ -878,6 +2153,7 @@ return $config;
 ```
 
 **Template Types Supported**:
+
 1. **Basic Template**: Single `config/web.php`
 2. **Advanced Template**: `common/config/main.php` + `main-local.php`
 3. **Advanced + API Template**: Additional `api` directory
@@ -891,6 +2167,7 @@ return $config;
 ### Overview
 
 The MCP server works with any MCP-compatible client. Configuration involves specifying:
+
 1. Command to run PHP
 2. Path to `yii2-gii-mcp` executable
 3. Environment variables (YII2_CONFIG_PATH, etc.)
@@ -900,6 +2177,7 @@ The MCP server works with any MCP-compatible client. Configuration involves spec
 **File**: `~/.firebender/firebender.json`
 
 **Configuration**:
+
 ```json
 {
   "mcpServers": {
@@ -919,6 +2197,7 @@ The MCP server works with any MCP-compatible client. Configuration involves spec
 ```
 
 **Advantages**:
+
 - Configure once, works for all Yii2 projects
 - Uses `${workspaceFolder}` for automatic path resolution
 - No absolute paths needed
@@ -926,6 +2205,7 @@ The MCP server works with any MCP-compatible client. Configuration involves spec
 
 **Per-Project Setup**:
 Each Yii2 project only needs:
+
 1. Package installed: `composer require took/yii2-gii-mcp`
 2. Config file: `config-mcp.php` in project root
 3. Restart PhpStorm
@@ -943,11 +2223,13 @@ Each Yii2 project only needs:
 ### Claude Desktop
 
 **Config File Locations**:
+
 - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
 - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
 - **Linux**: `~/.config/Claude/claude_desktop_config.json`
 
 **Configuration**:
+
 ```json
 {
   "mcpServers": {
@@ -974,6 +2256,7 @@ Each Yii2 project only needs:
 **File**: `.vscode/settings.json` (project) or global settings
 
 **Configuration**:
+
 ```json
 {
   "claude.mcpServers": {
@@ -998,6 +2281,7 @@ Each Yii2 project only needs:
 **File**: `.vscode/settings.json`
 
 **Configuration**:
+
 ```json
 {
   "cline.mcpServers": {
@@ -1020,6 +2304,7 @@ Each Yii2 project only needs:
 **File**: `~/.cursor/config.json` or Cursor settings
 
 **Configuration**:
+
 ```json
 {
   "mcp.servers": {
@@ -1040,6 +2325,7 @@ Each Yii2 project only needs:
 ### Generic MCP Client
 
 **Pattern**:
+
 ```json
 {
   "command": "php",
@@ -1059,12 +2345,14 @@ Each Yii2 project only needs:
 **Overview**: When Yii2 project runs in Docker containers, there are two main approaches:
 
 **Option A: Host-Based MCP (Recommended)**
+
 - MCP server runs on host machine (PHP 8.2+)
 - Connects to Docker database via exposed ports
 - Simpler configuration, better performance
 - No Docker exec overhead
 
 **Configuration Pattern**:
+
 ```json
 {
   "mcpServers": {
@@ -1080,6 +2368,7 @@ Each Yii2 project only needs:
 ```
 
 **config-mcp.php for Docker**:
+
 ```php
 'db' => [
     'dsn' => 'mysql:host=127.0.0.1;dbname=yii2_app',  // Docker port mapped to host
@@ -1089,12 +2378,14 @@ Each Yii2 project only needs:
 ```
 
 **Option B: Container-Based MCP**
+
 - MCP server runs inside Docker container
 - Uses docker exec to communicate
 - Requires wrapper script
 - No host PHP requirement
 
 **Wrapper Script Pattern** (`bin/yii2-gii-mcp-docker`):
+
 ```bash
 #!/bin/bash
 exec docker exec -i your-php-container \
@@ -1102,6 +2393,7 @@ exec docker exec -i your-php-container \
 ```
 
 **Configuration Pattern**:
+
 ```json
 {
   "mcpServers": {
@@ -1117,6 +2409,7 @@ exec docker exec -i your-php-container \
 ```
 
 **config-mcp.php for Container**:
+
 ```php
 'db' => [
     'dsn' => 'mysql:host=mysql;dbname=yii2_app',  // Docker service name
@@ -1126,6 +2419,7 @@ exec docker exec -i your-php-container \
 ```
 
 **Database Connectivity**:
+
 - **Host-based**: Use `127.0.0.1` (Docker exposes ports to host via port mapping)
 - **Container-based**: Use Docker service names (e.g., `mysql`, `db`)
 - **Port mapping required**: Ensure `ports: ["3306:3306"]` in docker-compose.yml
@@ -1145,6 +2439,7 @@ exec docker exec -i your-php-container \
 **Purpose**: Initialize Yii2 application context programmatically without web server.
 
 **Process**:
+
 1. Load Yii2 autoloader
 2. Load configuration from `YII2_CONFIG_PATH`
 3. Create Yii2 application instance
@@ -1152,10 +2447,29 @@ exec docker exec -i your-php-container \
 5. Establish database connection
 
 **Methods**:
+
 - `initialize(string $configPath)`: Bootstrap Yii2 with given config
 - `getDb()`: Get database connection component
 - `getGiiModule()`: Get Gii module instance
 - `getApplication()`: Get Yii2 application instance
+- `detectTemplateType()`: Detect Yii2 template type ('basic' or 'advanced')
+- `getDefaultModelNamespace()`: Get appropriate default namespace for models based on template type
+- `getDefaultControllerNamespace()`: Get appropriate default namespace for controllers based on template type
+
+**Template Detection**:
+
+The bootstrap automatically detects which Yii2 template is being used:
+
+- **Advanced Template**: Detected by presence of `/common` and `/console` directories
+- **Basic Template**: Detected by presence of `/app` and `/config` directories
+
+**Smart Defaults Based on Template Type**:
+
+- **Models**: `common\models` for Advanced Template, `app\models` for Basic Template
+- **Controllers**: `frontend\controllers` for Advanced Template, `app\controllers` for Basic Template
+- **Forms**: Default to `common\models` for Advanced (shared forms), `app\models` for Basic
+
+This detection is used across all code generation tools (`generate-model`, `generate-crud`, `generate-controller`, `generate-form`) to provide appropriate defaults without requiring explicit configuration.
 
 ### GiiHelper Integration
 
@@ -1164,6 +2478,7 @@ exec docker exec -i your-php-container \
 **Purpose**: Wrapper around Gii generators for easier programmatic access.
 
 **Key Methods**:
+
 - `previewModel(string $tableName, array $options): array`
 - `generateModel(string $tableName, array $options): array`
 - `previewCrud(string $modelClass, array $options): array`
@@ -1178,6 +2493,7 @@ exec docker exec -i your-php-container \
 - `generateExtension(array $options): array`
 
 **Return Format**:
+
 ```php
 [
     'files' => [
@@ -1191,11 +2507,64 @@ exec docker exec -i your-php-container \
 ]
 ```
 
+### MigrationHelper Integration
+
+**File**: `src/Helpers/MigrationHelper.php`
+
+**Purpose**: Wrapper around Yii2 migrate component for programmatic migration management.
+
+**Key Methods**:
+
+- `getMigrations(string $status = 'all'): array` - Get migrations by status (applied/pending/all)
+- `getMigrationHistory(int $limit = 10): array` - Get migration history with timestamps
+- `previewMigrationSql(string $name, string $direction = 'up'): string` - Preview SQL without executing
+- `executeMigration(string $operation, array $params): array` - Execute migration operations
+- `createMigration(string $name, array $fields = []): string` - Create migration file with field definitions
+- `validateMigrationName(string $name): bool` - Validate migration exists
+- `getMigrationByName(string $name): ?object` - Get specific migration instance
+
+**Field Definition Support**:
+
+The `createMigration()` method supports field definitions to leverage Yii2's migration builder:
+
+```php
+$fields = [
+    'name:string(255):notNull',
+    'email:string:notNull:unique',
+    'status:integer:defaultValue(1)',
+    'price:decimal(10,2):notNull',
+    'created_at:timestamp:notNull',
+    'is_active:boolean:defaultValue(true)',
+];
+
+$file = $helper->createMigration('create_users_table', $fields);
+```
+
+**Field Format**: `name:type[:size][:modifier[:modifier...]]`
+
+**Supported Types**: string, integer, text, decimal, timestamp, datetime, date, time, boolean, binary, money, json
+
+**Supported Modifiers**: notNull, unique, defaultValue(value), unsigned, comment('text')
+
+**Return Format**:
+
+```php
+[
+    'operation' => 'up',  // or 'down', 'create', 'redo', 'fresh'
+    'result' => 0,        // Exit code
+    'output' => '...',    // Console output
+    'migrations_applied' => 1,  // For up operations
+    'migrations_reverted' => 1, // For down operations
+    'file' => '/path/to/migration.php',  // For create operations
+]
+```
+
 ### Database Connection
 
 **Component**: `db` (default, configurable via `DB_CONNECTION` env var)
 
 **Required in Config**:
+
 ```php
 'components' => [
     'db' => [
@@ -1209,6 +2578,7 @@ exec docker exec -i your-php-container \
 ```
 
 **Supported Databases**:
+
 - MySQL / MariaDB
 - PostgreSQL
 - SQLite
@@ -1224,6 +2594,7 @@ exec docker exec -i your-php-container \
 **Philosophy**: All generation tools default to `preview: true` to prevent accidental file writes.
 
 **Workflow**:
+
 1. AI calls tool with `preview: true`
 2. Tool returns code preview
 3. User reviews and approves
@@ -1231,6 +2602,7 @@ exec docker exec -i your-php-container \
 5. Tool writes files
 
 **Implementation**:
+
 ```php
 protected function getPreviewParam(array $arguments): bool
 {
@@ -1243,11 +2615,13 @@ protected function getPreviewParam(array $arguments): bool
 **Purpose**: Prevent accidental overwrite of existing files.
 
 **Checks**:
+
 - File existence before generation
 - Write permission on target directory
 - Return list of conflicts to user
 
 **Implementation** (`src/Helpers/FileHelper.php`):
+
 ```php
 public static function checkConflicts(array $files): array
 {
@@ -1266,12 +2640,14 @@ public static function checkConflicts(array $files): array
 **Purpose**: Prevent SQL injection, path traversal, and malicious inputs.
 
 **Validations**:
+
 - Table names: Alphanumeric + underscores only
 - Class names: Valid PHP identifiers
 - Paths: Within project boundaries
 - Namespaces: Valid PHP namespace syntax
 
 **Implementation** (`src/Helpers/ValidationHelper.php`):
+
 ```php
 public static function validateTableName(string $name): bool
 {
@@ -1294,6 +2670,7 @@ public static function validatePath(string $path, string $basePath): bool
 ### 4. Table/Model Existence Checks
 
 **Before Generation**:
+
 - Verify table exists in database
 - Check model class is loadable
 - Validate relationships are resolvable
@@ -1306,6 +2683,7 @@ public static function validatePath(string $path, string $basePath): bool
 All errors follow standard error response format with code, message, and optional data.
 
 **Error Categories**:
+
 - Configuration errors (-32001)
 - Database errors (-32002)
 - Validation errors (-32602)
@@ -1323,6 +2701,7 @@ All errors follow standard error response format with code, message, and optiona
 **Purpose**: Automated setup wizard for first-time configuration.
 
 **Features**:
+
 - Auto-detects Yii2 project type (Basic/Advanced/Advanced+API)
 - Creates `config-mcp.php` with intelligent config merging
 - Tests database connection
@@ -1330,12 +2709,14 @@ All errors follow standard error response format with code, message, and optiona
 - Shows final instructions and next steps
 
 **Usage**:
+
 ```bash
 cd /path/to/your/yii2/project
 php vendor/took/yii2-gii-mcp/bin/interactive-setup
 ```
 
 **Workflow**:
+
 1. Detect project structure
 2. Ask user questions (with smart defaults)
 3. Create config-mcp.php (with backup if exists)
@@ -1345,12 +2726,14 @@ php vendor/took/yii2-gii-mcp/bin/interactive-setup
 7. Display success message and usage examples
 
 **UI Features**:
+
 - Colored terminal output (green for success, red for errors)
 - Progress indicators
 - Clear instructions
 - Helpful error messages with solutions
 
 **Code Quality**:
+
 - Helper functions for UI (`printSuccess()`, `printError()`, `printWarning()`)
 - Separation of concerns
 - Error handling at all critical points
@@ -1362,43 +2745,45 @@ php vendor/took/yii2-gii-mcp/bin/interactive-setup
 **Purpose**: Comprehensive diagnostic tool to check setup and find problems.
 
 **Checks**:
+
 1. **Project Structure**
-   - Composer project exists
-   - Yii2 dependency installed
-   - Vendor directory present
+    - Composer project exists
+    - Yii2 dependency installed
+    - Vendor directory present
 
 2. **Template Detection**
-   - Identifies Basic/Advanced/Advanced+API template
-   - Lists detected components (frontend, backend, api, console)
+    - Identifies Basic/Advanced/Advanced+API template
+    - Lists detected components (frontend, backend, api, console)
 
 3. **MCP Server Executable**
-   - Checks `bin/yii2-gii-mcp` exists
-   - Verifies executable permissions
-   - Tests if it's runnable
+    - Checks `bin/yii2-gii-mcp` exists
+    - Verifies executable permissions
+    - Tests if it's runnable
 
 4. **Configuration**
-   - `config-mcp.php` exists and readable
-   - Config returns valid array
-   - Has required keys (components, modules)
-   - Database component configured
-   - Gii module enabled
+    - `config-mcp.php` exists and readable
+    - Config returns valid array
+    - Has required keys (components, modules)
+    - Database component configured
+    - Gii module enabled
 
 5. **Database Connection**
-   - Tests actual database connection
-   - Lists available tables
-   - Shows sample table names
+    - Tests actual database connection
+    - Lists available tables
+    - Shows sample table names
 
 6. **Firebender Configuration**
-   - Checks global config (`~/.firebender/firebender.json`)
-   - Checks local config (`.firebender/firebender.json`)
-   - Validates JSON syntax
-   - Verifies yii2-gii server entry
+    - Checks global config (`~/.firebender/firebender.json`)
+    - Checks local config (`.firebender/firebender.json`)
+    - Validates JSON syntax
+    - Verifies yii2-gii server entry
 
 7. **PHP Environment**
-   - PHP version (>= 8.2)
-   - Required extensions (PDO, pdo_mysql, etc.)
+    - PHP version (>= 8.2)
+    - Required extensions (PDO, pdo_mysql, etc.)
 
 **Output Format**:
+
 ```
 === Project Structure ===
 ✓ Composer project
@@ -1424,6 +2809,7 @@ php vendor/took/yii2-gii-mcp/bin/interactive-setup
 ```
 
 **Usage**:
+
 ```bash
 cd /path/to/your/yii2/project
 php vendor/took/yii2-gii-mcp/bin/diagnose
@@ -1439,13 +2825,15 @@ php vendor/took/yii2-gii-mcp/bin/diagnose
 
 **Framework**: Codeception 5.0 (unified testing)
 
-**Philosophy**: 
+**Philosophy**:
+
 - KISS principle - one testing framework only
 - No Yii2 dependency in tests (fast, simple setup)
 - TDD approach - tests guide implementation
 - Reflection API for testing private methods without Yii2 dependencies
 
 **Test Suites**:
+
 1. **Unit Tests** (`tests/Unit/`)
 2. **Functional Tests** (`tests/Functional/`)
 
@@ -1454,6 +2842,7 @@ php vendor/took/yii2-gii-mcp/bin/diagnose
 **Current Coverage: 60.25%** (up from initial 29.96%)
 
 **Statistics**:
+
 - **Total Tests**: 329
 - **Total Assertions**: 1,139
 - **Success Rate**: 100% ✅
@@ -1463,6 +2852,7 @@ php vendor/took/yii2-gii-mcp/bin/diagnose
 #### Coverage by Component
 
 **Excellent Coverage (>70%)**:
+
 - ✅ **ToolRegistry**: 100.00% (17/17 lines)
 - ✅ **Protocol/Request**: 100.00% (26/26 lines)
 - ✅ **Protocol/Response**: 100.00% (17/17 lines)
@@ -1476,6 +2866,7 @@ php vendor/took/yii2-gii-mcp/bin/diagnose
 - ✅ **Tools/GenerateModule**: 74.17% (89/120 lines) - *Improved from 23.33%!*
 
 **Good Coverage (60-70%)**:
+
 - ✅ **Tools/GenerateForm**: 69.03% (78/113 lines)
 - ✅ **Tools/GenerateController**: 67.23% (80/119 lines)
 - ✅ **Tools/GenerateCrud**: 66.88% (103/154 lines)
@@ -1483,6 +2874,7 @@ php vendor/took/yii2-gii-mcp/bin/diagnose
 - ✅ **Tools/GenerateModel**: 64.49% (89/138 lines)
 
 **Improved Coverage (20-60%)**:
+
 - ✅ **Tools/InspectDatabase**: 40.16% (49/122 lines)
 - ✅ **Helpers/FileHelper**: 28.54%
 - ✅ **Tools/ListTables**: 24.69% (schema tests)
@@ -1490,65 +2882,66 @@ php vendor/took/yii2-gii-mcp/bin/diagnose
 ### Comprehensive Test Files Created
 
 #### Phase 1-5: Core Infrastructure (213 tests)
+
 1. **ValidationHelperTest.php** - 20 tests
-   - Class name, namespace, path validation
-   - Sanitization methods (table names, class names)
-   - Security checks (path traversal detection)
-   - Error message generation
+    - Class name, namespace, path validation
+    - Sanitization methods (table names, class names)
+    - Security checks (path traversal detection)
+    - Error message generation
 
 2. **FileHelperTest.php** - 26 tests
-   - File I/O operations with temp files
-   - Conflict detection
-   - Backup creation
-   - Path manipulation
+    - File I/O operations with temp files
+    - Conflict detection
+    - Backup creation
+    - Path manipulation
 
 3. **ServerConfigTest.php** - 15 tests
-   - Environment variable parsing
-   - Boolean value conversion
-   - Path inference logic
-   - Validation and error messaging
+    - Environment variable parsing
+    - Boolean value conversion
+    - Path inference logic
+    - Validation and error messaging
 
 4. **MCPServerTest.php** - 20+ tests
-   - Initialization flow
-   - Request routing (tools/list, tools/call)
-   - Error handling scenarios
-   - Protocol version handling
-   - State management
+    - Initialization flow
+    - Request routing (tools/list, tools/call)
+    - Error handling scenarios
+    - Protocol version handling
+    - State management
 
 5. **Protocol Tests** (87 tests total):
-   - **RequestTest.php** - 20 tests (JSON-RPC validation)
-   - **ResponseTest.php** - 20 tests (serialization, types)
-   - **MessageTest.php** - 18 tests (base protocol)
-   - **StdioTransportTest.php** - 29 tests (I/O, streams, EOF)
+    - **RequestTest.php** - 20 tests (JSON-RPC validation)
+    - **ResponseTest.php** - 20 tests (serialization, types)
+    - **MessageTest.php** - 18 tests (base protocol)
+    - **StdioTransportTest.php** - 29 tests (I/O, streams, EOF)
 
 #### Phase 6: Tools Enhancement (116 additional tests)
 
 6. **GenerateModelTest.php** - 20 tests
-   - Schema validation (all properties, defaults, enums)
-   - `formatGiiResult()` testing via Reflection
-   - Preview vs generation mode
-   - Validation errors, conflicts, generic errors
-   - Content display formatting
+    - Schema validation (all properties, defaults, enums)
+    - `formatGiiResult()` testing via Reflection
+    - Preview vs generation mode
+    - Validation errors, conflicts, generic errors
+    - Content display formatting
 
 7. **GenerateFormTest.php** - 18 tests
-   - Schema structure and property descriptions
-   - `formatGiiResult()` in both modes
-   - Error handling (validation, conflicts, generic)
-   - Multiple file handling
+    - Schema structure and property descriptions
+    - `formatGiiResult()` in both modes
+    - Error handling (validation, conflicts, generic)
+    - Multiple file handling
 
 8. **GenerateCrudTest.php** - 18 tests
-   - Widget type validation (grid/list enum)
-   - Base controller class defaults
-   - i18n settings
-   - `formatGiiResult()` with file grouping
-   - Preview mode helpful information
+    - Widget type validation (grid/list enum)
+    - Base controller class defaults
+    - i18n settings
+    - `formatGiiResult()` with file grouping
+    - Preview mode helpful information
 
 9. **GenerateExtensionTest.php** - 19 tests
-   - Vendor/package name validation
-   - Extension type enum (yii2-extension, library)
-   - `validateName()` method testing
-   - Composer.json generation preview
-   - Multiple file formatting
+    - Vendor/package name validation
+    - Extension type enum (yii2-extension, library)
+    - `validateName()` method testing
+    - Composer.json generation preview
+    - Multiple file formatting
 
 10. **GenerateModuleEnhancedTest.php** - 17 tests
     - Module ID validation (lowercase, dashes, underscores)
@@ -1580,6 +2973,7 @@ php vendor/took/yii2-gii-mcp/bin/diagnose
 #### ✅ What We Successfully Test Without Yii2
 
 **Schema & API Validation**:
+
 - All input schemas (structure, types, defaults, enum values)
 - JSON Schema compliance
 - Property descriptions and examples
@@ -1587,6 +2981,7 @@ php vendor/took/yii2-gii-mcp/bin/diagnose
 - additionalProperties restrictions
 
 **Business Logic (via Reflection API)**:
+
 ```php
 $reflection = new ReflectionClass($tool);
 $method = $reflection->getMethod('formatGiiResult');
@@ -1595,6 +2990,7 @@ $result = $method->invoke($tool, $testData, $previewMode);
 ```
 
 **Validation Methods Tested**:
+
 - `validateName()` (GenerateExtension)
 - `validateModuleID()` (GenerateModule)
 - `validateControllerID()` (GenerateController)
@@ -1602,6 +2998,7 @@ $result = $method->invoke($tool, $testData, $previewMode);
 - All ValidationHelper methods
 
 **Result Formatting Tested**:
+
 - `formatGiiResult()` for all generation tools
 - `formatOutput()` for inspection tools
 - `formatTableInfo()` structure validation
@@ -1609,11 +3006,13 @@ $result = $method->invoke($tool, $testData, $previewMode);
 - Error handling paths (validation, conflicts, generic)
 
 **Helper Functions**:
+
 - ValidationHelper (sanitization, validation, security)
 - FileHelper (file operations, backups, conflicts)
 - All static utility methods
 
 **Protocol Layer**:
+
 - Complete JSON-RPC 2.0 message handling
 - Request/Response serialization & validation
 - Transport layer with stream I/O
@@ -1621,6 +3020,7 @@ $result = $method->invoke($tool, $testData, $previewMode);
 - EOF detection and handling
 
 **Configuration**:
+
 - Environment variable parsing
 - Boolean value conversion
 - Path inference and validation
@@ -1659,23 +3059,24 @@ $result = $method->invoke($tool, $testData, $previewMode);
    ```
 
 5. **Edge Case Testing**:
-   - Empty inputs
-   - Invalid formats
-   - SQL injection attempts
-   - Path traversal detection
-   - Special characters
-   - Boundary conditions
+    - Empty inputs
+    - Invalid formats
+    - SQL injection attempts
+    - Path traversal detection
+    - Special characters
+    - Boundary conditions
 
 6. **Error Scenario Coverage**:
-   - Validation failures
-   - File conflicts
-   - Generic errors
-   - Missing parameters
-   - Invalid types
+    - Validation failures
+    - File conflicts
+    - Generic errors
+    - Missing parameters
+    - Invalid types
 
 ### Running Tests
 
 **Via Makefile**:
+
 ```bash
 make test                  # Run all tests
 make test-unit             # Unit tests only
@@ -1685,6 +3086,7 @@ make clean                 # Clean test artifacts
 ```
 
 **Via Composer**:
+
 ```bash
 composer test
 composer test-unit
@@ -1692,6 +3094,7 @@ composer test-functional
 ```
 
 **Direct Codeception**:
+
 ```bash
 vendor/bin/codecept run
 vendor/bin/codecept run Unit
@@ -1704,12 +3107,14 @@ vendor/bin/codecept run --coverage --coverage-html
 **Important**: Tests do NOT require Yii2 installation.
 
 **Why**:
+
 - Fast test execution
 - Simple contributor setup
 - No database required for unit tests
 - Clear separation of concerns
 
 **Mocking Strategy**:
+
 - Mock Yii2 application in tests
 - Mock database connections
 - Mock Gii generators for full workflow tests (future)
@@ -1717,6 +3122,7 @@ vendor/bin/codecept run --coverage --coverage-html
 ### Writing New Tests
 
 **For New Tools**:
+
 1. Create unit test in `tests/Unit/Tools/YourToolTest.php`
 2. Test input schema validation
 3. Test error handling
@@ -1724,6 +3130,7 @@ vendor/bin/codecept run --coverage --coverage-html
 5. Follow existing test patterns
 
 **Example Test Structure**:
+
 ```php
 class YourToolTest extends \Codeception\Test\Unit
 {
@@ -1752,6 +3159,7 @@ class YourToolTest extends \Codeception\Test\Unit
 **Steps**:
 
 1. **Create Tool Class** (`src/Tools/YourTool.php`):
+
 ```php
 <?php
 
@@ -1797,12 +3205,14 @@ class YourTool extends AbstractTool
 ```
 
 2. **Register Tool** (`bin/yii2-gii-mcp`):
+
 ```php
 $registry = new ToolRegistry();
 $registry->register(new YourTool());
 ```
 
 3. **Write Tests** (`tests/Unit/Tools/YourToolTest.php`):
+
 ```php
 class YourToolTest extends \Codeception\Test\Unit
 {
@@ -1821,6 +3231,7 @@ class YourToolTest extends \Codeception\Test\Unit
 **PSR-12**: Follow PSR-12 coding standard for all PHP code.
 
 **Key Rules**:
+
 - 4 spaces for indentation (no tabs)
 - Opening braces on same line for classes/functions
 - Type hints for all parameters and return types
@@ -1828,18 +3239,21 @@ class YourToolTest extends \Codeception\Test\Unit
 - One class per file
 
 **Tools**:
+
 - PHP-CS-Fixer for automatic formatting
 - PHPStan for static analysis (future)
 
 ### Error Handling
 
 **Always**:
+
 - Return structured JSON-RPC 2.0 errors
 - Use appropriate error codes
 - Include helpful error messages
 - Add data field with details for debugging
 
 **Example**:
+
 ```php
 return $this->createError(
     -32602,
@@ -1855,6 +3269,7 @@ return $this->createError(
 **Why**: stdout is reserved for JSON-RPC protocol messages.
 
 **Usage**:
+
 ```php
 if (getenv('DEBUG') === 'true') {
     fwrite(STDERR, "Debug: Processing table {$tableName}\n");
@@ -1864,12 +3279,14 @@ if (getenv('DEBUG') === 'true') {
 ### Dependencies
 
 **Minimize External Dependencies**:
+
 - Core PHP only for most functionality
 - Leverage Yii2 and Gii built-in features
 - JSON Schema validator for input validation
 - Codeception for testing
 
 **Current Dependencies** (`composer.json`):
+
 ```json
 {
   "require": {
@@ -1955,21 +3372,25 @@ yii2-gii-mcp/
 ### Key Files
 
 **Entry Points**:
+
 - `bin/yii2-gii-mcp` - MCP server executable
 - `bin/interactive-setup` - Setup wizard
 - `bin/diagnose` - Diagnostic tool
 
 **Core Classes**:
+
 - `src/MCPServer.php` - Main server logic
 - `src/ToolRegistry.php` - Tool management
 - `src/Protocol/StdioTransport.php` - I/O handling
 
 **Tool Implementations**:
+
 - All tools in `src/Tools/`
 - Extend `AbstractTool`
 - Implement `ToolInterface`
 
 **Configuration**:
+
 - `src/Config/ServerConfig.php` - Server config
 - `examples/config-advanced-template.php` - Template for projects
 
@@ -1984,6 +3405,7 @@ yii2-gii-mcp/
 **Cause**: Yii2 not installed or not in autoload path.
 
 **Solution**:
+
 ```bash
 composer require yiisoft/yii2
 composer require yiisoft/yii2-gii --dev
@@ -1994,6 +3416,7 @@ composer require yiisoft/yii2-gii --dev
 **Cause**: `YII2_CONFIG_PATH` not set or pointing to wrong file.
 
 **Solution**:
+
 ```bash
 # Create config-mcp.php
 cp vendor/took/yii2-gii-mcp/examples/config-advanced-template.php config-mcp.php
@@ -2007,6 +3430,7 @@ php vendor/took/yii2-gii-mcp/bin/interactive-setup
 **Cause**: Missing or misconfigured `db` component.
 
 **Solution**: Add to `config-mcp.php`:
+
 ```php
 'components' => [
     'db' => [
@@ -2041,6 +3465,7 @@ php vendor/took/yii2-gii-mcp/bin/interactive-setup
 #### 5. "Tools not available" in AI Assistant
 
 **Diagnostic Steps**:
+
 ```bash
 # 1. Run diagnostics
 php vendor/took/yii2-gii-mcp/bin/diagnose
@@ -2063,6 +3488,7 @@ YII2_CONFIG_PATH=config-mcp.php php vendor/took/yii2-gii-mcp/examples/test-list-
 **Cause**: Target directory not writable.
 
 **Solution**:
+
 ```bash
 # Check permissions
 ls -la app/models/
@@ -2076,6 +3502,7 @@ chmod 755 app/models/
 **Cause**: Non-standard project structure.
 
 **Solution**: Create custom `config-mcp.php`:
+
 ```php
 <?php
 return [
@@ -2098,6 +3525,7 @@ return [
 Enable detailed logging:
 
 **In Firebender**:
+
 ```json
 {
   "env": {
@@ -2107,6 +3535,7 @@ Enable detailed logging:
 ```
 
 **From Command Line**:
+
 ```bash
 DEBUG=1 YII2_CONFIG_PATH=config-mcp.php php vendor/took/yii2-gii-mcp/bin/yii2-gii-mcp
 ```
@@ -2116,11 +3545,13 @@ DEBUG=1 YII2_CONFIG_PATH=config-mcp.php php vendor/took/yii2-gii-mcp/bin/yii2-gi
 ### Getting Help
 
 **Diagnostic Tool**: First line of defense
+
 ```bash
 php vendor/took/yii2-gii-mcp/bin/diagnose
 ```
 
 **Example Scripts**: Test individual components
+
 ```bash
 # Test protocol
 php vendor/took/yii2-gii-mcp/examples/test-server.php
@@ -2140,6 +3571,7 @@ This section documents major improvements and changes made to the project.
 ### Phase 1-2: Core Implementation (December 2024)
 
 **Completed**:
+
 - ✅ Full JSON-RPC 2.0 over stdio transport
 - ✅ MCP protocol support (version 2024-11-05)
 - ✅ Tool registry system
@@ -2147,6 +3579,7 @@ This section documents major improvements and changes made to the project.
 - ✅ First 3 tools: ListTables, GenerateModel, GenerateCrud
 
 **Key Decisions**:
+
 - stdio transport (not HTTP) for simplicity
 - Preview mode by default for safety
 - JSON Schema for input validation
@@ -2155,6 +3588,7 @@ This section documents major improvements and changes made to the project.
 ### Phase 3: Extended Tools (January 2025)
 
 **Completed**:
+
 - ✅ InspectDatabase tool (detailed schema inspection)
 - ✅ GenerateController tool
 - ✅ GenerateForm tool
@@ -2172,6 +3606,7 @@ This section documents major improvements and changes made to the project.
 #### 1. Interactive Setup Wizard (`bin/interactive-setup`)
 
 **Features**:
+
 - Automatic Yii2 project type detection (Basic/Advanced/Advanced+API)
 - Automatic `config-mcp.php` creation with config merging
 - Database connection testing
@@ -2183,11 +3618,13 @@ This section documents major improvements and changes made to the project.
 - Backup option for existing configs
 
 **Usage**:
+
 ```bash
 php vendor/took/yii2-gii-mcp/bin/interactive-setup
 ```
 
 **Workflow**:
+
 1. Detect project structure
 2. Create config-mcp.php (with backup if exists)
 3. Test database connection
@@ -2198,6 +3635,7 @@ php vendor/took/yii2-gii-mcp/bin/interactive-setup
 #### 2. Diagnostic Tool (`bin/diagnose`)
 
 **Features**:
+
 - Project structure validation (Composer, Yii2, vendor)
 - Template type detection (Basic/Advanced/Advanced+API)
 - MCP server executable checks
@@ -2209,6 +3647,7 @@ php vendor/took/yii2-gii-mcp/bin/interactive-setup
 - Concrete solution suggestions for problems
 
 **Usage**:
+
 ```bash
 php vendor/took/yii2-gii-mcp/bin/diagnose
 ```
@@ -2216,11 +3655,13 @@ php vendor/took/yii2-gii-mcp/bin/diagnose
 #### 3. Improved Error Messages (`src/Config/ServerConfig.php`)
 
 **Before**:
+
 ```
 Yii2 config path not set. Set YII2_CONFIG_PATH environment variable.
 ```
 
 **After**:
+
 ```
 Yii2 config path not set.
   → Set YII2_CONFIG_PATH environment variable
@@ -2235,6 +3676,7 @@ For help, run: php vendor/took/yii2-gii-mcp/bin/diagnose
 #### 4. Documentation Overhaul
 
 **Created**:
+
 - `QUICKSTART.md` - Fast-track installation guide
 - `SETUP_GUIDE.md` - Comprehensive setup guide
 - `SETUP_IMPROVEMENTS.md` - Technical documentation of improvements
@@ -2245,12 +3687,14 @@ For help, run: php vendor/took/yii2-gii-mcp/bin/diagnose
 ### Phase 5: Documentation Consolidation (January 2026)
 
 **Completed**:
+
 - ✅ Consolidated root .md files into brief human-friendly README.md
 - ✅ Created comprehensive AI-MEMORY-BANK.md for AI agents
 - ✅ Removed redundant documentation files
 - ✅ Clear separation: humans get quick start, AI agents get complete reference
 
 **Deleted Files**:
+
 - SETUP_GUIDE.md (consolidated)
 - SETUP_IMPROVEMENTS.md (consolidated)
 - QUICKSTART.md (consolidated)
@@ -2258,6 +3702,7 @@ For help, run: php vendor/took/yii2-gii-mcp/bin/diagnose
 - docs/firebender-global-setup.md (consolidated)
 
 **New Structure**:
+
 - `/README.md` - Minimal overview + quick start for humans
 - `/docs/AI-MEMORY-BANK.md` - Complete technical reference for AI agents
 - `/docs/README.md` - Navigation for documentation
@@ -2271,6 +3716,7 @@ For help, run: php vendor/took/yii2-gii-mcp/bin/diagnose
 #### 1. Coverage Achievement: 29.96% → 60.25% (+100% improvement!)
 
 **Key Milestones**:
+
 - ✅ **329 total tests** (from ~140)
 - ✅ **1,139 assertions** (from ~600)
 - ✅ **60.25% line coverage** (from 29.96%)
@@ -2280,11 +3726,13 @@ For help, run: php vendor/took/yii2-gii-mcp/bin/diagnose
 #### 2. Enhanced Testing Methodology
 
 **Reflection API Usage**:
+
 - Test private methods without exposing them
 - Validate business logic (formatGiiResult, validation methods)
 - Maintain encapsulation while ensuring coverage
 
 **Example Pattern**:
+
 ```php
 $reflection = new ReflectionClass($tool);
 $method = $reflection->getMethod('formatGiiResult');
@@ -2295,6 +3743,7 @@ $result = $method->invoke($tool, $testData, true);
 #### 3. Comprehensive Tool Test Files
 
 **Phase 6 Enhancements** (116 new tests):
+
 1. **GenerateModelTest.php** - 20 tests (64.49% coverage)
 2. **GenerateFormTest.php** - 18 tests (69.03% coverage)
 3. **GenerateCrudTest.php** - 18 tests (66.88% coverage)
@@ -2305,21 +3754,23 @@ $result = $method->invoke($tool, $testData, true);
 8. **ListTablesTest.php** - 8 schema validation tests
 
 **Each test file covers**:
+
 - Input schema validation (structure, types, defaults, enums)
 - Property descriptions and examples
 - Validation methods (via Reflection)
 - formatGiiResult() for all scenarios:
-  - Preview mode (with content display)
-  - Generation mode (with file status)
-  - Validation errors
-  - File conflicts
-  - Generic errors
+    - Preview mode (with content display)
+    - Generation mode (with file status)
+    - Validation errors
+    - File conflicts
+    - Generic errors
 - Error message formatting
 - Interface compliance
 
 #### 4. Testing Without Yii2 Dependencies
 
 **✅ Successfully Tested**:
+
 - Complete input schema validation
 - All private validation methods (via Reflection)
 - Result formatting logic (preview vs generation)
@@ -2330,6 +3781,7 @@ $result = $method->invoke($tool, $testData, true);
 - Security validation (injection, traversal)
 
 **⚠️ Requires Integration Tests** (with Yii2):
+
 - doExecute() with actual Gii generators
 - Database operations
 - File generation workflows
@@ -2338,12 +3790,14 @@ $result = $method->invoke($tool, $testData, true);
 #### 5. Coverage by Component
 
 **Perfect Coverage (100%)**:
+
 - ToolRegistry (17/17 lines)
 - Protocol/Request (26/26 lines)
 - Protocol/Response (17/17 lines)
 - Protocol/Message (6/6 lines)
 
 **Excellent Coverage (>80%)**:
+
 - AbstractTool: 98.36%
 - ValidationHelper: 95.83%
 - ServerConfig: 95.83%
@@ -2352,6 +3806,7 @@ $result = $method->invoke($tool, $testData, true);
 - MCPServer: 81.90% (from 7.62%!)
 
 **Good Coverage (60-80%)**:
+
 - GenerateModule: 74.17% (from 23.33%!)
 - GenerateForm: 69.03%
 - GenerateController: 67.23%
@@ -2362,6 +3817,7 @@ $result = $method->invoke($tool, $testData, true);
 #### 6. Testing Techniques Established
 
 **Reflection API**:
+
 ```php
 $method = $reflection->getMethod('privateMethod');
 $method->setAccessible(true);
@@ -2369,12 +3825,14 @@ $result = $method->invoke($tool, $args);
 ```
 
 **Mock Objects**:
+
 ```php
 $bootstrap = $this->createMock(Yii2Bootstrap::class);
 $tool = new GenerateModel($bootstrap);
 ```
 
 **Stream Testing**:
+
 ```php
 $stream = fopen('php://memory', 'r+');
 fwrite($stream, $jsonData);
@@ -2382,6 +3840,7 @@ rewind($stream);
 ```
 
 **Temporary Files**:
+
 ```php
 $tempFile = tempnam(sys_get_temp_dir(), 'test_');
 // Test file operations
@@ -2391,6 +3850,7 @@ unlink($tempFile);
 #### 7. Edge Case & Security Testing
 
 **Edge Cases Covered**:
+
 - Empty inputs
 - Null values
 - Invalid formats
@@ -2398,6 +3858,7 @@ unlink($tempFile);
 - Special characters
 
 **Security Tests**:
+
 - SQL injection attempts in table names
 - Path traversal detection (../, absolute paths)
 - Input sanitization validation
@@ -2406,6 +3867,7 @@ unlink($tempFile);
 #### 8. Quality Metrics
 
 **Test Quality**:
+
 - No skipped tests for testable components
 - All tests have meaningful assertions
 - Comprehensive error scenario coverage
@@ -2413,11 +3875,390 @@ unlink($tempFile);
 - Interface compliance verification
 
 **Code Quality Impact**:
+
 - 60% overall coverage milestone achieved
 - All critical paths tested
 - Regression protection in place
 - Documentation through tests
 - Production-ready confidence
+
+### Phase 7: Migration Management Tools (January 2026)
+
+**Motivation**: Enable AI agents to manage database migrations programmatically with safety features.
+
+**Completed Features**:
+
+#### 1. MigrationHelper (`src/Helpers/MigrationHelper.php`)
+
+**Purpose**: Wrapper for Yii2 migrate component
+
+**Key Features**:
+
+- Get migrations by status (applied/pending/all)
+- Preview migration SQL without executing
+- Execute migration operations (up/down/create/redo/fresh)
+- Create migrations with field definitions
+- Support Yii2 migration builder syntax
+
+**Field Definition Support**:
+
+```php
+$fields = [
+    'name:string(255):notNull',
+    'email:string:notNull:unique',
+    'status:integer:defaultValue(1)',
+];
+```
+
+#### 2. ListMigrations Tool (`src/Tools/ListMigrations.php`)
+
+**Type**: Read-only (safe)
+
+**Features**:
+
+- List migrations filtered by status (all/applied/pending)
+- Show applied timestamps
+- Display summary counts
+- Limit results for performance
+
+**Use Cases**: Check migration status, review history, identify pending migrations
+
+#### 3. PreviewMigration Tool (`src/Tools/PreviewMigration.php`)
+
+**Type**: Read-only (safe)
+
+**Features**:
+
+- Preview SQL for up/down directions
+- No database modifications
+- Validate migration exists
+- Formatted SQL output
+
+**Use Cases**: Review SQL before applying, understand migration actions, verify correctness
+
+#### 4. ExecuteMigration Tool (`src/Tools/ExecuteMigration.php`)
+
+**Type**: Potentially destructive (full safety features)
+
+**Safety Features**:
+
+- Preview mode enabled by default
+- `confirmation="yes"` required for all operations
+- `destructiveConfirmation="I understand this will modify the database"` required for down/fresh/redo
+- All operations logged to stderr
+- Detailed execution results
+
+**Operations**:
+
+- **up**: Apply pending migrations
+- **down**: Revert migrations (requires destructive confirmation)
+- **create**: Create new migration with field definitions
+- **redo**: Revert and re-apply (requires destructive confirmation)
+- **fresh**: Drop all tables and re-apply (requires destructive confirmation)
+
+**Field Definitions for Create**:
+Supports Yii2 migration builder format with types, sizes, and modifiers:
+
+- Types: string, integer, text, decimal, timestamp, boolean, json, etc.
+- Modifiers: notNull, unique, defaultValue(value), unsigned, comment('text')
+
+#### 5. Comprehensive Test Coverage
+
+**New Test Files** (75 tests total):
+
+- `tests/Unit/Helpers/MigrationHelperTest.php` (20 tests)
+    - Field definition parsing
+    - Migration content generation
+    - Table name extraction
+    - Column building
+- `tests/Unit/Tools/ListMigrationsTest.php` (17 tests)
+    - Input schema validation
+    - Status enum validation
+    - Output formatting
+- `tests/Unit/Tools/PreviewMigrationTest.php` (16 tests)
+    - Required parameters
+    - Direction enum
+    - SQL preview formatting
+- `tests/Unit/Tools/ExecuteMigrationTest.php` (22 tests)
+    - Safety confirmation validation
+    - Destructive operation checks
+    - Preview result generation
+    - Operation requirements validation
+
+**Testing Approach**:
+
+- Reflection API for testing private methods
+- Mock Yii2Bootstrap to avoid dependencies
+- Comprehensive validation logic testing
+- Edge case and security testing
+
+#### 6. Documentation Updates
+
+**README.md**:
+
+- Added "Migration Management" to key features
+- Added migration tools to Available Tools table
+- Updated project status to "Phase 1-7 Complete"
+- Updated tool count from 8 to 11
+
+**AI-MEMORY-BANK.md**:
+
+- Documented all 3 migration tools (list-migrations, preview-migration, execute-migration)
+- Added MigrationHelper to Helpers section
+- Added Phase 7 to Implementation History
+- Added migration workflow to Best Practices
+
+**TODO.md**:
+
+- Marked section 5.3 (Migration Management Tools) as complete
+
+#### 7. Integration
+
+**bin/yii2-gii-mcp**:
+
+- Registered 3 new migration tools
+- Updated debug message to show 11 tools
+- Added use statements for migration classes
+
+**Total New Code**:
+
+- 4 new source files (~950 lines)
+- 4 new test files (~900 lines)
+- ~1,850 total new lines
+
+**Total Tools**: 11 production-ready tools (8 Gii generators + 3 migration tools)
+
+**Tool Consolidation (DRY)**:
+
+- PreviewMigration functionality merged into ExecuteMigration
+- SQL preview now available via ExecuteMigration with preview=true and migrationName
+- Reduced code duplication while maintaining all functionality
+
+**Test Statistics Update**:
+
+- Tests increased from 329 to 404+ total (includes new SQL preview tests)
+- Comprehensive migration tool coverage
+- All tests passing
+
+### Phase 8: Enhanced Migration Creation Tool (January 2026)
+
+**Motivation**: Separate migration creation from execution and add comprehensive parameters matching Yii2's
+migrate/create command capabilities.
+
+**Completed Features**:
+
+#### 1. CreateMigration Tool (`src/Tools/CreateMigration.php`)
+
+**Purpose**: Dedicated tool for creating migrations with all Yii2 migrate/create parameters
+
+**Key Enhancements**:
+
+- **Migration Types**: create, add, drop, junction, custom
+- **Advanced Field Definitions**: Full support for types, sizes, and modifiers
+- **Auto Features**: Timestamps, soft deletes, foreign keys
+- **Custom Paths**: Support for custom migration directories and namespaces
+- **Template Support**: Custom migration templates
+- **Junction Tables**: Automatic many-to-many relationship table generation
+- **Table Prefixes**: Respect Yii2 table prefix configuration
+
+**Migration Types Supported**:
+
+- **create**: Full table creation with field definitions and constraints
+- **add**: Add columns to existing tables
+- **drop**: Drop tables or specific columns
+- **junction**: Generate many-to-many junction tables with FK constraints
+- **custom**: Empty migration template for custom SQL
+
+**Field Definition Format**:
+
+```
+name:type[:size][:modifier[:modifier...]]
+
+Examples:
+- "name:string(255):notNull"
+- "email:string:notNull:unique"
+- "status:integer:defaultValue(1)"
+- "price:decimal(10,2):notNull:defaultValue(0.00)"
+- "created_at:timestamp:notNull"
+```
+
+**Advanced Parameters**:
+
+- `name`: Migration name (required, snake_case)
+- `fields`: Array of field definitions
+- `migrationType`: Type of migration (create/add/drop/junction/custom)
+- `tableName`: Explicit table name (optional, extracted from name)
+- `junctionTable1`/`junctionTable2`: For junction tables
+- `migrationPath`: Custom directory for migration files
+- `migrationNamespace`: Namespace for namespaced migrations
+- `templateFile`: Custom template file path
+- `useTablePrefix`: Apply table prefix from db config (default: true)
+- `addTimestamps`: Auto-add created_at/updated_at columns
+- `addSoftDelete`: Auto-add deleted_at column
+- `addForeignKeys`: Auto-generate FKs for _id fields
+- `onDeleteCascade`: Use CASCADE vs RESTRICT for FKs
+- `comment`: Table comment/description
+
+**Automatic Features**:
+
+- **Timestamps**: Adds `created_at` and `updated_at` timestamp columns
+- **Soft Deletes**: Adds `deleted_at` timestamp column
+- **Foreign Keys**: Detects fields ending with `_id` and creates FK constraints
+- **Junction Tables**: Full many-to-many setup with indexes and FKs
+
+#### 2. Enhanced MigrationHelper
+
+**New Methods**:
+
+- `createMigrationAdvanced(array $params)`: Create migration with all advanced options
+- `generateAdvancedMigrationContent()`: Generate migration code based on type
+- `generateUpContent()`: Generate safeUp() method content
+- `generateDownContent()`: Generate safeDown() method content
+- `parseFieldDefinitionAdvanced()`: Enhanced field parsing with sizes
+- `generateForeignKeys()`: Auto-generate FK constraints
+- `generateDropForeignKeys()`: Auto-generate FK drop code
+
+**Migration Content Generation**:
+
+- Smart detection of table names from migration names
+- Automatic pluralization for foreign key tables
+- Index generation for junction tables
+- Comment support for tables
+- Proper indentation and code formatting
+
+**Example Outputs**:
+
+Create Table Migration:
+
+```php
+$this->createTable('{{%users}}', [
+    'id' => $this->primaryKey(),
+    'username' => $this->string(255)->notNull()->unique(),
+    'email' => $this->string(255)->notNull()->unique(),
+    'status' => $this->integer()->defaultValue(1),
+    'created_at' => $this->timestamp()->notNull(),
+    'updated_at' => $this->timestamp()->notNull(),
+]);
+
+// Add foreign keys
+$this->addForeignKey(
+    'fk-users-role_id',
+    '{{%users}}',
+    'role_id',
+    '{{%roles}}',
+    'id',
+    'RESTRICT'
+);
+```
+
+Junction Table Migration:
+
+```php
+$this->createTable('{{%user_posts}}', [
+    'id' => $this->primaryKey(),
+    'user_id' => $this->integer()->notNull(),
+    'post_id' => $this->integer()->notNull(),
+    'created_at' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
+]);
+
+// Create indexes
+$this->createIndex('idx-user_posts-user_id', '{{%user_posts}}', 'user_id');
+$this->createIndex('idx-user_posts-post_id', '{{%user_posts}}', 'post_id');
+
+// Add foreign keys
+$this->addForeignKey('fk-user_posts-user_id', '{{%user_posts}}', 'user_id', '{{%users}}', 'id', 'CASCADE');
+$this->addForeignKey('fk-user_posts-post_id', '{{%user_posts}}', 'post_id', '{{%posts}}', 'id', 'CASCADE');
+```
+
+#### 3. Integration & Documentation
+
+**bin/yii2-gii-mcp**:
+
+- Registered CreateMigration tool
+- Updated tool count from 11 to 12
+- Added use statement for CreateMigration class
+
+**AI-MEMORY-BANK.md**:
+
+- Comprehensive documentation of CreateMigration tool
+- All parameters documented with examples
+- Field definition format explained
+- Migration type descriptions
+- Use case examples
+
+**Benefits**:
+
+- Clear separation: CreateMigration for creation, ExecuteMigration for execution
+- Full parity with Yii2's migrate/create command
+- AI agents can create complex migrations programmatically
+- Support for modular applications with namespaces
+- Enterprise features: soft deletes, timestamps, auto-FKs
+
+**Total New Code** (Phase 8):
+
+- 1 new tool file (~730 lines)
+- Enhanced MigrationHelper (~700 additional lines)
+- ~1,430 total new lines
+
+**Total Tools**: 12 production-ready tools (8 Gii generators + 4 migration tools)
+
+#### Phase 8 Enhancement: Index Generation & Custom FK Actions (January 9, 2026)
+
+**Motivation**: Complete the migration creation tool with index generation and full foreign key action control.
+
+**Completed Features**:
+
+**1. Index Generation for Specific Columns**
+
+- New `indexes` parameter (array of strings)
+- Support for single column indexes: `['email']`
+- Support for composite indexes: `['user_id,created_at']`
+- Auto-generated index names: `idx-{table}-{column1}-{column2}`
+- Automatic index removal in `safeDown()`
+
+**2. Custom Foreign Key Actions**
+
+- New `foreignKeys` parameter (array of objects)
+- Per-field FK configuration: `{field, table, column, onDelete, onUpdate}`
+- Support all SQL FK actions: CASCADE, RESTRICT, SET NULL, SET DEFAULT, NO ACTION
+- Custom referenced column support (not just 'id')
+- Backward compatible with existing `addForeignKeys` boolean
+- Invalid actions automatically converted to RESTRICT for safety
+
+**Code Changes**:
+
+- `src/Helpers/MigrationHelper.php` (~200 lines added)
+  - `generateIndexes()` - Create indexes with proper formatting
+  - `generateDropIndexes()` - Remove indexes in safeDown()
+  - `generateForeignKeysExplicit()` - Create FKs with custom actions
+  - `generateDropForeignKeysExplicit()` - Remove explicit FKs
+  - FK action validation
+  - Updated method signatures for new parameters
+
+- `src/Tools/CreateMigration.php` (~100 lines added)
+  - Added `indexes` and `foreignKeys` to input schema
+  - Updated parameter extraction and passing
+  - Enhanced preview output to show indexes and FKs
+
+**Test Coverage**:
+
+- Added 11 comprehensive tests to `MigrationHelperTest.php`
+- All 36 tests pass (100% success rate)
+- 126 total assertions
+- Tests cover: single/composite indexes, all FK actions, validation, edge cases
+
+**Documentation Updates**:
+
+- `docs/PHASE-8-CREATE-MIGRATION-ENHANCEMENT.md`: Complete feature documentation with examples
+- `docs/AI-MEMORY-BANK.md`: Updated tool parameters, advanced features, and usage examples
+
+**Benefits**:
+
+- Production-ready migrations with proper indexes from the start
+- Full control over referential integrity behavior
+- No manual SQL required
+- Database optimization built-in
+- Safer data deletion patterns
 
 ---
 
@@ -2428,6 +4269,7 @@ This section provides guidelines for AI coding assistants using this MCP server.
 ### Understanding the Workflow
 
 **Typical Interaction**:
+
 1. **Inspect**: Use `list-tables` or `inspect-database` to understand schema
 2. **Preview**: Use generation tools with `preview: true` to show code
 3. **Review**: Present preview to user for approval
@@ -2437,15 +4279,18 @@ This section provides guidelines for AI coding assistants using this MCP server.
 ### Tool Selection Guide
 
 **For Database Exploration**:
+
 - Use `list-tables` for quick overview
 - Use `inspect-database` for detailed schema including relationships
 
 **For Code Generation**:
+
 - Always start with preview mode
 - Use specific namespaces when generating for Advanced template
 - Check for existing files before generation
 
 **Tool Decision Tree**:
+
 ```
 User wants code?
 ├─ Just explore database? → list-tables or inspect-database
@@ -2470,27 +4315,59 @@ User wants code?
 
 ### Namespace Handling
 
-**Basic Template**:
+**Automatic Detection**:
+
+The `generate-model` tool automatically detects the Yii2 template type and uses appropriate defaults:
+
+- **Advanced Template**: Defaults to `common\models` (shared models accessible by all components)
+- **Basic Template**: Defaults to `app\models`
+
+**Basic Template Structure**:
+
 - Models: `app\models`
 - Controllers: `app\controllers`
 
-**Advanced Template**:
-- Common models: `common\models`
+**Advanced Template Structure**:
+
+- **Common models** (default): `common\models` - Shared across all components
+- **Frontend models**: `frontend\models` - Frontend-specific models
+- **Backend models**: `backend\models` - Admin/backend-specific models
+- **API models**: `api\models` - API-specific models (if API component exists)
 - Frontend controllers: `frontend\controllers`
 - Backend controllers: `backend\controllers`
 - API controllers: `api\controllers`
 
-**Always ask user** which component/namespace for Advanced template if unclear.
+**Best Practices for Advanced Template**:
+
+1. **Use `common\models` by default** - Most models should be shared (this is the automatic default)
+2. **Use component-specific namespaces** only when the model is truly specific to that component
+3. **Always ask user** if unclear which namespace to use for controllers or component-specific models
+4. **The tool will automatically use the correct default**, so no need to specify namespace unless overriding
+
+**Examples**:
+
+```
+User: "Generate a User model"
+AI: The tool will automatically detect Advanced Template and use common\models
+
+User: "Generate a Product model in the frontend"
+AI: Call generate-model with namespace="frontend\\models"
+
+User: "Generate models for the users and posts tables"
+AI: Both will default to common\models (no namespace parameter needed)
+```
 
 ### Error Handling
 
 **When Tool Returns Error**:
+
 1. Parse error message and code
 2. Check if it's a common issue (table not found, file exists, etc.)
 3. Suggest solution to user
 4. Offer to retry with corrected parameters
 
 **Example**:
+
 ```
 Error: Table 'usr' not found (code: -32002)
 → "The table 'usr' doesn't exist. Did you mean 'users'? 
@@ -2500,6 +4377,7 @@ Error: Table 'usr' not found (code: -32002)
 ### Preview Workflow
 
 **Best Practice**:
+
 ```
 1. AI: Calls generate-model with preview: true
 2. AI: "Here's the User model I'll generate: [shows code]"
@@ -2513,12 +4391,14 @@ Error: Table 'usr' not found (code: -32002)
 ### Multi-Step Generation
 
 **For CRUD Generation**:
+
 1. Check if model exists (if not, offer to generate it)
 2. Generate model (if needed)
-3. Generate CRUD
+3. Generate CRUD with appropriate component
 4. Show summary of all created files
 
-**Example**:
+**Example - Basic Template**:
+
 ```
 User: "I need CRUD for the party table"
 
@@ -2535,9 +4415,36 @@ AI Steps:
    PartySearch.php, and 6 view files"
 ```
 
+**Example - Advanced Template**:
+
+```
+User: "I need backend CRUD for the users table"
+
+AI Steps:
+1. inspect-database (check users table exists)
+2. Check if User model exists in common\models
+3. If not: generate-model with preview (defaults to common\models)
+4. User approves
+5. generate-model with preview: false
+6. generate-crud with modelClass="common\\models\\User", component="backend", preview: true
+7. User approves
+8. generate-crud with component="backend", preview: false
+9. Show summary: "Created backend\controllers\UserController.php, 
+   backend\models\UserSearch.php, and 6 view files in @backend/views/user"
+```
+
+**Best Practices for Advanced Template CRUD**:
+
+1. **Always ask which component** if unclear (frontend/backend/api)
+2. **Common models by default** - Generate models in common\models for sharing
+3. **Component-specific CRUDs** - Generate CRUD in the appropriate component
+4. **Auto-detection works** - If model already has component namespace, it auto-detects
+5. **Frontend is default** - If model is in common\models and no component specified, CRUD goes to frontend
+
 ### Common Patterns
 
 **Pattern 1: Explore Then Generate**
+
 ```
 1. list-tables → Show user available tables
 2. User picks one
@@ -2548,6 +4455,7 @@ AI Steps:
 ```
 
 **Pattern 2: Batch Model Generation**
+
 ```
 User: "Generate models for all tables"
 
@@ -2561,6 +4469,7 @@ User: "Generate models for all tables"
 ```
 
 **Pattern 3: Incremental CRUD**
+
 ```
 1. Generate model
 2. Test/review model
@@ -2569,15 +4478,140 @@ User: "Generate models for all tables"
 5. Customize (add actions, modify views)
 ```
 
+**Pattern 4: Migration Workflow**
+
+```
+User: "Create a migration for the users table"
+
+AI Steps:
+1. list-migrations (check current status)
+2. execute-migration with operation=create, preview=true
+3. Show preview: "Will create migration with these fields..."
+4. User approves
+5. execute-migration with confirmation="yes", preview=false
+6. Show result: "Created migration file: m240107_120000_create_users_table.php"
+7. Suggest: "Would you like to preview the migration before applying it?"
+8. If yes: preview-migration
+9. If approved: execute-migration with operation=up
+```
+
+### Migration Management Best Practices
+
+**For List Migrations**:
+
+- Use before any migration operation to understand current state
+- Filter by status (pending/applied) to focus on relevant migrations
+- Check for pending migrations before deploying
+
+**For SQL Preview**:
+
+- **ALWAYS preview before executing** a migration
+- Use execute-migration with preview=true, migrationName, and direction
+- Review SQL for both up and down directions
+- Verify table names, column types, and constraints
+- Check for potential data loss in down migrations
+
+**For Execute Migration**:
+
+**Safety Protocol**:
+
+1. **List first**: Always call list-migrations to understand state
+2. **Preview SQL**: Use execute-migration with preview=true, migrationName, and direction to review SQL
+3. **Preview the operation**: Call execute-migration with preview=true (without migrationName for operation preview)
+4. **User approval**: Get explicit user confirmation
+5. **Execute**: Call with confirmation and preview=false
+
+**Confirmation Requirements**:
+
+- **All operations**: `confirmation="yes"` (exact string)
+- **Destructive ops** (down/fresh/redo): Additional
+  `destructiveConfirmation="I understand this will modify the database"`
+- **Never bypass**: These are safety features, not optional
+
+**Creating Migrations**:
+
+```
+User: "Create a migration for users table with name, email, and status"
+
+AI:
+1. Call create-migration with:
+   - name="create_users_table"
+   - migrationType="create"
+   - fields=["name:string(255):notNull", "email:string:notNull:unique", "status:integer:defaultValue(1)"]
+   - addTimestamps=true
+   - preview=true
+2. Show preview with generated migration code
+3. If approved, call again with preview=false
+4. Migration file created with all fields defined
+```
+
+**Field Definition Format**:
+
+- Basic: `name:type`
+- With size: `name:string(255)`
+- With modifiers: `name:string:notNull:unique`
+- With default: `status:integer:defaultValue(1)`
+- Complex: `price:decimal(10,2):notNull:defaultValue(0.00)`
+
+**Applying Migrations**:
+
+```
+User: "Apply pending migrations"
+
+AI:
+1. list-migrations (show pending)
+2. For critical migrations: execute-migration with preview=true, migrationName, direction="up"
+3. execute-migration with operation=up, preview=true
+4. Show: "Will apply X migrations"
+5. If approved: execute-migration with confirmation="yes", preview=false
+```
+
+**Reverting Migrations**:
+
+```
+User: "Revert the last migration"
+
+AI:
+1. list-migrations (show recent applied)
+2. execute-migration with preview=true, migrationName, direction=down (to show SQL)
+3. Show SQL and WARNING
+4. execute-migration with operation=down, preview=true (to show operation preview)
+5. Show destructive warning
+6. If approved: execute-migration with:
+   - operation="down"
+   - confirmation="yes"
+   - destructiveConfirmation="I understand this will modify the database"
+   - preview=false
+```
+
+**Never**:
+
+- ❌ Skip confirmations
+- ❌ Execute without preview
+- ❌ Use fresh operation without explicit user request
+- ❌ Apply down migrations without showing the SQL
+- ❌ Batch execute migrations without user seeing the list
+
+**Always**:
+
+- ✅ List migrations first
+- ✅ Preview SQL before executing
+- ✅ Show preview of operation
+- ✅ Get explicit confirmation
+- ✅ Warn about destructive operations
+- ✅ Show execution results
+
 ### Safety Checks
 
 **Before Generation**:
+
 - ✅ Check table/model exists
 - ✅ Validate namespace is appropriate
 - ✅ Check target directory is writable
 - ✅ Preview first, then generate
 
 **After Generation**:
+
 - ✅ Confirm files were created
 - ✅ List all generated files
 - ✅ Suggest next steps (run migrations, test, etc.)
@@ -2585,17 +4619,20 @@ User: "Generate models for all tables"
 ### Communicating with Users
 
 **Be Clear**:
+
 - Explain what you're doing before each tool call
 - Show previews in readable format
 - Confirm file creation with file paths
 - Suggest next steps
 
 **Be Helpful**:
+
 - If error occurs, explain and suggest fix
 - Offer alternatives ("Or would you prefer...")
 - Provide examples when asking questions
 
 **Example Good Communication**:
+
 ```
 AI: "I'll inspect the party table to see its structure and relationships."
     [Calls inspect-database]
@@ -2613,11 +4650,13 @@ AI: "✓ Created common/models/Party.php
 ### Testing and Verification
 
 **After Setup**:
+
 - Suggest running `bin/diagnose` to verify setup
 - Test with simple tool like `list-tables`
 - Verify file permissions if generation fails
 
 **After Generation**:
+
 - Confirm files exist
 - Suggest running Yii2 to test ("Try accessing /party in your browser")
 - Offer to make adjustments
@@ -2625,14 +4664,17 @@ AI: "✓ Created common/models/Party.php
 ### Advanced Usage
 
 **Custom Templates** (future):
+
 - When available, ask user about template preferences
 - Offer to customize generated code
 
 **Batch Operations**:
+
 - Offer to generate multiple models at once
 - Ask for confirmation before batch operations
 
 **Error Recovery**:
+
 - If generation fails, parse error and retry
 - Suggest fixing underlying issue (permissions, config, etc.)
 
@@ -2644,7 +4686,7 @@ This AI Memory Bank contains complete technical documentation for the yii2-gii-m
 
 - Architecture and design
 - Full MCP protocol implementation
-- All 8 production-ready tools
+- All 12 production-ready tools
 - Configuration for all MCP clients
 - Safety features and validation
 - Setup tools and diagnostics
@@ -2653,16 +4695,18 @@ This AI Memory Bank contains complete technical documentation for the yii2-gii-m
 - Complete troubleshooting guide
 - Implementation history
 
-**For AI Agents**: Use this document as your primary reference. It contains everything needed to effectively use and extend this MCP server.
+**For AI Agents**: Use this document as your primary reference. It contains everything needed to effectively use and
+extend this MCP server.
 
 **For Humans**: See `/README.md` for a quick start guide.
 
-**Project Status**: Phase 1-4 complete. All core functionality implemented and tested. Ready for production use.
+**Project Status**: Phase 1-8 complete with enhancements. All core functionality implemented and tested. 12 production-ready tools (8 Gii
+generators + 4 migration tools including enhanced CreateMigration with index generation and custom FK actions). Code consolidation applied (DRY principle). Ready for production use.
 
 **Next Phase**: Custom Gii templates, advanced code inspection, database diagram generation.
 
 ---
 
-**Document Version**: 1.0  
-**Last Updated**: January 2026  
+**Document Version**: 1.2  
+**Last Updated**: January 9, 2026  
 **Maintained By**: AI-assisted development (Firebender, Claude)

@@ -76,12 +76,14 @@ php vendor/took/yii2-gii-mcp/bin/interactive-setup
 ```
 
 **Advantages:**
+
 - ✅ Simple Firebender configuration
 - ✅ No Docker networking complexity
 - ✅ Fast communication (no Docker overhead)
 - ✅ Easy debugging
 
 **Requirements:**
+
 - PHP 8.2+ installed on host
 - Composer available on host
 
@@ -115,11 +117,13 @@ php vendor/took/yii2-gii-mcp/bin/interactive-setup
 ```
 
 **Advantages:**
+
 - ✅ No host PHP requirement
 - ✅ Consistent environment
 - ✅ Works on any host OS
 
 **Disadvantages:**
+
 - ⚠️ More complex setup
 - ⚠️ Requires wrapper script
 - ⚠️ Slower (Docker exec overhead)
@@ -309,6 +313,7 @@ EOF
 ### Option A: Host-Based (Recommended)
 
 Edit Claude config file:
+
 - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
 - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
 - **Linux**: `~/.config/Claude/claude_desktop_config.json`
@@ -358,17 +363,20 @@ Edit Claude config file:
 **Solutions:**
 
 1. **Check port mapping:**
+
 ```bash
 docker ps
 # Look for 0.0.0.0:3306->3306/tcp
 ```
 
 2. **Verify database is running:**
+
 ```bash
 docker exec -it your-mysql-container mysql -u root -p
 ```
 
 3. **Test connection from host:**
+
 ```bash
 mysql -h 127.0.0.1 -P 3306 -u root -p
 ```
@@ -376,8 +384,8 @@ mysql -h 127.0.0.1 -P 3306 -u root -p
 4. **Check firewall:** Ensure port 3306 is not blocked
 
 5. **Use correct host:**
-   - Windows/Mac Docker Desktop: `127.0.0.1` (from host)
-   - Linux: `127.0.0.1` or docker bridge IP
+    - Windows/Mac Docker Desktop: `127.0.0.1` (from host)
+    - Linux: `127.0.0.1` or docker bridge IP
 
 ### Path Not Found Errors
 
@@ -410,6 +418,7 @@ docker exec your-php-container ls -la /var/www/html/config-mcp.php
 **Solutions:**
 
 1. **Check volume mount permissions:**
+
 ```bash
 # docker-compose.yml
 volumes:
@@ -417,11 +426,13 @@ volumes:
 ```
 
 2. **Fix ownership inside container:**
+
 ```bash
 docker exec your-php-container chown -R www-data:www-data /var/www/html
 ```
 
 3. **Match user IDs:**
+
 ```yaml
 # docker-compose.yml
 services:
@@ -436,24 +447,26 @@ services:
 **Solutions:**
 
 1. **Test PHP is accessible:**
+
 ```bash
 php --version
 # Should show PHP 8.2+
 ```
 
 2. **Test MCP server manually:**
+
 ```bash
 echo '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}' | php vendor/took/yii2-gii-mcp/bin/yii2-gii-mcp
 ```
 
 3. **Check Firebender logs:**
-   - PhpStorm: Help → Show Log in Files
-   - Look for MCP-related errors
+    - PhpStorm: Help → Show Log in Files
+    - Look for MCP-related errors
 
 4. **Restart completely:**
-   - Close all PhpStorm windows
-   - Kill PhpStorm processes
-   - Start PhpStorm fresh
+    - Close all PhpStorm windows
+    - Kill PhpStorm processes
+    - Start PhpStorm fresh
 
 ### Docker Compose Not Found
 
@@ -462,12 +475,14 @@ echo '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":
 **Solutions:**
 
 1. **Use Docker Desktop's built-in Compose:**
+
 ```bash
 docker compose version
 # Should show Compose v2.x
 ```
 
 2. **Or use docker-compose (legacy):**
+
 ```bash
 docker-compose version
 ```
@@ -497,16 +512,19 @@ services:
 ### Security
 
 1. **Add config-mcp.php to .gitignore:**
+
 ```bash
 echo "config-mcp.php" >> .gitignore
 ```
 
 2. **Use environment variables for secrets:**
+
 ```php
 'password' => getenv('DB_PASSWORD') ?: 'fallback',
 ```
 
 3. **Restrict database access:**
+
 ```yaml
 services:
   mysql:
@@ -519,12 +537,14 @@ services:
 1. **Use host-based setup** for better performance (no Docker exec overhead)
 
 2. **Add delegated mode to volumes:**
+
 ```yaml
 volumes:
   - ./:/var/www/html:delegated
 ```
 
 3. **Persistent volume for vendor:**
+
 ```yaml
 volumes:
   - vendor:/var/www/html/vendor
@@ -533,6 +553,7 @@ volumes:
 ### Development Workflow
 
 1. **Use separate configs for Docker:**
+
 ```
 config/              # Main Yii2 configs
 config-mcp.php       # MCP-specific (Docker database)
@@ -546,6 +567,7 @@ config/test.php      # Test environment
 ## Examples
 
 See `examples/docker/` directory for:
+
 - Sample Firebender configurations
 - Sample config-mcp.php for Docker
 - Working Docker Compose setup
@@ -598,17 +620,20 @@ From host, use exposed ports. From container, use service names.
 ### Windows-Specific Notes
 
 1. **Use Windows-style paths in Claude Desktop:**
+
 ```json
 "YII2_CONFIG_PATH": "C:\\Users\\YourName\\Projects\\yii2-app\\config-mcp.php"
 ```
 
 2. **PowerShell wrapper script:**
+
 ```powershell
 # bin/yii2-gii-mcp-docker.ps1
 docker exec -i your-php-container php /var/www/html/vendor/took/yii2-gii-mcp/bin/yii2-gii-mcp
 ```
 
 3. **WSL2 path translation:**
+
 ```bash
 # Access Windows files from WSL2
 cd /mnt/c/Users/YourName/Projects/yii2-app

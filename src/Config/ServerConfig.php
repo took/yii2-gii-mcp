@@ -81,6 +81,7 @@ class ServerConfig
     public function setYii2ConfigPath(string $path): self
     {
         $this->yii2ConfigPath = $path;
+
         return $this;
     }
 
@@ -103,6 +104,7 @@ class ServerConfig
     public function setYii2AppPath(string $path): self
     {
         $this->yii2AppPath = $path;
+
         return $this;
     }
 
@@ -125,6 +127,7 @@ class ServerConfig
     public function setGiiEnabled(bool $enabled): self
     {
         $this->giiEnabled = $enabled;
+
         return $this;
     }
 
@@ -147,6 +150,7 @@ class ServerConfig
     public function setDbConnection(string $connection): self
     {
         $this->dbConnection = $connection;
+
         return $this;
     }
 
@@ -169,6 +173,7 @@ class ServerConfig
     public function setDebugMode(bool $debug): self
     {
         $this->debugMode = $debug;
+
         return $this;
     }
 
@@ -246,23 +251,23 @@ class ServerConfig
 
         return $errors;
     }
-    
+
     /**
      * Get user-friendly error message
-     * 
+     *
      * @return string Formatted error message with helpful suggestions
      */
     public function getErrorMessage(): string
     {
         $errors = $this->validate();
-        
+
         if (empty($errors)) {
             return '';
         }
-        
+
         $message = "Configuration Error:\n\n";
         $message .= implode("\n", $errors);
-        
+
         return $message;
     }
 }

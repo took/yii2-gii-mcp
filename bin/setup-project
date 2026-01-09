@@ -2,14 +2,14 @@
 <?php
 /**
  * Setup script for yii2-gii-mcp in a Yii2 project
- * 
+ *
  * This script helps you quickly set up the MCP server configuration
  * for your Yii2 project by copying the smart config template.
- * 
+ *
  * Usage:
  *   cd /path/to/your/yii2/project
  *   php vendor/took/yii2-gii-mcp/bin/setup-project
- * 
+ *
  * This will:
  * 1. Detect your project structure
  * 2. Copy the config-advanced-template.php to your project root as config-mcp.php
@@ -78,7 +78,7 @@ if (file_exists($configDestination)) {
     $handle = fopen("php://stdin", "r");
     $line = trim(fgets($handle));
     fclose($handle);
-    
+
     if (strtolower($line) !== 'y' && strtolower($line) !== 'yes') {
         echo "\nSetup cancelled. No files were modified.\n\n";
         exit(0);
