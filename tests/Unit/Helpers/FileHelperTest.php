@@ -444,7 +444,7 @@ class FileHelperTest extends Unit
 
     private function rmdirRecursive(string $dir): void
     {
-        if (!is_dir($dir)) {
+        if (! is_dir($dir)) {
             return;
         }
 

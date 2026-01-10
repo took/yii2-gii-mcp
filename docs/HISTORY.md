@@ -2,6 +2,21 @@
 
 This document tracks the public release history of yii2-gii-mcp on GitHub.
 
+## Version 1.1.1
+
+**Release Date**: June 10, 2026
+
+### Patch Summary
+
+This is a maintenance and stability patch focused on improved error handling, configuration robustness, and user experience ahead of planned feature additions.
+
+### Changes
+
+- Improved error handling and test setup robustness.
+- Minor code cleanup and dependency updates.
+
+_No new features added in this patch. Minor user-facing and developer-facing improvements; recommended for all users._
+
 ## Version 1.1.0
 
 **Release Date**: January 10, 2026

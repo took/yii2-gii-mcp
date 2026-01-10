@@ -23,7 +23,7 @@ abstract class Message
     {
         $data = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
 
-        if (!is_array($data)) {
+        if (! is_array($data)) {
             throw new JsonException('Invalid JSON-RPC message format');
         }
 
@@ -38,7 +38,7 @@ abstract class Message
      */
     protected static function validateVersion(array $data): void
     {
-        if (!isset($data['jsonrpc']) || $data['jsonrpc'] !== self::JSON_RPC_VERSION) {
+        if (! isset($data['jsonrpc']) || $data['jsonrpc'] !== self::JSON_RPC_VERSION) {
             throw new InvalidArgumentException('Invalid JSON-RPC version. Expected "2.0"');
         }
     }

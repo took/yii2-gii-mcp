@@ -19,8 +19,7 @@ class Request extends Message
         private readonly string|int|null $id,
         private readonly string          $method,
         private readonly ?array          $params = null
-    )
-    {
+    ) {
     }
 
     /**
@@ -49,7 +48,7 @@ class Request extends Message
     {
         self::validateVersion($data);
 
-        if (!isset($data['method']) || !is_string($data['method'])) {
+        if (! isset($data['method']) || ! is_string($data['method'])) {
             throw new InvalidArgumentException('Request must have a "method" field');
         }
 
@@ -57,7 +56,7 @@ class Request extends Message
         $method = $data['method'];
         $params = $data['params'] ?? null;
 
-        if ($params !== null && !is_array($params)) {
+        if ($params !== null && ! is_array($params)) {
             throw new InvalidArgumentException('Request params must be an array or null');
         }
 

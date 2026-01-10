@@ -149,7 +149,7 @@ class ProjectStructureHelper
         ];
 
         foreach ($moduleDirs as $moduleDir) {
-            if (!is_dir($moduleDir)) {
+            if (! is_dir($moduleDir)) {
                 continue;
             }
 
@@ -164,7 +164,7 @@ class ProjectStructureHelper
                 }
 
                 $modulePath = $moduleDir . '/' . $item;
-                if (!is_dir($modulePath)) {
+                if (! is_dir($modulePath)) {
                     continue;
                 }
 
@@ -219,7 +219,7 @@ class ProjectStructureHelper
 
         // Scan for config file patterns
         $configEnvs = self::detectEnvironmentsFromConfigFiles($basePath);
-        if (!empty($configEnvs)) {
+        if (! empty($configEnvs)) {
             $result['available'] = array_unique(array_merge($result['available'], $configEnvs));
             $result['sources'][] = 'config-files';
         }
@@ -241,7 +241,7 @@ class ProjectStructureHelper
     public static function scanEnvironmentsFolder(string $basePath): array
     {
         $environmentsPath = $basePath . '/environments';
-        if (!is_dir($environmentsPath)) {
+        if (! is_dir($environmentsPath)) {
             return [];
         }
 
@@ -284,13 +284,13 @@ class ProjectStructureHelper
 
         foreach ($indexPaths as $indexPath) {
             $fullPath = $basePath . '/' . $indexPath;
-            if (!file_exists($fullPath)) {
+            if (! file_exists($fullPath)) {
                 continue;
             }
 
             // Parse the index file
             $parsed = self::parseIndexPhpFile($fullPath);
-            if (!empty($parsed)) {
+            if (! empty($parsed)) {
                 $envData = [
                     'YII_ENV' => $parsed['YII_ENV'] ?? null,
                     'YII_DEBUG' => $parsed['YII_DEBUG'] ?? null,
@@ -334,7 +334,7 @@ class ProjectStructureHelper
      */
     public static function parseIndexPhpFile(string $filePath): array
     {
-        if (!file_exists($filePath)) {
+        if (! file_exists($filePath)) {
             return [];
         }
 
@@ -371,7 +371,7 @@ class ProjectStructureHelper
     public static function compareIndexFiles(string $actualFile, string $basePath): ?string
     {
         $environmentsPath = $basePath . '/environments';
-        if (!is_dir($environmentsPath)) {
+        if (! is_dir($environmentsPath)) {
             return null;
         }
 
@@ -388,7 +388,7 @@ class ProjectStructureHelper
 
         foreach ($environments as $env) {
             $templateFile = $environmentsPath . '/' . $env . '/' . $relativePath;
-            if (!file_exists($templateFile)) {
+            if (! file_exists($templateFile)) {
                 continue;
             }
 
@@ -431,7 +431,7 @@ class ProjectStructureHelper
         ];
 
         foreach ($searchPaths as $searchPath) {
-            if (!is_dir($searchPath)) {
+            if (! is_dir($searchPath)) {
                 continue;
             }
 

@@ -6,7 +6,6 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Throwable;
 use Took\Yii2GiiMCP\Helpers\ComponentAnalyzer;
-use Took\Yii2GiiMCP\Helpers\ProjectStructureHelper;
 use Took\Yii2GiiMCP\Helpers\Yii2Bootstrap;
 
 /**
@@ -104,9 +103,9 @@ class InspectComponents extends AbstractTool
             }
 
             // If module is specified, adjust path
-            if (!empty($moduleName)) {
+            if (! empty($moduleName)) {
                 $modulePath = $basePath . '/modules/' . $moduleName;
-                if (!is_dir($modulePath)) {
+                if (! is_dir($modulePath)) {
                     return $this->createError("Module not found: $moduleName at $modulePath");
                 }
                 $basePath = $modulePath;
@@ -190,7 +189,7 @@ class InspectComponents extends AbstractTool
     private function scanControllers(string $basePath, bool $includeDetails): array
     {
         $controllersPath = $basePath . '/controllers';
-        if (!is_dir($controllersPath)) {
+        if (! is_dir($controllersPath)) {
             return [];
         }
 
@@ -198,7 +197,7 @@ class InspectComponents extends AbstractTool
         $files = $this->findPhpFiles($controllersPath);
 
         foreach ($files as $file) {
-            if (!str_ends_with($file, 'Controller.php')) {
+            if (! str_ends_with($file, 'Controller.php')) {
                 continue;
             }
 
@@ -230,7 +229,7 @@ class InspectComponents extends AbstractTool
     private function scanModels(string $basePath, bool $includeDetails): array
     {
         $modelsPath = $basePath . '/models';
-        if (!is_dir($modelsPath)) {
+        if (! is_dir($modelsPath)) {
             return [];
         }
 
@@ -270,7 +269,7 @@ class InspectComponents extends AbstractTool
     private function scanViews(string $basePath): array
     {
         $viewsPath = $basePath . '/views';
-        if (!is_dir($viewsPath)) {
+        if (! is_dir($viewsPath)) {
             return [];
         }
 
@@ -305,7 +304,7 @@ class InspectComponents extends AbstractTool
      */
     private function findPhpFiles(string $directory): array
     {
-        if (!is_dir($directory)) {
+        if (! is_dir($directory)) {
             return [];
         }
 
@@ -360,7 +359,7 @@ class InspectComponents extends AbstractTool
                     $output .= "  Parent: {$controller['parent']}\n";
                 }
 
-                if (!empty($controller['actions'])) {
+                if (! empty($controller['actions'])) {
                     $output .= "  Actions (" . count($controller['actions']) . "):\n";
                     foreach ($controller['actions'] as $action) {
                         $output .= "    - {$action['id']}";
@@ -371,14 +370,14 @@ class InspectComponents extends AbstractTool
                     }
                 }
 
-                if (!empty($controller['filters'])) {
+                if (! empty($controller['filters'])) {
                     $output .= "  Filters (" . count($controller['filters']) . "):\n";
                     foreach ($controller['filters'] as $filter) {
                         $output .= "    - {$filter['name']}: {$filter['class']}\n";
                     }
                 }
 
-                if (!empty($controller['behaviors']) && empty($controller['filters'])) {
+                if (! empty($controller['behaviors']) && empty($controller['filters'])) {
                     $output .= "  Behaviors (" . count($controller['behaviors']) . "):\n";
                     foreach ($controller['behaviors'] as $behavior) {
                         $output .= "    - {$behavior['name']}: {$behavior['class']}\n";
@@ -405,7 +404,7 @@ class InspectComponents extends AbstractTool
                     $output .= "  Table: {$model['tableName']}\n";
                 }
 
-                if (!empty($model['attributes'])) {
+                if (! empty($model['attributes'])) {
                     $output .= "  Attributes (" . count($model['attributes']) . "): ";
                     $output .= implode(', ', array_slice($model['attributes'], 0, 10));
                     if (count($model['attributes']) > 10) {
@@ -414,18 +413,18 @@ class InspectComponents extends AbstractTool
                     $output .= "\n";
                 }
 
-                if (!empty($model['rules'])) {
+                if (! empty($model['rules'])) {
                     $output .= "  Validation Rules: " . count($model['rules']) . "\n";
                 }
 
-                if (!empty($model['relations'])) {
+                if (! empty($model['relations'])) {
                     $output .= "  Relations (" . count($model['relations']) . "):\n";
                     foreach ($model['relations'] as $relation) {
                         $output .= "    - {$relation['name']} ({$relation['method']})\n";
                     }
                 }
 
-                if (!empty($model['scenarios'])) {
+                if (! empty($model['scenarios'])) {
                     $output .= "  Scenarios: " . implode(', ', array_keys($model['scenarios'])) . "\n";
                 }
             } else {

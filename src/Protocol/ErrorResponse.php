@@ -32,8 +32,7 @@ class ErrorResponse extends Message
         private readonly int             $code,
         private readonly string          $message,
         private readonly mixed           $data = null
-    )
-    {
+    ) {
     }
 
     /**
@@ -62,17 +61,17 @@ class ErrorResponse extends Message
     {
         self::validateVersion($data);
 
-        if (!isset($data['error']) || !is_array($data['error'])) {
+        if (! isset($data['error']) || ! is_array($data['error'])) {
             throw new InvalidArgumentException('Error response must have an "error" object');
         }
 
         $error = $data['error'];
 
-        if (!isset($error['code']) || !is_int($error['code'])) {
+        if (! isset($error['code']) || ! is_int($error['code'])) {
             throw new InvalidArgumentException('Error must have an integer "code" field');
         }
 
-        if (!isset($error['message']) || !is_string($error['message'])) {
+        if (! isset($error['message']) || ! is_string($error['message'])) {
             throw new InvalidArgumentException('Error must have a string "message" field');
         }
 

@@ -1,2 +1,2331 @@
 parameters:
-    ignoreErrors: []
+	ignoreErrors:
+		-
+			message: "#^Access to constant OP_OVERWRITE on an unknown class yii\\\\gii\\\\CodeFile\\.$#"
+			count: 1
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to constant OP_SKIP on an unknown class yii\\\\gii\\\\CodeFile\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to constant RELATIONS_ALL on an unknown class yii\\\\gii\\\\generators\\\\model\\\\Generator\\.$#"
+			count: 1
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$actions on an unknown class yii\\\\gii\\\\generators\\\\controller\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$authorEmail on an unknown class yii\\\\gii\\\\generators\\\\extension\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$authorName on an unknown class yii\\\\gii\\\\generators\\\\extension\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$baseClass on an unknown class yii\\\\gii\\\\generators\\\\controller\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$baseClass on an unknown class yii\\\\gii\\\\generators\\\\model\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$baseControllerClass on an unknown class yii\\\\gii\\\\generators\\\\crud\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$content on an unknown class yii\\\\gii\\\\CodeFile\\.$#"
+			count: 1
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$controller on an unknown class yii\\\\gii\\\\generators\\\\controller\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$controllerClass on an unknown class yii\\\\gii\\\\generators\\\\crud\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$db on an unknown class yii\\\\gii\\\\generators\\\\model\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$description on an unknown class yii\\\\gii\\\\generators\\\\extension\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$enableI18N on an unknown class yii\\\\gii\\\\generators\\\\crud\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$error on an unknown class yii\\\\gii\\\\CodeFile\\.$#"
+			count: 1
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$generateLabelsFromComments on an unknown class yii\\\\gii\\\\generators\\\\model\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$generateRelations on an unknown class yii\\\\gii\\\\generators\\\\model\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$indexWidgetType on an unknown class yii\\\\gii\\\\generators\\\\crud\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$keywords on an unknown class yii\\\\gii\\\\generators\\\\extension\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$modelClass on an unknown class yii\\\\gii\\\\generators\\\\crud\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$modelClass on an unknown class yii\\\\gii\\\\generators\\\\form\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$modelClass on an unknown class yii\\\\gii\\\\generators\\\\model\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$moduleClass on an unknown class yii\\\\gii\\\\generators\\\\module\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$moduleID on an unknown class yii\\\\gii\\\\generators\\\\module\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$namespace on an unknown class yii\\\\gii\\\\generators\\\\extension\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$ns on an unknown class yii\\\\gii\\\\generators\\\\controller\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$ns on an unknown class yii\\\\gii\\\\generators\\\\form\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$ns on an unknown class yii\\\\gii\\\\generators\\\\model\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$operation on an unknown class yii\\\\gii\\\\CodeFile\\.$#"
+			count: 7
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$packageName on an unknown class yii\\\\gii\\\\generators\\\\extension\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$path on an unknown class yii\\\\gii\\\\CodeFile\\.$#"
+			count: 7
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$queryBaseClass on an unknown class yii\\\\gii\\\\generators\\\\model\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$queryClass on an unknown class yii\\\\gii\\\\generators\\\\model\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$queryNs on an unknown class yii\\\\gii\\\\generators\\\\model\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$scenarioName on an unknown class yii\\\\gii\\\\generators\\\\form\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$searchModelClass on an unknown class yii\\\\gii\\\\generators\\\\crud\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$tableName on an unknown class yii\\\\gii\\\\generators\\\\model\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$title on an unknown class yii\\\\gii\\\\generators\\\\extension\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$type on an unknown class yii\\\\gii\\\\generators\\\\extension\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$vendorName on an unknown class yii\\\\gii\\\\generators\\\\extension\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$viewName on an unknown class yii\\\\gii\\\\generators\\\\form\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$viewPath on an unknown class yii\\\\gii\\\\generators\\\\crud\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Access to property \\$viewPath on an unknown class yii\\\\gii\\\\generators\\\\form\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Call to method generate\\(\\) on an unknown class yii\\\\gii\\\\generators\\\\controller\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Call to method generate\\(\\) on an unknown class yii\\\\gii\\\\generators\\\\crud\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Call to method generate\\(\\) on an unknown class yii\\\\gii\\\\generators\\\\extension\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Call to method generate\\(\\) on an unknown class yii\\\\gii\\\\generators\\\\form\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Call to method generate\\(\\) on an unknown class yii\\\\gii\\\\generators\\\\model\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Call to method generate\\(\\) on an unknown class yii\\\\gii\\\\generators\\\\module\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Call to method getErrors\\(\\) on an unknown class yii\\\\gii\\\\generators\\\\controller\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Call to method getErrors\\(\\) on an unknown class yii\\\\gii\\\\generators\\\\crud\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Call to method getErrors\\(\\) on an unknown class yii\\\\gii\\\\generators\\\\extension\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Call to method getErrors\\(\\) on an unknown class yii\\\\gii\\\\generators\\\\form\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Call to method getErrors\\(\\) on an unknown class yii\\\\gii\\\\generators\\\\model\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Call to method getErrors\\(\\) on an unknown class yii\\\\gii\\\\generators\\\\module\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Call to method getRelativePath\\(\\) on an unknown class yii\\\\gii\\\\CodeFile\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Call to method save\\(\\) on an unknown class yii\\\\gii\\\\CodeFile\\.$#"
+			count: 1
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Call to method validate\\(\\) on an unknown class yii\\\\gii\\\\generators\\\\controller\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Call to method validate\\(\\) on an unknown class yii\\\\gii\\\\generators\\\\crud\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Call to method validate\\(\\) on an unknown class yii\\\\gii\\\\generators\\\\extension\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Call to method validate\\(\\) on an unknown class yii\\\\gii\\\\generators\\\\form\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Call to method validate\\(\\) on an unknown class yii\\\\gii\\\\generators\\\\model\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Call to method validate\\(\\) on an unknown class yii\\\\gii\\\\generators\\\\module\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Instantiated class yii\\\\gii\\\\generators\\\\controller\\\\Generator not found\\.$#"
+			count: 1
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Instantiated class yii\\\\gii\\\\generators\\\\crud\\\\Generator not found\\.$#"
+			count: 1
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Instantiated class yii\\\\gii\\\\generators\\\\extension\\\\Generator not found\\.$#"
+			count: 1
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Instantiated class yii\\\\gii\\\\generators\\\\form\\\\Generator not found\\.$#"
+			count: 1
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Instantiated class yii\\\\gii\\\\generators\\\\model\\\\Generator not found\\.$#"
+			count: 1
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Instantiated class yii\\\\gii\\\\generators\\\\module\\\\Generator not found\\.$#"
+			count: 1
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Method Took\\\\Yii2GiiMCP\\\\Helpers\\\\GiiHelper\\:\\:createControllerGenerator\\(\\) has invalid return type yii\\\\gii\\\\generators\\\\controller\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Method Took\\\\Yii2GiiMCP\\\\Helpers\\\\GiiHelper\\:\\:createCrudGenerator\\(\\) has invalid return type yii\\\\gii\\\\generators\\\\crud\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Method Took\\\\Yii2GiiMCP\\\\Helpers\\\\GiiHelper\\:\\:createExtensionGenerator\\(\\) has invalid return type yii\\\\gii\\\\generators\\\\extension\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Method Took\\\\Yii2GiiMCP\\\\Helpers\\\\GiiHelper\\:\\:createFormGenerator\\(\\) has invalid return type yii\\\\gii\\\\generators\\\\form\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Method Took\\\\Yii2GiiMCP\\\\Helpers\\\\GiiHelper\\:\\:createModelGenerator\\(\\) has invalid return type yii\\\\gii\\\\generators\\\\model\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Method Took\\\\Yii2GiiMCP\\\\Helpers\\\\GiiHelper\\:\\:createModuleGenerator\\(\\) has invalid return type yii\\\\gii\\\\generators\\\\module\\\\Generator\\.$#"
+			count: 2
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Parameter \\$files of method Took\\\\Yii2GiiMCP\\\\Helpers\\\\GiiHelper\\:\\:checkFileConflicts\\(\\) has invalid type yii\\\\gii\\\\CodeFile\\.$#"
+			count: 1
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Parameter \\$files of method Took\\\\Yii2GiiMCP\\\\Helpers\\\\GiiHelper\\:\\:formatPreviewResult\\(\\) has invalid type yii\\\\gii\\\\CodeFile\\.$#"
+			count: 1
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Parameter \\$files of method Took\\\\Yii2GiiMCP\\\\Helpers\\\\GiiHelper\\:\\:saveFiles\\(\\) has invalid type yii\\\\gii\\\\CodeFile\\.$#"
+			count: 1
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Parameter \\$files of method Took\\\\Yii2GiiMCP\\\\Helpers\\\\GiiHelper\\:\\:validateFiles\\(\\) has invalid type yii\\\\gii\\\\CodeFile\\.$#"
+			count: 1
+			path: src/Helpers/GiiHelper.php
+
+		-
+			message: "#^Call to method createCommand\\(\\) on an unknown class yii\\\\db\\\\Connection\\.$#"
+			count: 2
+			path: src/Helpers/LogReaderHelper.php
+
+		-
+			message: "#^Parameter \\$db of method Took\\\\Yii2GiiMCP\\\\Helpers\\\\LogReaderHelper\\:\\:getLogTableName\\(\\) has invalid type yii\\\\db\\\\Connection\\.$#"
+			count: 2
+			path: src/Helpers/LogReaderHelper.php
+
+		-
+			message: "#^Parameter \\$db of method Took\\\\Yii2GiiMCP\\\\Helpers\\\\LogReaderHelper\\:\\:readDbLogs\\(\\) has invalid type yii\\\\db\\\\Connection\\.$#"
+			count: 2
+			path: src/Helpers/LogReaderHelper.php
+
+		-
+			message: "#^Access to property \\$color on an unknown class yii\\\\console\\\\controllers\\\\MigrateController\\.$#"
+			count: 2
+			path: src/Helpers/MigrationHelper.php
+
+		-
+			message: "#^Access to property \\$fields on an unknown class yii\\\\console\\\\controllers\\\\MigrateController\\.$#"
+			count: 2
+			path: src/Helpers/MigrationHelper.php
+
+		-
+			message: "#^Access to property \\$interactive on an unknown class yii\\\\console\\\\controllers\\\\MigrateController\\.$#"
+			count: 2
+			path: src/Helpers/MigrationHelper.php
+
+		-
+			message: "#^Access to property \\$migrationNamespaces on an unknown class yii\\\\console\\\\controllers\\\\MigrateController\\.$#"
+			count: 2
+			path: src/Helpers/MigrationHelper.php
+
+		-
+			message: "#^Access to property \\$migrationPath on an unknown class yii\\\\console\\\\controllers\\\\MigrateController\\.$#"
+			count: 4
+			path: src/Helpers/MigrationHelper.php
+
+		-
+			message: "#^Access to property \\$templateFile on an unknown class yii\\\\console\\\\controllers\\\\MigrateController\\.$#"
+			count: 2
+			path: src/Helpers/MigrationHelper.php
+
+		-
+			message: "#^Call to method actionDown\\(\\) on an unknown class yii\\\\console\\\\controllers\\\\MigrateController\\.$#"
+			count: 1
+			path: src/Helpers/MigrationHelper.php
+
+		-
+			message: "#^Call to method actionFresh\\(\\) on an unknown class yii\\\\console\\\\controllers\\\\MigrateController\\.$#"
+			count: 1
+			path: src/Helpers/MigrationHelper.php
+
+		-
+			message: "#^Call to method actionRedo\\(\\) on an unknown class yii\\\\console\\\\controllers\\\\MigrateController\\.$#"
+			count: 1
+			path: src/Helpers/MigrationHelper.php
+
+		-
+			message: "#^Call to method actionUp\\(\\) on an unknown class yii\\\\console\\\\controllers\\\\MigrateController\\.$#"
+			count: 1
+			path: src/Helpers/MigrationHelper.php
+
+		-
+			message: "#^Call to method createMigration\\(\\) on an unknown class yii\\\\console\\\\controllers\\\\MigrateController\\.$#"
+			count: 1
+			path: src/Helpers/MigrationHelper.php
+
+		-
+			message: "#^Call to method down\\(\\) on an unknown class yii\\\\db\\\\Migration\\.$#"
+			count: 1
+			path: src/Helpers/MigrationHelper.php
+
+		-
+			message: "#^Call to method getMigrationHistory\\(\\) on an unknown class yii\\\\console\\\\controllers\\\\MigrateController\\.$#"
+			count: 3
+			path: src/Helpers/MigrationHelper.php
+
+		-
+			message: "#^Call to method getNewMigrations\\(\\) on an unknown class yii\\\\console\\\\controllers\\\\MigrateController\\.$#"
+			count: 2
+			path: src/Helpers/MigrationHelper.php
+
+		-
+			message: "#^Call to method getSchema\\(\\) on an unknown class yii\\\\db\\\\Connection\\.$#"
+			count: 1
+			path: src/Helpers/MigrationHelper.php
+
+		-
+			message: "#^Call to method up\\(\\) on an unknown class yii\\\\db\\\\Migration\\.$#"
+			count: 1
+			path: src/Helpers/MigrationHelper.php
+
+		-
+			message: "#^Call to static method getAlias\\(\\) on an unknown class Yii\\.$#"
+			count: 2
+			path: src/Helpers/MigrationHelper.php
+
+		-
+			message: "#^Class yii\\\\db\\\\Migration not found\\.$#"
+			count: 1
+			path: src/Helpers/MigrationHelper.php
+
+		-
+			message: "#^Instantiated class yii\\\\console\\\\controllers\\\\MigrateController not found\\.$#"
+			count: 1
+			path: src/Helpers/MigrationHelper.php
+
+		-
+			message: "#^Method Took\\\\Yii2GiiMCP\\\\Helpers\\\\MigrationHelper\\:\\:createMigrateController\\(\\) has invalid return type yii\\\\console\\\\controllers\\\\MigrateController\\.$#"
+			count: 2
+			path: src/Helpers/MigrationHelper.php
+
+		-
+			message: "#^Method Took\\\\Yii2GiiMCP\\\\Helpers\\\\MigrationHelper\\:\\:getMigrationByName\\(\\) has invalid return type yii\\\\db\\\\Migration\\.$#"
+			count: 2
+			path: src/Helpers/MigrationHelper.php
+
+		-
+			message: "#^Parameter \\$controller of method Took\\\\Yii2GiiMCP\\\\Helpers\\\\MigrationHelper\\:\\:executeMigrationCreate\\(\\) has invalid type yii\\\\console\\\\controllers\\\\MigrateController\\.$#"
+			count: 2
+			path: src/Helpers/MigrationHelper.php
+
+		-
+			message: "#^Parameter \\$controller of method Took\\\\Yii2GiiMCP\\\\Helpers\\\\MigrationHelper\\:\\:executeMigrationDown\\(\\) has invalid type yii\\\\console\\\\controllers\\\\MigrateController\\.$#"
+			count: 2
+			path: src/Helpers/MigrationHelper.php
+
+		-
+			message: "#^Parameter \\$controller of method Took\\\\Yii2GiiMCP\\\\Helpers\\\\MigrationHelper\\:\\:executeMigrationFresh\\(\\) has invalid type yii\\\\console\\\\controllers\\\\MigrateController\\.$#"
+			count: 2
+			path: src/Helpers/MigrationHelper.php
+
+		-
+			message: "#^Parameter \\$controller of method Took\\\\Yii2GiiMCP\\\\Helpers\\\\MigrationHelper\\:\\:executeMigrationRedo\\(\\) has invalid type yii\\\\console\\\\controllers\\\\MigrateController\\.$#"
+			count: 2
+			path: src/Helpers/MigrationHelper.php
+
+		-
+			message: "#^Parameter \\$controller of method Took\\\\Yii2GiiMCP\\\\Helpers\\\\MigrationHelper\\:\\:executeMigrationUp\\(\\) has invalid type yii\\\\console\\\\controllers\\\\MigrateController\\.$#"
+			count: 2
+			path: src/Helpers/MigrationHelper.php
+
+		-
+			message: "#^Method Took\\\\Yii2GiiMCP\\\\Helpers\\\\ProjectStructureHelper\\:\\:parseIndexPhpFile\\(\\) should return array\\{YII_ENV\\: string\\|null, YII_DEBUG\\: bool\\|null\\} but returns array\\{\\}\\.$#"
+			count: 2
+			path: src/Helpers/ProjectStructureHelper.php
+
+		-
+			message: "#^Variable \\$parsed in empty\\(\\) always exists and is not falsy\\.$#"
+			count: 1
+			path: src/Helpers/ProjectStructureHelper.php
+
+		-
+			message: "#^Call to method get\\(\\) on an unknown class yii\\\\base\\\\Application\\.$#"
+			count: 1
+			path: src/Helpers/Yii2Bootstrap.php
+
+		-
+			message: "#^Call to method getModule\\(\\) on an unknown class yii\\\\base\\\\Application\\.$#"
+			count: 1
+			path: src/Helpers/Yii2Bootstrap.php
+
+		-
+			message: "#^Class yii\\\\db\\\\Connection not found\\.$#"
+			count: 1
+			path: src/Helpers/Yii2Bootstrap.php
+
+		-
+			message: "#^Class yii\\\\gii\\\\Module not found\\.$#"
+			count: 1
+			path: src/Helpers/Yii2Bootstrap.php
+
+		-
+			message: "#^Instantiated class yii\\\\web\\\\Application not found\\.$#"
+			count: 1
+			path: src/Helpers/Yii2Bootstrap.php
+
+		-
+			message: "#^Method Took\\\\Yii2GiiMCP\\\\Helpers\\\\Yii2Bootstrap\\:\\:getApp\\(\\) has invalid return type yii\\\\base\\\\Application\\.$#"
+			count: 1
+			path: src/Helpers/Yii2Bootstrap.php
+
+		-
+			message: "#^Method Took\\\\Yii2GiiMCP\\\\Helpers\\\\Yii2Bootstrap\\:\\:getDb\\(\\) has invalid return type yii\\\\db\\\\Connection\\.$#"
+			count: 2
+			path: src/Helpers/Yii2Bootstrap.php
+
+		-
+			message: "#^Method Took\\\\Yii2GiiMCP\\\\Helpers\\\\Yii2Bootstrap\\:\\:getGiiModule\\(\\) has invalid return type yii\\\\gii\\\\Module\\.$#"
+			count: 2
+			path: src/Helpers/Yii2Bootstrap.php
+
+		-
+			message: "#^Property Took\\\\Yii2GiiMCP\\\\Helpers\\\\Yii2Bootstrap\\:\\:\\$app \\(yii\\\\base\\\\Application\\|null\\) does not accept yii\\\\web\\\\Application\\.$#"
+			count: 1
+			path: src/Helpers/Yii2Bootstrap.php
+
+		-
+			message: "#^Property Took\\\\Yii2GiiMCP\\\\Helpers\\\\Yii2Bootstrap\\:\\:\\$app has unknown class yii\\\\base\\\\Application as its type\\.$#"
+			count: 1
+			path: src/Helpers/Yii2Bootstrap.php
+
+		-
+			message: "#^Call to method getBasePath\\(\\) on an unknown class yii\\\\base\\\\Application\\.$#"
+			count: 1
+			path: src/Tools/DetectApplicationStructure.php
+
+		-
+			message: "#^Variable \\$parsed in empty\\(\\) always exists and is not falsy\\.$#"
+			count: 1
+			path: src/Tools/DetectApplicationStructure.php
+
+		-
+			message: "#^Access to property \\$dsn on an unknown class yii\\\\db\\\\Connection\\.$#"
+			count: 1
+			path: src/Tools/GenerateModel.php
+
+		-
+			message: "#^Call to method getSchema\\(\\) on an unknown class yii\\\\db\\\\Connection\\.$#"
+			count: 1
+			path: src/Tools/GenerateModel.php
+
+		-
+			message: "#^Call to method getBasePath\\(\\) on an unknown class yii\\\\base\\\\Application\\.$#"
+			count: 1
+			path: src/Tools/InspectComponents.php
+
+		-
+			message: "#^Access to property \\$columns on an unknown class yii\\\\db\\\\TableSchema\\.$#"
+			count: 1
+			path: src/Tools/InspectDatabase.php
+
+		-
+			message: "#^Access to property \\$dsn on an unknown class yii\\\\db\\\\Connection\\.$#"
+			count: 1
+			path: src/Tools/InspectDatabase.php
+
+		-
+			message: "#^Access to property \\$foreignKeys on an unknown class yii\\\\db\\\\TableSchema\\.$#"
+			count: 1
+			path: src/Tools/InspectDatabase.php
+
+		-
+			message: "#^Access to property \\$fullName on an unknown class yii\\\\db\\\\TableSchema\\.$#"
+			count: 1
+			path: src/Tools/InspectDatabase.php
+
+		-
+			message: "#^Access to property \\$name on an unknown class yii\\\\db\\\\TableSchema\\.$#"
+			count: 1
+			path: src/Tools/InspectDatabase.php
+
+		-
+			message: "#^Access to property \\$primaryKey on an unknown class yii\\\\db\\\\TableSchema\\.$#"
+			count: 1
+			path: src/Tools/InspectDatabase.php
+
+		-
+			message: "#^Access to property \\$schemaName on an unknown class yii\\\\db\\\\TableSchema\\.$#"
+			count: 1
+			path: src/Tools/InspectDatabase.php
+
+		-
+			message: "#^Access to property \\$sequenceName on an unknown class yii\\\\db\\\\TableSchema\\.$#"
+			count: 1
+			path: src/Tools/InspectDatabase.php
+
+		-
+			message: "#^Call to method getSchema\\(\\) on an unknown class yii\\\\db\\\\Connection\\.$#"
+			count: 1
+			path: src/Tools/InspectDatabase.php
+
+		-
+			message: "#^Parameter \\$tableSchema of method Took\\\\Yii2GiiMCP\\\\Tools\\\\InspectDatabase\\:\\:formatTableInfo\\(\\) has invalid type yii\\\\db\\\\TableSchema\\.$#"
+			count: 2
+			path: src/Tools/InspectDatabase.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between yii\\\\db\\\\Connection and null will always evaluate to false\\.$#"
+			count: 1
+			path: src/Tools/InspectDatabase.php
+
+		-
+			message: "#^Call to method getSchema\\(\\) on an unknown class yii\\\\db\\\\Connection\\.$#"
+			count: 1
+			path: src/Tools/ListTables.php
+
+		-
+			message: "#^Call to method getBasePath\\(\\) on an unknown class yii\\\\base\\\\Application\\.$#"
+			count: 1
+			path: src/Tools/ReadLogs.php
+
+		-
+			message: "#^Method Tests\\\\Support\\\\MockTool\\:\\:testCreateResult\\(\\) has parameter \\$data with no type specified\\.$#"
+			count: 1
+			path: tests/Support/MockTool.php
+
+		-
+			message: "#^Method Tests\\\\Support\\\\MockTool\\:\\:testCreateResult\\(\\) has parameter \\$type with no type specified\\.$#"
+			count: 1
+			path: tests/Support/MockTool.php
+
+		-
+			message: "#^Method Tests\\\\Support\\\\MockTool\\:\\:testGetOptionalParam\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Support/MockTool.php
+
+		-
+			message: "#^Method Tests\\\\Support\\\\MockTool\\:\\:testGetOptionalParam\\(\\) has parameter \\$default with no type specified\\.$#"
+			count: 1
+			path: tests/Support/MockTool.php
+
+		-
+			message: "#^Method Tests\\\\Support\\\\MockTool\\:\\:testGetRequiredParam\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Support/MockTool.php
+
+		-
+			message: "#^Class Tests\\\\Unit\\\\Helpers\\\\ComponentAnalyzerTest has an uninitialized property \\$testDataPath\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/ComponentAnalyzerTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\ComponentAnalyzerTest\\:\\:_after\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/ComponentAnalyzerTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\ComponentAnalyzerTest\\:\\:_before\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/ComponentAnalyzerTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\ComponentAnalyzerTest\\:\\:testAnalyzeFileWithNoClass\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/ComponentAnalyzerTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\ComponentAnalyzerTest\\:\\:testAnalyzeInvalidFile\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/ComponentAnalyzerTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\ComponentAnalyzerTest\\:\\:testAnalyzeModel\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/ComponentAnalyzerTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\ComponentAnalyzerTest\\:\\:testAnalyzeSimpleController\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/ComponentAnalyzerTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\ComponentAnalyzerTest\\:\\:testExtractActionsFromController\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/ComponentAnalyzerTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\ComponentAnalyzerTest\\:\\:testExtractValidationRules\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/ComponentAnalyzerTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\ComponentAnalyzerTest\\:\\:testGetClassFromFileInvalid\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/ComponentAnalyzerTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\ComponentAnalyzerTest\\:\\:testIsController\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/ComponentAnalyzerTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\ComponentAnalyzerTest\\:\\:testIsModel\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/ComponentAnalyzerTest.php
+
+		-
+			message: "#^Class Tests\\\\Unit\\\\Helpers\\\\FileHelperTest has an uninitialized property \\$testDir\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/FileHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\LogReaderHelperTest\\:\\:testAggregateLogs\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/LogReaderHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\LogReaderHelperTest\\:\\:testAggregateLogsWithLimit\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/LogReaderHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\LogReaderHelperTest\\:\\:testApplyFiltersCombined\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/LogReaderHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\LogReaderHelperTest\\:\\:testApplyFiltersExactCategory\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/LogReaderHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\LogReaderHelperTest\\:\\:testApplyFiltersLevel\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/LogReaderHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\LogReaderHelperTest\\:\\:testApplyFiltersLimit\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/LogReaderHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\LogReaderHelperTest\\:\\:testApplyFiltersSearchMessage\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/LogReaderHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\LogReaderHelperTest\\:\\:testApplyFiltersSearchTrace\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/LogReaderHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\LogReaderHelperTest\\:\\:testApplyFiltersTimeSince\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/LogReaderHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\LogReaderHelperTest\\:\\:testApplyFiltersTimeUntil\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/LogReaderHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\LogReaderHelperTest\\:\\:testApplyFiltersWildcardCategory\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/LogReaderHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\LogReaderHelperTest\\:\\:testLogLevelToNumber\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/LogReaderHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\LogReaderHelperTest\\:\\:testMapLogLevel\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/LogReaderHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\LogReaderHelperTest\\:\\:testMapLogLevelString\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/LogReaderHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\LogReaderHelperTest\\:\\:testParseLogLine\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/LogReaderHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\LogReaderHelperTest\\:\\:testParseLogLineDifferentLevels\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/LogReaderHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\LogReaderHelperTest\\:\\:testParseLogLineInvalid\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/LogReaderHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\LogReaderHelperTest\\:\\:testParseLogLineWithUserId\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/LogReaderHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\LogReaderHelperTest\\:\\:testReadLogFileNonExistent\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/LogReaderHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\MigrationHelperTest\\:\\:testBuildColumnsFromFields\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/MigrationHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\MigrationHelperTest\\:\\:testBuildColumnsFromFieldsEmpty\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/MigrationHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\MigrationHelperTest\\:\\:testBuildColumnsFromFieldsWithEnum\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/MigrationHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\MigrationHelperTest\\:\\:testConstructor\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/MigrationHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\MigrationHelperTest\\:\\:testExtractTableNameFromMigrationNameWithCreatePattern\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/MigrationHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\MigrationHelperTest\\:\\:testExtractTableNameFromMigrationNameWithDifferentPattern\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/MigrationHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\MigrationHelperTest\\:\\:testExtractTableNameWithMultipleUnderscores\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/MigrationHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\MigrationHelperTest\\:\\:testGenerateDropForeignKeysExplicit\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/MigrationHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\MigrationHelperTest\\:\\:testGenerateDropIndexes\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/MigrationHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\MigrationHelperTest\\:\\:testGenerateForeignKeysExplicitAllValidActions\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/MigrationHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\MigrationHelperTest\\:\\:testGenerateForeignKeysExplicitCascade\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/MigrationHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\MigrationHelperTest\\:\\:testGenerateForeignKeysExplicitCustomColumn\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/MigrationHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\MigrationHelperTest\\:\\:testGenerateForeignKeysExplicitInvalidAction\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/MigrationHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\MigrationHelperTest\\:\\:testGenerateForeignKeysExplicitSetNull\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/MigrationHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\MigrationHelperTest\\:\\:testGenerateIndexesCompositeIndex\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/MigrationHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\MigrationHelperTest\\:\\:testGenerateIndexesMultiple\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/MigrationHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\MigrationHelperTest\\:\\:testGenerateIndexesSingleColumn\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/MigrationHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\MigrationHelperTest\\:\\:testGenerateMigrationContentEmpty\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/MigrationHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\MigrationHelperTest\\:\\:testGenerateMigrationContentStructure\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/MigrationHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\MigrationHelperTest\\:\\:testGenerateMigrationContentWithFields\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/MigrationHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\MigrationHelperTest\\:\\:testParseFieldDefinitionAdvancedEnumComplex\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/MigrationHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\MigrationHelperTest\\:\\:testParseFieldDefinitionAdvancedEnumSimple\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/MigrationHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\MigrationHelperTest\\:\\:testParseFieldDefinitionAdvancedEnumSingleValue\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/MigrationHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\MigrationHelperTest\\:\\:testParseFieldDefinitionAdvancedEnumWithDefault\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/MigrationHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\MigrationHelperTest\\:\\:testParseFieldDefinitionAdvancedEnumWithManyValues\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/MigrationHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\MigrationHelperTest\\:\\:testParseFieldDefinitionAdvancedEnumWithNotNull\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/MigrationHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\MigrationHelperTest\\:\\:testParseFieldDefinitionAdvancedEnumWithoutName\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/MigrationHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\MigrationHelperTest\\:\\:testParseFieldDefinitionBoolean\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/MigrationHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\MigrationHelperTest\\:\\:testParseFieldDefinitionComplexModifiers\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/MigrationHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\MigrationHelperTest\\:\\:testParseFieldDefinitionInteger\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/MigrationHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\MigrationHelperTest\\:\\:testParseFieldDefinitionSimple\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/MigrationHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\MigrationHelperTest\\:\\:testParseFieldDefinitionText\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/MigrationHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\MigrationHelperTest\\:\\:testParseFieldDefinitionTimestamp\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/MigrationHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\MigrationHelperTest\\:\\:testParseFieldDefinitionWithModifierArguments\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/MigrationHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\MigrationHelperTest\\:\\:testParseFieldDefinitionWithModifiers\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/MigrationHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\MigrationHelperTest\\:\\:testParseFieldDefinitionWithSize\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/MigrationHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\ProjectStructureHelperTest\\:\\:testDetectEnvironments\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/ProjectStructureHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\ProjectStructureHelperTest\\:\\:testDetectEnvironmentsFromConfigFiles\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/ProjectStructureHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\ProjectStructureHelperTest\\:\\:testDetectTemplateTypeAdvanced\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/ProjectStructureHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\ProjectStructureHelperTest\\:\\:testDetectTemplateTypeAdvancedWithApi\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/ProjectStructureHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\ProjectStructureHelperTest\\:\\:testDetectTemplateTypeBasic\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/ProjectStructureHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\ProjectStructureHelperTest\\:\\:testDetectTemplateTypeDefaultsToBasic\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/ProjectStructureHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\ProjectStructureHelperTest\\:\\:testFindApplicationDirsAdvanced\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/ProjectStructureHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\ProjectStructureHelperTest\\:\\:testFindApplicationDirsBasic\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/ProjectStructureHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\ProjectStructureHelperTest\\:\\:testFindModules\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/ProjectStructureHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\ProjectStructureHelperTest\\:\\:testGetApplicationTypeApi\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/ProjectStructureHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\ProjectStructureHelperTest\\:\\:testGetApplicationTypeConsole\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/ProjectStructureHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\ProjectStructureHelperTest\\:\\:testGetApplicationTypeWeb\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/ProjectStructureHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\ProjectStructureHelperTest\\:\\:testHasEnvFiles\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/ProjectStructureHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\ProjectStructureHelperTest\\:\\:testHasEnvFilesNegative\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/ProjectStructureHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\ProjectStructureHelperTest\\:\\:testIsYii2ApplicationInvalid\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/ProjectStructureHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\ProjectStructureHelperTest\\:\\:testIsYii2ApplicationWithConfig\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/ProjectStructureHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\ProjectStructureHelperTest\\:\\:testParseIndexPhpFile\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/ProjectStructureHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\ProjectStructureHelperTest\\:\\:testParseIndexPhpFileProd\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/ProjectStructureHelperTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Helpers\\\\ProjectStructureHelperTest\\:\\:testScanEnvironmentsFolder\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Helpers/ProjectStructureHelperTest.php
+
+		-
+			message: "#^Class Tests\\\\Support\\\\MockSimpleTool does not have a constructor and must be instantiated without any parameters\\.$#"
+			count: 2
+			path: tests/Unit/MCPServerTest.php
+
+		-
+			message: "#^Class Tests\\\\Unit\\\\ToolRegistryTest has an uninitialized property \\$registry\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: tests/Unit/ToolRegistryTest.php
+
+		-
+			message: "#^Class Tests\\\\Unit\\\\Tools\\\\AbstractToolTest has an uninitialized property \\$tool\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: tests/Unit/Tools/AbstractToolTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\DetectApplicationStructureTest\\:\\:testBasePathDescription\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/DetectApplicationStructureTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\DetectApplicationStructureTest\\:\\:testDescriptionMentionsKeyFeatures\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/DetectApplicationStructureTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\DetectApplicationStructureTest\\:\\:testGetDescription\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/DetectApplicationStructureTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\DetectApplicationStructureTest\\:\\:testGetInputSchema\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/DetectApplicationStructureTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\DetectApplicationStructureTest\\:\\:testGetName\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/DetectApplicationStructureTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\DetectApplicationStructureTest\\:\\:testInputSchemaBasePath\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/DetectApplicationStructureTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\DetectApplicationStructureTest\\:\\:testInputSchemaIsValidJsonSchema\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/DetectApplicationStructureTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\DetectApplicationStructureTest\\:\\:testSchemaDisallowsAdditionalProperties\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/DetectApplicationStructureTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\DetectApplicationStructureTest\\:\\:testSchemaPropertiesHaveDefaults\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/DetectApplicationStructureTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\DetectApplicationStructureTest\\:\\:testToolInstantiation\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/DetectApplicationStructureTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\DetectApplicationStructureTest\\:\\:testToolNameConvention\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/DetectApplicationStructureTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ExecuteMigrationTest\\:\\:testConfirmationIsRequired\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ExecuteMigrationTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ExecuteMigrationTest\\:\\:testCreatePreviewResult\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ExecuteMigrationTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ExecuteMigrationTest\\:\\:testCreatePreviewResultIncludesFields\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ExecuteMigrationTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ExecuteMigrationTest\\:\\:testCreatePreviewResultIncludesOperation\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ExecuteMigrationTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ExecuteMigrationTest\\:\\:testCreatePreviewResultShowsWarningForDestructive\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ExecuteMigrationTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ExecuteMigrationTest\\:\\:testDirectionDefaultValue\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ExecuteMigrationTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ExecuteMigrationTest\\:\\:testDirectionEnumValues\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ExecuteMigrationTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ExecuteMigrationTest\\:\\:testFieldsIsArrayType\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ExecuteMigrationTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ExecuteMigrationTest\\:\\:testFormatExecutionResult\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ExecuteMigrationTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ExecuteMigrationTest\\:\\:testFormatSqlPreviewIncludesDirection\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ExecuteMigrationTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ExecuteMigrationTest\\:\\:testFormatSqlPreviewIncludesMigrationName\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ExecuteMigrationTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ExecuteMigrationTest\\:\\:testFormatSqlPreviewIncludesNotice\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ExecuteMigrationTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ExecuteMigrationTest\\:\\:testFormatSqlPreviewIncludesSql\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ExecuteMigrationTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ExecuteMigrationTest\\:\\:testFormatSqlPreviewStructure\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ExecuteMigrationTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ExecuteMigrationTest\\:\\:testGetDescriptionMentionsSafety\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ExecuteMigrationTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ExecuteMigrationTest\\:\\:testGetInputSchema\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ExecuteMigrationTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ExecuteMigrationTest\\:\\:testGetName\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ExecuteMigrationTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ExecuteMigrationTest\\:\\:testImplementsToolInterface\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ExecuteMigrationTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ExecuteMigrationTest\\:\\:testInputSchemaHasAllProperties\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ExecuteMigrationTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ExecuteMigrationTest\\:\\:testInputSchemaHasDirectionProperty\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ExecuteMigrationTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ExecuteMigrationTest\\:\\:testInputSchemaPropertyDescriptions\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ExecuteMigrationTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ExecuteMigrationTest\\:\\:testMigrationCountDefaultValue\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ExecuteMigrationTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ExecuteMigrationTest\\:\\:testNoAdditionalProperties\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ExecuteMigrationTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ExecuteMigrationTest\\:\\:testOperationEnumValues\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ExecuteMigrationTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ExecuteMigrationTest\\:\\:testOperationIsRequired\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ExecuteMigrationTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ExecuteMigrationTest\\:\\:testPreviewDefaultIsTrue\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ExecuteMigrationTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ExecuteMigrationTest\\:\\:testValidateConfirmationsInvalid\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ExecuteMigrationTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ExecuteMigrationTest\\:\\:testValidateConfirmationsNoDestructiveForCreate\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ExecuteMigrationTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ExecuteMigrationTest\\:\\:testValidateConfirmationsNoDestructiveForUp\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ExecuteMigrationTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ExecuteMigrationTest\\:\\:testValidateConfirmationsRequiresDestructiveForDown\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ExecuteMigrationTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ExecuteMigrationTest\\:\\:testValidateConfirmationsRequiresDestructiveForFresh\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ExecuteMigrationTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ExecuteMigrationTest\\:\\:testValidateConfirmationsRequiresDestructiveForRedo\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ExecuteMigrationTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ExecuteMigrationTest\\:\\:testValidateConfirmationsValid\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ExecuteMigrationTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ExecuteMigrationTest\\:\\:testValidateConfirmationsValidDestructive\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ExecuteMigrationTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ExecuteMigrationTest\\:\\:testValidateOperationRequirementsCreateWithName\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ExecuteMigrationTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ExecuteMigrationTest\\:\\:testValidateOperationRequirementsCreateWithoutName\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ExecuteMigrationTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateControllerTest\\:\\:testActionsExamplesInDescription\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateControllerTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateControllerTest\\:\\:testActionsHasDefaultValue\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateControllerTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateControllerTest\\:\\:testActionsPropertyStructure\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateControllerTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateControllerTest\\:\\:testAllPropertiesHaveDescriptions\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateControllerTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateControllerTest\\:\\:testBaseClassHasDefaultValue\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateControllerTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateControllerTest\\:\\:testControllerIDExamplesInDescription\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateControllerTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateControllerTest\\:\\:testControllerIDPropertyStructure\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateControllerTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateControllerTest\\:\\:testFormatGiiResultWithConflicts\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateControllerTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateControllerTest\\:\\:testFormatGiiResultWithGenericError\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateControllerTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateControllerTest\\:\\:testFormatGiiResultWithSuccessInGenerationMode\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateControllerTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateControllerTest\\:\\:testFormatGiiResultWithSuccessInPreviewMode\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateControllerTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateControllerTest\\:\\:testFormatGiiResultWithValidationErrors\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateControllerTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateControllerTest\\:\\:testGetDescription\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateControllerTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateControllerTest\\:\\:testGetName\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateControllerTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateControllerTest\\:\\:testInputSchemaHasRequiredFields\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateControllerTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateControllerTest\\:\\:testInputSchemaStructure\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateControllerTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateControllerTest\\:\\:testNamespaceHasDefaultValue\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateControllerTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateControllerTest\\:\\:testNamespacePropertyStructure\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateControllerTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateControllerTest\\:\\:testPreviewModeIsDefault\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateControllerTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateControllerTest\\:\\:testPreviewPropertyStructure\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateControllerTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateControllerTest\\:\\:testSchemaDisallowsAdditionalProperties\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateControllerTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateControllerTest\\:\\:testToolImplementsRequiredInterfaces\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateControllerTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateControllerTest\\:\\:testValidateActionsWithInvalidActions\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateControllerTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateControllerTest\\:\\:testValidateActionsWithValidActions\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateControllerTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateControllerTest\\:\\:testValidateControllerIDWithInvalidIDs\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateControllerTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateControllerTest\\:\\:testValidateControllerIDWithValidIDs\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateControllerTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateCrudTest\\:\\:getTool\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateCrudTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateCrudTest\\:\\:testAllPropertiesHaveDescriptions\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateCrudTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateCrudTest\\:\\:testBaseControllerClassHasDefault\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateCrudTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateCrudTest\\:\\:testEnableI18NHasDefault\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateCrudTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateCrudTest\\:\\:testFormatGiiResultGroupsByType\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateCrudTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateCrudTest\\:\\:testFormatGiiResultWithConflicts\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateCrudTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateCrudTest\\:\\:testFormatGiiResultWithGenericError\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateCrudTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateCrudTest\\:\\:testFormatGiiResultWithSuccessInGenerationMode\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateCrudTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateCrudTest\\:\\:testFormatGiiResultWithSuccessInPreviewMode\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateCrudTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateCrudTest\\:\\:testFormatGiiResultWithValidationErrors\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateCrudTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateCrudTest\\:\\:testGetDescription\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateCrudTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateCrudTest\\:\\:testGetName\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateCrudTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateCrudTest\\:\\:testIndexWidgetTypeHasValidEnum\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateCrudTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateCrudTest\\:\\:testInputSchemaHasRequiredFields\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateCrudTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateCrudTest\\:\\:testModelClassDescription\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateCrudTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateCrudTest\\:\\:testPreviewModeIncludesHelpfulInfo\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateCrudTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateCrudTest\\:\\:testPreviewModeIsDefault\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateCrudTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateCrudTest\\:\\:testSchemaStructure\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateCrudTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateCrudTest\\:\\:testToolImplementsRequiredInterfaces\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateCrudTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateExtensionTest\\:\\:testAllPropertiesHaveDescriptions\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateExtensionTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateExtensionTest\\:\\:testFormatGiiResultWithSuccessInGenerationMode\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateExtensionTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateExtensionTest\\:\\:testFormatGiiResultWithSuccessInPreviewMode\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateExtensionTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateExtensionTest\\:\\:testFormatGiiResultWithValidationErrors\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateExtensionTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateExtensionTest\\:\\:testGetDescription\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateExtensionTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateExtensionTest\\:\\:testGetName\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateExtensionTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateExtensionTest\\:\\:testInputSchemaHasRequiredFields\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateExtensionTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateExtensionTest\\:\\:testPackageNameDescription\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateExtensionTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateExtensionTest\\:\\:testPreviewModeIsDefault\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateExtensionTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateExtensionTest\\:\\:testSchemaStructure\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateExtensionTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateExtensionTest\\:\\:testToolImplementsRequiredInterfaces\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateExtensionTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateExtensionTest\\:\\:testTypeDefaultValue\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateExtensionTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateExtensionTest\\:\\:testTypeHasValidEnum\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateExtensionTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateExtensionTest\\:\\:testValidateNameWithInvalidNames\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateExtensionTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateExtensionTest\\:\\:testValidateNameWithValidNames\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateExtensionTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateExtensionTest\\:\\:testVendorNameDescription\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateExtensionTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateFormTest\\:\\:testAllPropertiesHaveDescriptions\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateFormTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateFormTest\\:\\:testFormatGiiResultWithConflicts\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateFormTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateFormTest\\:\\:testFormatGiiResultWithGenericError\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateFormTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateFormTest\\:\\:testFormatGiiResultWithSuccessInGenerationMode\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateFormTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateFormTest\\:\\:testFormatGiiResultWithSuccessInPreviewMode\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateFormTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateFormTest\\:\\:testFormatGiiResultWithValidationErrors\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateFormTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateFormTest\\:\\:testGetDescription\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateFormTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateFormTest\\:\\:testGetName\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateFormTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateFormTest\\:\\:testInputSchemaHasRequiredFields\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateFormTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateFormTest\\:\\:testModelClassDescription\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateFormTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateFormTest\\:\\:testPreviewModeIsDefault\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateFormTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateFormTest\\:\\:testSchemaDefaults\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateFormTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateFormTest\\:\\:testSchemaStructure\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateFormTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateFormTest\\:\\:testToolImplementsRequiredInterfaces\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateFormTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateModelTest\\:\\:testAllPropertiesHaveDescriptions\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateModelTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateModelTest\\:\\:testFormatGiiResultWithConflicts\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateModelTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateModelTest\\:\\:testFormatGiiResultWithGenericError\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateModelTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateModelTest\\:\\:testFormatGiiResultWithSuccessInGenerationMode\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateModelTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateModelTest\\:\\:testFormatGiiResultWithSuccessInPreviewMode\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateModelTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateModelTest\\:\\:testFormatGiiResultWithValidationErrors\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateModelTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateModelTest\\:\\:testGenerateRelationsEnum\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateModelTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateModelTest\\:\\:testGetDescription\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateModelTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateModelTest\\:\\:testGetInputSchema\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateModelTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateModelTest\\:\\:testGetName\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateModelTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateModelTest\\:\\:testInputSchemaHasProperValidation\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateModelTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateModelTest\\:\\:testPreviewModeIsDefault\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateModelTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateModelTest\\:\\:testPreviewModeShowsContent\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateModelTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateModelTest\\:\\:testSchemaDefaults\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateModelTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateModelTest\\:\\:testTableNameDescription\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateModelTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateModelTest\\:\\:testToolImplementsRequiredInterfaces\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateModelTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateModuleEnhancedTest\\:\\:getTool\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateModuleEnhancedTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateModuleEnhancedTest\\:\\:testAllPropertiesHaveDescriptions\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateModuleEnhancedTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateModuleEnhancedTest\\:\\:testFormatGiiResultGroupsFilesByType\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateModuleEnhancedTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateModuleEnhancedTest\\:\\:testFormatGiiResultWithConflicts\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateModuleEnhancedTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateModuleEnhancedTest\\:\\:testFormatGiiResultWithGenericError\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateModuleEnhancedTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateModuleEnhancedTest\\:\\:testFormatGiiResultWithSuccessInGenerationMode\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateModuleEnhancedTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateModuleEnhancedTest\\:\\:testFormatGiiResultWithSuccessInPreviewMode\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateModuleEnhancedTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateModuleEnhancedTest\\:\\:testFormatGiiResultWithValidationErrors\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateModuleEnhancedTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateModuleEnhancedTest\\:\\:testGetDescriptionContainsKeywords\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateModuleEnhancedTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateModuleEnhancedTest\\:\\:testGetName\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateModuleEnhancedTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateModuleEnhancedTest\\:\\:testInputSchemaStructure\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateModuleEnhancedTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateModuleEnhancedTest\\:\\:testModuleClassProperty\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateModuleEnhancedTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateModuleEnhancedTest\\:\\:testModuleIDProperty\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateModuleEnhancedTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateModuleEnhancedTest\\:\\:testPreviewModeShowsHelpfulInfo\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateModuleEnhancedTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateModuleEnhancedTest\\:\\:testPreviewPropertyDefaults\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateModuleEnhancedTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateModuleEnhancedTest\\:\\:testToolImplementsRequiredInterfaces\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateModuleEnhancedTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateModuleEnhancedTest\\:\\:testValidateModuleIDWithInvalidIDs\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateModuleEnhancedTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateModuleEnhancedTest\\:\\:testValidateModuleIDWithValidIDs\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateModuleEnhancedTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateModuleTest\\:\\:testGetDescription\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateModuleTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateModuleTest\\:\\:testGetName\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateModuleTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateModuleTest\\:\\:testInputSchemaHasRequiredFields\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateModuleTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\GenerateModuleTest\\:\\:testPreviewModeIsDefault\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/GenerateModuleTest.php
+
+		-
+			message: "#^Class Tests\\\\Unit\\\\Tools\\\\InspectComponentsTest has an uninitialized property \\$tool\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: tests/Unit/Tools/InspectComponentsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\InspectComponentsTest\\:\\:_before\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/InspectComponentsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\InspectComponentsTest\\:\\:createMockApplication\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/InspectComponentsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\InspectComponentsTest\\:\\:testDefaultParameters\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/InspectComponentsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\InspectComponentsTest\\:\\:testExecuteWithAllComponents\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/InspectComponentsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\InspectComponentsTest\\:\\:testExecuteWithControllersOnly\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/InspectComponentsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\InspectComponentsTest\\:\\:testExecuteWithDetailedAnalysis\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/InspectComponentsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\InspectComponentsTest\\:\\:testExecuteWithInvalidApplication\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/InspectComponentsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\InspectComponentsTest\\:\\:testExecuteWithInvalidModule\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/InspectComponentsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\InspectComponentsTest\\:\\:testExecuteWithModelsOnly\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/InspectComponentsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\InspectComponentsTest\\:\\:testExecuteWithViewsOnly\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/InspectComponentsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\InspectComponentsTest\\:\\:testInputSchema\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/InspectComponentsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\InspectComponentsTest\\:\\:testInputValidationWithInvalidComponentType\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/InspectComponentsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\InspectComponentsTest\\:\\:testJsonOutputStructure\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/InspectComponentsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\InspectComponentsTest\\:\\:testToolMetadata\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/InspectComponentsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\InspectComponentsTest\\:\\:testWithAdvancedTemplate\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/InspectComponentsTest.php
+
+		-
+			message: "#^Property Tests\\\\Unit\\\\Tools\\\\InspectComponentsTest\\:\\:\\$mockBootstrap has no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/InspectComponentsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\InspectDatabaseTest\\:\\:testAllPropertiesHaveDescriptions\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/InspectDatabaseTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\InspectDatabaseTest\\:\\:testConnectionDefaultValue\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/InspectDatabaseTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\InspectDatabaseTest\\:\\:testFormatOutputWithNoTables\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/InspectDatabaseTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\InspectDatabaseTest\\:\\:testFormatOutputWithTables\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/InspectDatabaseTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\InspectDatabaseTest\\:\\:testFormatTableInfoMethodExists\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/InspectDatabaseTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\InspectDatabaseTest\\:\\:testGetDescription\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/InspectDatabaseTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\InspectDatabaseTest\\:\\:testGetInputSchema\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/InspectDatabaseTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\InspectDatabaseTest\\:\\:testGetName\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/InspectDatabaseTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\InspectDatabaseTest\\:\\:testIncludeViewsHasDefaultValue\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/InspectDatabaseTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\InspectDatabaseTest\\:\\:testInputSchemaHasNoRequiredFields\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/InspectDatabaseTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\InspectDatabaseTest\\:\\:testSchemaDisallowsAdditionalProperties\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/InspectDatabaseTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\InspectDatabaseTest\\:\\:testTablePatternDescription\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/InspectDatabaseTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\InspectDatabaseTest\\:\\:testToolImplementsRequiredInterfaces\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/InspectDatabaseTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\InspectDatabaseTest\\:\\:testToolIsReadOnly\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/InspectDatabaseTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ListMigrationsTest\\:\\:testFormatOutputEmpty\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ListMigrationsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ListMigrationsTest\\:\\:testFormatOutputShowsSummary\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ListMigrationsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ListMigrationsTest\\:\\:testFormatOutputWithLimit\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ListMigrationsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ListMigrationsTest\\:\\:testFormatOutputWithMigrations\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ListMigrationsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ListMigrationsTest\\:\\:testGetDescription\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ListMigrationsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ListMigrationsTest\\:\\:testGetInputSchema\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ListMigrationsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ListMigrationsTest\\:\\:testGetName\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ListMigrationsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ListMigrationsTest\\:\\:testImplementsToolInterface\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ListMigrationsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ListMigrationsTest\\:\\:testInputSchemaHasLimitProperty\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ListMigrationsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ListMigrationsTest\\:\\:testInputSchemaHasStatusProperty\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ListMigrationsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ListMigrationsTest\\:\\:testInputSchemaPropertyDescriptions\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ListMigrationsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ListMigrationsTest\\:\\:testLimitDefaultValue\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ListMigrationsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ListMigrationsTest\\:\\:testNoAdditionalProperties\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ListMigrationsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ListMigrationsTest\\:\\:testStatusDefaultValue\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ListMigrationsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ListMigrationsTest\\:\\:testStatusEnumValues\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ListMigrationsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ListTablesTest\\:\\:testConnectionPropertyDefault\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ListTablesTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ListTablesTest\\:\\:testDetailedPropertyDefault\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ListTablesTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ListTablesTest\\:\\:testGetDescription\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ListTablesTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ListTablesTest\\:\\:testGetInputSchema\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ListTablesTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ListTablesTest\\:\\:testGetName\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ListTablesTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ListTablesTest\\:\\:testInputSchemaIsValidJsonSchema\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ListTablesTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ListTablesTest\\:\\:testSchemaDisallowsAdditionalProperties\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ListTablesTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ListTablesTest\\:\\:testToolInstantiation\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ListTablesTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ReadLogsTest\\:\\:testAllPropertiesHaveDefaults\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ReadLogsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ReadLogsTest\\:\\:testDescriptionMentionsKeyFeatures\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ReadLogsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ReadLogsTest\\:\\:testEnumPropertiesValid\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ReadLogsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ReadLogsTest\\:\\:testGetDescription\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ReadLogsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ReadLogsTest\\:\\:testGetInputSchema\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ReadLogsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ReadLogsTest\\:\\:testGetName\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ReadLogsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ReadLogsTest\\:\\:testInputSchemaApplication\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ReadLogsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ReadLogsTest\\:\\:testInputSchemaCategory\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ReadLogsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ReadLogsTest\\:\\:testInputSchemaIsValidJsonSchema\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ReadLogsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ReadLogsTest\\:\\:testInputSchemaLevel\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ReadLogsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ReadLogsTest\\:\\:testInputSchemaLimit\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ReadLogsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ReadLogsTest\\:\\:testInputSchemaProperties\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ReadLogsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ReadLogsTest\\:\\:testInputSchemaSearch\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ReadLogsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ReadLogsTest\\:\\:testInputSchemaSource\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ReadLogsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ReadLogsTest\\:\\:testInputSchemaTimeRange\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ReadLogsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ReadLogsTest\\:\\:testSchemaDisallowsAdditionalProperties\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ReadLogsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ReadLogsTest\\:\\:testToolInstantiation\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ReadLogsTest.php
+
+		-
+			message: "#^Method Tests\\\\Unit\\\\Tools\\\\ReadLogsTest\\:\\:testToolNameConvention\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Tools/ReadLogsTest.php

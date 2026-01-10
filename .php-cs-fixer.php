@@ -7,6 +7,8 @@ $finder = PhpCsFixer\Finder::create()
         __DIR__ . '/bin',
         __DIR__ . '/examples',
     ])
+    ->exclude('_output')
+    ->exclude('_generated')
     ->name('*.php')
     ->notName('*.blade.php')
     ->ignoreDotFiles(true)

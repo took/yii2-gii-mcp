@@ -21,7 +21,7 @@ class MCPServer
 {
     private const PROTOCOL_VERSION = '2024-11-05';
     private const SERVER_NAME = 'yii2-gii-mcp';
-    private const SERVER_VERSION = '1.1.0';
+    private const SERVER_VERSION = '1.1.1';
 
     private StdioTransport $transport;
     private ?ToolRegistry $toolRegistry = null;
@@ -64,7 +64,7 @@ class MCPServer
     {
         $this->transport->log("MCP Server starting...");
 
-        while (!$this->transport->isEof()) {
+        while (! $this->transport->isEof()) {
             try {
                 $message = $this->transport->readMessage();
 
@@ -208,7 +208,7 @@ class MCPServer
      */
     private function handleToolsList(string|int $id): Response|ErrorResponse
     {
-        if (!$this->initialized) {
+        if (! $this->initialized) {
             return ErrorResponse::internalError($id, 'Server not initialized');
         }
 
@@ -235,7 +235,7 @@ class MCPServer
      */
     private function handleToolsCall(string|int $id, ?array $params): Response|ErrorResponse
     {
-        if (!$this->initialized) {
+        if (! $this->initialized) {
             return ErrorResponse::internalError($id, 'Server not initialized');
         }
 
@@ -244,14 +244,14 @@ class MCPServer
         }
 
         // Validate parameters
-        if (!isset($params['name']) || !is_string($params['name'])) {
+        if (! isset($params['name']) || ! is_string($params['name'])) {
             return ErrorResponse::invalidParams($id, 'Missing or invalid "name" parameter');
         }
 
         $toolName = $params['name'];
         $arguments = $params['arguments'] ?? [];
 
-        if (!is_array($arguments)) {
+        if (! is_array($arguments)) {
             return ErrorResponse::invalidParams($id, 'Tool arguments must be an array');
         }
 

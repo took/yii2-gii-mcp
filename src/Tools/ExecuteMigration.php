@@ -126,7 +126,7 @@ class ExecuteMigration extends AbstractTool
 
             // Validate operation parameter
             $validOperations = ['up', 'down', 'create', 'redo', 'fresh'];
-            if (!in_array($operation, $validOperations, true)) {
+            if (! in_array($operation, $validOperations, true)) {
                 return $this->createError(
                     'Invalid operation. Must be one of: ' . implode(', ', $validOperations),
                     ['operation' => $operation]
@@ -134,7 +134,7 @@ class ExecuteMigration extends AbstractTool
             }
 
             // Validate direction parameter
-            if (!in_array($direction, ['up', 'down'], true)) {
+            if (! in_array($direction, ['up', 'down'], true)) {
                 return $this->createError(
                     'Invalid direction parameter. Must be one of: up, down',
                     ['direction' => $direction]
@@ -152,7 +152,7 @@ class ExecuteMigration extends AbstractTool
             }
 
             // Ensure Yii2 is initialized
-            if (!$this->bootstrap->isInitialized()) {
+            if (! $this->bootstrap->isInitialized()) {
                 $this->bootstrap->initialize();
             }
 
@@ -172,6 +172,7 @@ class ExecuteMigration extends AbstractTool
                 if ($migrationName !== null && $operation !== 'create') {
                     return $this->createSqlPreviewResult($migrationName, $direction);
                 }
+
                 // Operation preview mode: show what operation would do
                 return $this->createPreviewResult($operation, $migrationName, $migrationCount, $fields);
             }
@@ -218,8 +219,7 @@ class ExecuteMigration extends AbstractTool
         string  $operation,
         string  $confirmation,
         ?string $destructiveConfirmation
-    ): ?array
-    {
+    ): ?array {
         // Check main confirmation
         if ($confirmation !== 'yes') {
             return $this->createError(
@@ -265,8 +265,7 @@ class ExecuteMigration extends AbstractTool
         string  $operation,
         ?string $migrationName,
         array   $fields
-    ): ?array
-    {
+    ): ?array {
         switch ($operation) {
             case 'down':
             case 'redo':
@@ -284,6 +283,7 @@ class ExecuteMigration extends AbstractTool
                         ]
                     );
                 }
+
                 break;
 
             case 'fresh':
@@ -305,7 +305,7 @@ class ExecuteMigration extends AbstractTool
     {
         try {
             // Validate migration exists
-            if (!$this->migrationHelper->validateMigrationName($migrationName)) {
+            if (! $this->migrationHelper->validateMigrationName($migrationName)) {
                 return $this->createError(
                     "Migration '{$migrationName}' not found",
                     [
@@ -371,8 +371,7 @@ class ExecuteMigration extends AbstractTool
         ?string $migrationName,
         int     $migrationCount,
         array   $fields
-    ): array
-    {
+    ): array {
         $output = "=== Migration Preview ===\n\n";
         $output .= "Operation: {$operation}\n";
 
@@ -384,7 +383,7 @@ class ExecuteMigration extends AbstractTool
             $output .= "Migration Count: {$migrationCount}\n";
         }
 
-        if ($operation === 'create' && !empty($fields)) {
+        if ($operation === 'create' && ! empty($fields)) {
             $output .= "Fields:\n";
             foreach ($fields as $field) {
                 $output .= "  - {$field}\n";
@@ -397,24 +396,29 @@ class ExecuteMigration extends AbstractTool
         switch ($operation) {
             case 'up':
                 $output .= "This will apply {$migrationCount} pending migration(s) to the database.\n";
+
                 break;
             case 'down':
                 $output .= "This will revert {$migrationCount} applied migration(s) from the database.\n";
                 $output .= "⚠️  WARNING: This is a destructive operation that will modify the database schema.\n";
+
                 break;
             case 'create':
                 $output .= "This will create a new migration file: {$migrationName}\n";
-                if (!empty($fields)) {
+                if (! empty($fields)) {
                     $output .= "The migration will include field definitions for table creation.\n";
                 }
+
                 break;
             case 'redo':
                 $output .= "This will revert and re-apply {$migrationCount} migration(s).\n";
                 $output .= "⚠️  WARNING: This is a destructive operation that will modify the database schema.\n";
+
                 break;
             case 'fresh':
                 $output .= "This will drop all tables and re-apply all migrations.\n";
                 $output .= "⚠️  DANGER: This will DELETE ALL DATA in the database!\n";
+
                 break;
         }
 
@@ -458,7 +462,7 @@ class ExecuteMigration extends AbstractTool
             $output .= "Migrations Reverted: {$result['migrations_reverted']}\n";
         }
 
-        if (isset($result['output']) && !empty($result['output'])) {
+        if (isset($result['output']) && ! empty($result['output'])) {
             $output .= "\nOutput:\n{$result['output']}\n";
         }
 

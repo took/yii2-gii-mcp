@@ -48,7 +48,7 @@ class FileHelper
      */
     public static function getFileInfo(string $path): ?array
     {
-        if (!file_exists($path)) {
+        if (! file_exists($path)) {
             return null;
         }
 
@@ -137,7 +137,7 @@ class FileHelper
      */
     public static function readFile(string $path): ?string
     {
-        if (!file_exists($path) || !is_readable($path)) {
+        if (! file_exists($path) || ! is_readable($path)) {
             return null;
         }
 
@@ -159,7 +159,7 @@ class FileHelper
     {
         // Ensure parent directory exists
         $dir = dirname($path);
-        if (!self::ensureDirectory($dir)) {
+        if (! self::ensureDirectory($dir)) {
             return false;
         }
 
@@ -196,7 +196,7 @@ class FileHelper
      */
     public static function createBackup(string $path, ?string $backupSuffix = '.bak'): ?string
     {
-        if (!file_exists($path)) {
+        if (! file_exists($path)) {
             return null;
         }
 
@@ -292,7 +292,7 @@ class FileHelper
 
         foreach ($paths as $path) {
             // Check for path traversal
-            $isValid = !ValidationHelper::hasPathTraversal($path);
+            $isValid = ! ValidationHelper::hasPathTraversal($path);
 
             // Check for absolute paths outside project (if applicable)
             // For now, just check traversal

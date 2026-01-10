@@ -75,7 +75,7 @@ class Yii2Bootstrap
 
         // Validate configuration
         $errors = $this->config->validate();
-        if (!empty($errors)) {
+        if (! empty($errors)) {
             throw new RuntimeException(
                 'Configuration validation failed: ' . implode(', ', $errors)
             );
@@ -144,13 +144,13 @@ class Yii2Bootstrap
     {
         $configPath = $this->config->getYii2ConfigPath();
 
-        if (!file_exists($configPath)) {
+        if (! file_exists($configPath)) {
             throw new RuntimeException("Configuration file not found: {$configPath}");
         }
 
         $config = require $configPath;
 
-        if (!is_array($config)) {
+        if (! is_array($config)) {
             throw new RuntimeException("Configuration file must return an array: {$configPath}");
         }
 
@@ -177,11 +177,11 @@ class Yii2Bootstrap
         ];
 
         // Also add Gii to bootstrap if not present
-        if (!isset($config['bootstrap'])) {
+        if (! isset($config['bootstrap'])) {
             $config['bootstrap'] = [];
         }
 
-        if (!in_array('gii', $config['bootstrap'], true)) {
+        if (! in_array('gii', $config['bootstrap'], true)) {
             $config['bootstrap'][] = 'gii';
         }
 
@@ -228,7 +228,7 @@ class Yii2Bootstrap
             throw new RuntimeException("Database connection '{$connectionId}' not found");
         }
 
-        if (!$db instanceof Connection) {
+        if (! $db instanceof Connection) {
             throw new RuntimeException("Component '{$connectionId}' is not a database connection");
         }
 
@@ -242,7 +242,7 @@ class Yii2Bootstrap
      */
     private function ensureInitialized(): void
     {
-        if (!$this->initialized) {
+        if (! $this->initialized) {
             throw new RuntimeException('Yii2 not initialized. Call initialize() first.');
         }
     }
@@ -257,7 +257,7 @@ class Yii2Bootstrap
     {
         $this->ensureInitialized();
 
-        if (!$this->config->isGiiEnabled()) {
+        if (! $this->config->isGiiEnabled()) {
             throw new RuntimeException('Gii is disabled in configuration');
         }
 
@@ -267,7 +267,7 @@ class Yii2Bootstrap
             throw new RuntimeException('Gii module not found in application');
         }
 
-        if (!$gii instanceof GiiModule) {
+        if (! $gii instanceof GiiModule) {
             throw new RuntimeException('Gii module is not an instance of yii\gii\Module');
         }
 
@@ -315,6 +315,7 @@ class Yii2Bootstrap
         // Advanced Template has /common and /console directories
         if (is_dir($appPath . '/common') && is_dir($appPath . '/console')) {
             $this->templateType = 'advanced';
+
             return $this->templateType;
         }
 
@@ -322,12 +323,14 @@ class Yii2Bootstrap
         // Basic Template has /app and /config directories
         if (is_dir($appPath . '/app') && is_dir($appPath . '/config')) {
             $this->templateType = 'basic';
+
             return $this->templateType;
         }
 
         // Default to basic if structure is unclear
         // This provides a safe fallback for non-standard structures
         $this->templateType = 'basic';
+
         return $this->templateType;
     }
 

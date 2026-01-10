@@ -221,11 +221,11 @@ class ServerConfig
             $errors[] = '  → Set YII2_CONFIG_PATH environment variable';
             $errors[] = '  → Or create config-mcp.php in your project root';
             $errors[] = '  → Quick fix: php vendor/took/yii2-gii-mcp/bin/interactive-setup';
-        } elseif (!file_exists($this->yii2ConfigPath)) {
+        } elseif (! file_exists($this->yii2ConfigPath)) {
             $errors[] = "Yii2 config file not found: {$this->yii2ConfigPath}";
             $errors[] = "  → Create config-mcp.php: cp vendor/took/yii2-gii-mcp/examples/config-advanced-template.php config-mcp.php";
             $errors[] = "  → Or run: php vendor/took/yii2-gii-mcp/bin/interactive-setup";
-        } elseif (!is_readable($this->yii2ConfigPath)) {
+        } elseif (! is_readable($this->yii2ConfigPath)) {
             $errors[] = "Yii2 config file not readable: {$this->yii2ConfigPath}";
             $errors[] = "  → Check file permissions: chmod 644 {$this->yii2ConfigPath}";
         }
@@ -235,16 +235,16 @@ class ServerConfig
             $errors[] = 'Yii2 app path not set.';
             $errors[] = '  → Set YII2_APP_PATH environment variable to your Yii2 project root';
             $errors[] = '  → Example: export YII2_APP_PATH=/path/to/your/yii2/project';
-        } elseif (!is_dir($this->yii2AppPath)) {
+        } elseif (! is_dir($this->yii2AppPath)) {
             $errors[] = "Yii2 app path is not a directory: {$this->yii2AppPath}";
             $errors[] = "  → Make sure the path points to your Yii2 project root directory";
-        } elseif (!is_readable($this->yii2AppPath)) {
+        } elseif (! is_readable($this->yii2AppPath)) {
             $errors[] = "Yii2 app path not readable: {$this->yii2AppPath}";
             $errors[] = "  → Check directory permissions";
         }
 
         // Add helpful context if errors found
-        if (!empty($errors)) {
+        if (! empty($errors)) {
             $errors[] = '';
             $errors[] = 'For help, run: php vendor/took/yii2-gii-mcp/bin/diagnose';
         }

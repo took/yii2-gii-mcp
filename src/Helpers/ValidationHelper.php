@@ -47,7 +47,7 @@ class ValidationHelper
             if ($segment === '') {
                 return false; // Empty segments not allowed
             }
-            if (!preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $segment)) {
+            if (! preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $segment)) {
                 return false;
             }
         }

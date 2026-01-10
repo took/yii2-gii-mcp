@@ -363,7 +363,7 @@ class MigrationHelperTest extends Unit
         $method->setAccessible(true);
 
         $result = $method->invoke($helper, "status:enum('draft','published','archived')");
-        
+
         $this->assertStringContainsString("'status'", $result);
         $this->assertStringContainsString('$this->string()', $result);
         $this->assertStringContainsString("->check(\"status IN ('draft','published','archived')\")", $result);
@@ -382,7 +382,7 @@ class MigrationHelperTest extends Unit
         $method->setAccessible(true);
 
         $result = $method->invoke($helper, "status:enum('draft','published'):notNull");
-        
+
         $this->assertStringContainsString("'status'", $result);
         $this->assertStringContainsString('$this->string()', $result);
         $this->assertStringContainsString('->notNull()', $result);
@@ -402,7 +402,7 @@ class MigrationHelperTest extends Unit
         $method->setAccessible(true);
 
         $result = $method->invoke($helper, "status:enum('draft','published'):defaultValue('draft')");
-        
+
         $this->assertStringContainsString("'status'", $result);
         $this->assertStringContainsString('$this->string()', $result);
         $this->assertStringContainsString("->defaultValue('draft')", $result);
@@ -422,7 +422,7 @@ class MigrationHelperTest extends Unit
         $method->setAccessible(true);
 
         $result = $method->invoke($helper, "status:enum('draft','published','archived'):notNull:defaultValue('draft')");
-        
+
         $this->assertStringContainsString("'status'", $result);
         $this->assertStringContainsString('$this->string()', $result);
         $this->assertStringContainsString('->notNull()', $result);
@@ -443,7 +443,7 @@ class MigrationHelperTest extends Unit
         $method->setAccessible(true);
 
         $result = $method->invoke($helper, "priority:enum('urgent','high','medium','low','trivial')");
-        
+
         $this->assertStringContainsString("'priority'", $result);
         $this->assertStringContainsString('$this->string()', $result);
         $this->assertStringContainsString("->check(\"priority IN ('urgent','high','medium','low','trivial')\")", $result);
@@ -462,7 +462,7 @@ class MigrationHelperTest extends Unit
         $method->setAccessible(true);
 
         $result = $method->invoke($helper, "state:enum('active')");
-        
+
         $this->assertStringContainsString("'state'", $result);
         $this->assertStringContainsString('$this->string()', $result);
         $this->assertStringContainsString("->check(\"state IN ('active')\")", $result);
@@ -481,7 +481,7 @@ class MigrationHelperTest extends Unit
         $method->setAccessible(true);
 
         $result = $method->invoke($helper, "status:enum('draft','published'):notNull", false);
-        
+
         $this->assertStringNotContainsString("'status'", $result);
         $this->assertStringContainsString('$this->string()', $result);
         $this->assertStringContainsString('->notNull()', $result);

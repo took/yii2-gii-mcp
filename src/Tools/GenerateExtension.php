@@ -114,21 +114,21 @@ class GenerateExtension extends AbstractTool
             $preview = $this->getOptionalParam($arguments, 'preview', true);
 
             // Validate vendor name
-            if (!$this->validateName($vendorName)) {
+            if (! $this->validateName($vendorName)) {
                 return $this->createError(
                     "Invalid vendor name '{$vendorName}'. Use lowercase alphanumeric with dashes."
                 );
             }
 
             // Validate package name
-            if (!$this->validateName($packageName)) {
+            if (! $this->validateName($packageName)) {
                 return $this->createError(
                     "Invalid package name '{$packageName}'. Use lowercase alphanumeric with dashes."
                 );
             }
 
             // Ensure Yii2 is initialized
-            if (!$this->bootstrap->isInitialized()) {
+            if (! $this->bootstrap->isInitialized()) {
                 $this->bootstrap->initialize();
             }
 
@@ -184,7 +184,7 @@ class GenerateExtension extends AbstractTool
      */
     private function formatGiiResult(array $result, bool $preview): array
     {
-        if (!$result['success']) {
+        if (! $result['success']) {
             // Handle validation errors
             if (isset($result['validationErrors'])) {
                 $errors = [];
@@ -200,7 +200,7 @@ class GenerateExtension extends AbstractTool
 
             // Handle conflicts
             if (isset($result['conflicts'])) {
-                $conflicts = array_map(fn($c) => $c['path'], $result['conflicts']);
+                $conflicts = array_map(fn ($c) => $c['path'], $result['conflicts']);
 
                 return $this->createError(
                     $result['error'] ?? 'File conflicts',
@@ -266,7 +266,7 @@ class GenerateExtension extends AbstractTool
             }
 
             // Show other files
-            if (!empty($otherFiles)) {
+            if (! empty($otherFiles)) {
                 $output .= "Additional Files:\n";
                 foreach ($otherFiles as $file) {
                     $output .= "- {$file['relativePath']} ({$file['operation']})\n";
@@ -305,16 +305,16 @@ class GenerateExtension extends AbstractTool
                 }
             }
 
-            if (!empty($configFiles)) {
+            if (! empty($configFiles)) {
                 $output .= "\nConfiguration Files:\n" . implode("\n", $configFiles) . "\n";
             }
-            if (!empty($docFiles)) {
+            if (! empty($docFiles)) {
                 $output .= "\nDocumentation:\n" . implode("\n", $docFiles) . "\n";
             }
-            if (!empty($sourceFiles)) {
+            if (! empty($sourceFiles)) {
                 $output .= "\nSource Files:\n" . implode("\n", $sourceFiles) . "\n";
             }
-            if (!empty($directories)) {
+            if (! empty($directories)) {
                 $output .= "\nDirectories:\n" . implode("\n", $directories) . "\n";
             }
 

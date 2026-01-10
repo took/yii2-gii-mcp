@@ -173,7 +173,7 @@ class DetectApplicationStructure extends AbstractTool
                 // Parse PHP files for environment constants
                 if (pathinfo($fullPath, PATHINFO_EXTENSION) === 'php') {
                     $parsed = ProjectStructureHelper::parseIndexPhpFile($fullPath);
-                    if (!empty($parsed)) {
+                    if (! empty($parsed)) {
                         $info['env'] = $parsed['YII_ENV'] ?? 'unknown';
                         $info['debug'] = $parsed['YII_DEBUG'] ?? false;
                     }
@@ -211,7 +211,7 @@ class DetectApplicationStructure extends AbstractTool
             $output .= "  Type: {$app['type']}\n";
             $output .= "  Has Web: " . ($app['hasWeb'] ? 'Yes' : 'No') . "\n";
 
-            if (!empty($app['entryPoints'])) {
+            if (! empty($app['entryPoints'])) {
                 $output .= "  Entry Points:\n";
                 foreach ($app['entryPoints'] as $entry) {
                     $output .= "    - {$entry['file']}";
@@ -222,7 +222,7 @@ class DetectApplicationStructure extends AbstractTool
                 }
             }
 
-            if (!empty($app['modules'])) {
+            if (! empty($app['modules'])) {
                 $output .= "  Modules (" . count($app['modules']) . "):\n";
                 foreach ($app['modules'] as $module) {
                     $output .= "    - {$module['id']} ({$module['path']})\n";
@@ -234,7 +234,7 @@ class DetectApplicationStructure extends AbstractTool
         $output .= "\n\nEnvironments:\n";
         $output .= str_repeat('-', 50) . "\n";
 
-        if (!empty($structure['environments']['available'])) {
+        if (! empty($structure['environments']['available'])) {
             $output .= "Available: " . implode(', ', $structure['environments']['available']) . "\n";
         } else {
             $output .= "Available: None detected\n";
@@ -243,7 +243,7 @@ class DetectApplicationStructure extends AbstractTool
         if ($structure['environments']['current']) {
             $output .= "Current: {$structure['environments']['current']}\n";
 
-            if (!empty($structure['environments']['currentDetails'])) {
+            if (! empty($structure['environments']['currentDetails'])) {
                 $details = $structure['environments']['currentDetails'];
                 $output .= "  YII_ENV: " . ($details['YII_ENV'] ?? 'not set') . "\n";
                 $output .= "  YII_DEBUG: " . (isset($details['YII_DEBUG']) ? ($details['YII_DEBUG'] ? 'true' : 'false') : 'not set') . "\n";
@@ -255,7 +255,7 @@ class DetectApplicationStructure extends AbstractTool
             $output .= "Current: Not detected\n";
         }
 
-        if (!empty($structure['environments']['sources'])) {
+        if (! empty($structure['environments']['sources'])) {
             $output .= "Detection sources: " . implode(', ', $structure['environments']['sources']) . "\n";
         }
 
