@@ -1,14 +1,18 @@
-.PHONY: help test test-unit test-functional test-all coverage clean install
+.PHONY: help test test-unit test-functional test-all coverage clean install phpstan cs-check cs-fix qa
 
 # Default target
 help:
 	@echo "Available targets:"
-	@echo "  make install          - Install dependencies"
+	@echo "  make install         - Install dependencies"
 	@echo "  make test            - Run all Codeception tests"
 	@echo "  make test-unit       - Run unit tests only"
 	@echo "  make test-functional - Run functional tests only"
 	@echo "  make test-all        - Run all tests (alias for test)"
 	@echo "  make coverage        - Generate HTML coverage report"
+	@echo "  make phpstan         - Run PHPStan static analysis"
+	@echo "  make cs-check        - Check code style (dry-run)"
+	@echo "  make cs-fix          - Fix code style issues"
+	@echo "  make qa              - Run all quality checks (tests, phpstan, cs-check)"
 	@echo "  make clean           - Remove test artifacts and caches"
 
 # Install dependencies
@@ -41,3 +45,20 @@ clean:
 	rm -rf tests/_output/
 	rm -rf coverage/*
 	@echo "Cleaned test artifacts and caches"
+
+# Run PHPStan static analysis
+phpstan:
+	vendor/bin/phpstan analyse --configuration=phpstan.neon.dist
+
+# Check code style (dry-run)
+cs-check:
+	vendor/bin/php-cs-fixer fix --dry-run --diff --verbose
+
+# Fix code style issues
+cs-fix:
+	vendor/bin/php-cs-fixer fix --verbose
+
+# Run all quality checks
+qa: test phpstan cs-check
+	@echo ""
+	@echo "All quality checks completed successfully!"

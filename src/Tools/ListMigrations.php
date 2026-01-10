@@ -79,7 +79,7 @@ class ListMigrations extends AbstractTool
             $limit = $this->getOptionalParam($arguments, 'limit', 10);
 
             // Validate status parameter
-            if (!in_array($status, ['all', 'applied', 'pending'], true)) {
+            if (! in_array($status, ['all', 'applied', 'pending'], true)) {
                 return $this->createError(
                     'Invalid status parameter. Must be one of: all, applied, pending',
                     ['status' => $status]
@@ -87,7 +87,7 @@ class ListMigrations extends AbstractTool
             }
 
             // Ensure Yii2 is initialized
-            if (!$this->bootstrap->isInitialized()) {
+            if (! $this->bootstrap->isInitialized()) {
                 $this->bootstrap->initialize();
             }
 
@@ -142,8 +142,8 @@ class ListMigrations extends AbstractTool
         $output = $summary . json_encode($migrations, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
 
         // Add summary table
-        $appliedCount = count(array_filter($migrations, fn($m) => $m['status'] === 'applied'));
-        $pendingCount = count(array_filter($migrations, fn($m) => $m['status'] === 'pending'));
+        $appliedCount = count(array_filter($migrations, fn ($m) => $m['status'] === 'applied'));
+        $pendingCount = count(array_filter($migrations, fn ($m) => $m['status'] === 'pending'));
 
         $output .= "\n\nSummary:\n";
         $output .= "- Applied: {$appliedCount}\n";

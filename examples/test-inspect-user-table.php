@@ -33,11 +33,11 @@ if (empty($configPath)) {
             "  YII2_CONFIG_PATH=/path/to/config-mcp.php php examples/test-inspect-user-table.php\n");
 }
 
-if (!file_exists($configPath)) {
+if (! file_exists($configPath)) {
     die("ERROR: Configuration file not found: $configPath\n");
 }
 
-if (!file_exists($serverPath)) {
+if (! file_exists($serverPath)) {
     die("ERROR: MCP server executable not found: $serverPath\n");
 }
 
@@ -59,7 +59,7 @@ $env = [
 
 $process = proc_open("php $serverPath", $descriptorspec, $pipes, $appPath, $env);
 
-if (!is_resource($process)) {
+if (! is_resource($process)) {
     die("ERROR: Failed to start MCP server\n");
 }
 
@@ -143,7 +143,7 @@ fclose($pipes[1]);
 $stderr = stream_get_contents($pipes[2]);
 fclose($pipes[2]);
 
-if (!empty($stderr)) {
+if (! empty($stderr)) {
     echo "\n" . str_repeat('=', 80) . "\n";
     echo "SERVER DEBUG OUTPUT (stderr)\n";
     echo str_repeat('=', 80) . "\n";

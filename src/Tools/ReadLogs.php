@@ -107,7 +107,7 @@ class ReadLogs extends AbstractTool
     {
         try {
             // Ensure Yii2 is initialized
-            if (!$this->bootstrap->isInitialized()) {
+            if (! $this->bootstrap->isInitialized()) {
                 $this->bootstrap->initialize();
             }
 
@@ -143,7 +143,7 @@ class ReadLogs extends AbstractTool
             if ($source === 'file' || $source === 'both') {
                 $logDirs = LogReaderHelper::findLogFiles(
                     $basePath,
-                    !empty($application) ? $application : null
+                    ! empty($application) ? $application : null
                 );
 
                 foreach ($logDirs as $appName => $logDir) {
@@ -166,8 +166,8 @@ class ReadLogs extends AbstractTool
                     foreach ($dbLogs as &$log) {
                         $log['source'] = 'db';
                     }
-                    if (!empty($dbLogs)) {
-                        $dbAppName = !empty($application) ? $application : 'database';
+                    if (! empty($dbLogs)) {
+                        $dbAppName = ! empty($application) ? $application : 'database';
                         if (isset($logsByApp[$dbAppName])) {
                             $logsByApp[$dbAppName] = array_merge($logsByApp[$dbAppName], $dbLogs);
                         } else {
@@ -227,7 +227,7 @@ class ReadLogs extends AbstractTool
         foreach ($logs as $log) {
             // Count by level
             $level = $log['level'];
-            if (!isset($stats['byLevel'][$level])) {
+            if (! isset($stats['byLevel'][$level])) {
                 $stats['byLevel'][$level] = 0;
             }
             $stats['byLevel'][$level]++;
@@ -235,7 +235,7 @@ class ReadLogs extends AbstractTool
             // Count by application
             if (isset($log['application'])) {
                 $app = $log['application'];
-                if (!isset($stats['byApplication'][$app])) {
+                if (! isset($stats['byApplication'][$app])) {
                     $stats['byApplication'][$app] = 0;
                 }
                 $stats['byApplication'][$app]++;
@@ -259,7 +259,7 @@ class ReadLogs extends AbstractTool
         $output .= str_repeat('=', 50) . "\n\n";
 
         // Applied filters
-        if (!empty($filters)) {
+        if (! empty($filters)) {
             $output .= "Applied Filters:\n";
             foreach ($filters as $key => $value) {
                 if ($key !== 'limit') {
@@ -273,14 +273,14 @@ class ReadLogs extends AbstractTool
         $output .= "Statistics:\n";
         $output .= "  Total entries: {$stats['total']}\n";
 
-        if (!empty($stats['byLevel'])) {
+        if (! empty($stats['byLevel'])) {
             $output .= "  By level:\n";
             foreach ($stats['byLevel'] as $level => $count) {
                 $output .= "    - {$level}: {$count}\n";
             }
         }
 
-        if (!empty($stats['byApplication'])) {
+        if (! empty($stats['byApplication'])) {
             $output .= "  By application:\n";
             foreach ($stats['byApplication'] as $app => $count) {
                 $output .= "    - {$app}: {$count}\n";
@@ -308,7 +308,7 @@ class ReadLogs extends AbstractTool
                 $output .= "[{$log['category']}]\n";
                 $output .= "    {$log['message']}\n";
 
-                if (!empty($log['trace'])) {
+                if (! empty($log['trace'])) {
                     $output .= "    Trace: " . substr($log['trace'], 0, 200);
                     if (strlen($log['trace']) > 200) {
                         $output .= "...";

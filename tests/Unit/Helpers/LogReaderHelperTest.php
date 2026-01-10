@@ -274,7 +274,7 @@ class LogReaderHelperTest extends Unit
         $aggregated = LogReaderHelper::aggregateLogs($logsByApp, ['limit' => 100]);
 
         $this->assertCount(3, $aggregated);
-        
+
         // Should be sorted by timestamp (newest first)
         $this->assertEquals('Frontend warning', $aggregated[0]['message']);
         $this->assertEquals('frontend', $aggregated[0]['application']);

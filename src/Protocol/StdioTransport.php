@@ -28,8 +28,7 @@ class StdioTransport
         $stdout = null,
         $stderr = null,
         bool $debug = false
-    )
-    {
+    ) {
         $this->stdin = $stdin ?? STDIN;
         $this->stdout = $stdout ?? STDOUT;
         $this->stderr = $stderr ?? STDERR;

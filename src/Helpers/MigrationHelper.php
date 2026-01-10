@@ -4,10 +4,8 @@ namespace Took\Yii2GiiMCP\Helpers;
 
 use Exception;
 use RuntimeException;
-use Yii;
 use yii\console\controllers\MigrateController;
 use yii\db\Migration;
-use yii\helpers\Console;
 
 /**
  * Migration Helper
@@ -37,7 +35,7 @@ class MigrationHelper
     public function getMigrations(string $status = 'all'): array
     {
         // Ensure Yii2 is initialized
-        if (!$this->bootstrap->isInitialized()) {
+        if (! $this->bootstrap->isInitialized()) {
             $this->bootstrap->initialize();
         }
 
@@ -108,7 +106,7 @@ class MigrationHelper
     public function getMigrationHistory(int $limit = 10): array
     {
         // Ensure Yii2 is initialized
-        if (!$this->bootstrap->isInitialized()) {
+        if (! $this->bootstrap->isInitialized()) {
             $this->bootstrap->initialize();
         }
 
@@ -137,12 +135,12 @@ class MigrationHelper
     public function previewMigrationSql(string $name, string $direction = 'up'): string
     {
         // Ensure Yii2 is initialized
-        if (!$this->bootstrap->isInitialized()) {
+        if (! $this->bootstrap->isInitialized()) {
             $this->bootstrap->initialize();
         }
 
         // Validate migration exists
-        if (!$this->validateMigrationName($name)) {
+        if (! $this->validateMigrationName($name)) {
             throw new RuntimeException("Migration '{$name}' not found");
         }
 
@@ -197,7 +195,7 @@ class MigrationHelper
     {
         try {
             // Ensure Yii2 is initialized
-            if (!$this->bootstrap->isInitialized()) {
+            if (! $this->bootstrap->isInitialized()) {
                 $this->bootstrap->initialize();
             }
 
@@ -211,6 +209,7 @@ class MigrationHelper
 
             // Check in new migrations
             $newMigrations = $controller->getNewMigrations();
+
             return in_array($name, $newMigrations, true);
         } catch (Exception $e) {
             return false;
@@ -227,7 +226,7 @@ class MigrationHelper
     {
         try {
             // Ensure Yii2 is initialized
-            if (!$this->bootstrap->isInitialized()) {
+            if (! $this->bootstrap->isInitialized()) {
                 $this->bootstrap->initialize();
             }
 
@@ -253,14 +252,14 @@ class MigrationHelper
     public function createMigration(string $name, array $fields = []): string
     {
         // Ensure Yii2 is initialized
-        if (!$this->bootstrap->isInitialized()) {
+        if (! $this->bootstrap->isInitialized()) {
             $this->bootstrap->initialize();
         }
 
         $controller = $this->createMigrateController();
 
         // Set migration template based on fields
-        if (!empty($fields)) {
+        if (! empty($fields)) {
             // Parse fields for table creation
             $controller->fields = $fields;
         }
@@ -296,7 +295,7 @@ class MigrationHelper
         $upContent = "        // Add migration logic here\n";
         $downContent = "        // Add revert logic here\n";
 
-        if (!empty($fields)) {
+        if (! empty($fields)) {
             // Generate table creation from fields
             $tableName = $this->extractTableNameFromMigrationName($name);
             $columns = $this->buildColumnsFromFields($fields);
@@ -432,7 +431,7 @@ PHP;
     public function executeMigration(string $operation, array $params): array
     {
         // Ensure Yii2 is initialized
-        if (!$this->bootstrap->isInitialized()) {
+        if (! $this->bootstrap->isInitialized()) {
             $this->bootstrap->initialize();
         }
 
@@ -584,7 +583,7 @@ PHP;
     public function createMigrationAdvanced(array $params): array
     {
         // Ensure Yii2 is initialized
-        if (!$this->bootstrap->isInitialized()) {
+        if (! $this->bootstrap->isInitialized()) {
             $this->bootstrap->initialize();
         }
 
@@ -626,7 +625,7 @@ PHP;
 
         // Determine migration path
         $finalMigrationPath = $controller->migrationPath;
-        if (!is_dir($finalMigrationPath)) {
+        if (! is_dir($finalMigrationPath)) {
             throw new RuntimeException("Migration path does not exist: {$finalMigrationPath}");
         }
 
@@ -696,8 +695,7 @@ PHP;
         ?string $comment,
         array   $indexes = [],
         array   $foreignKeys = []
-    ): string
-    {
+    ): string {
         $content = "<?php\n";
 
         // Add namespace if provided
@@ -778,8 +776,7 @@ PHP;
         ?string $comment,
         array   $indexes = [],
         array   $foreignKeys = []
-    ): string
-    {
+    ): string {
         $content = '';
         $indent = '        ';
 
@@ -804,18 +801,19 @@ PHP;
                 }
 
                 // Add indexes if provided
-                if (!empty($indexes)) {
+                if (! empty($indexes)) {
                     $content .= "\n" . $this->generateIndexes($tableName, $indexes, $useTablePrefix, $indent);
                 }
 
                 // Add foreign keys
-                if (!empty($foreignKeys)) {
+                if (! empty($foreignKeys)) {
                     // Explicit foreign keys take precedence
                     $content .= "\n" . $this->generateForeignKeysExplicit($tableName, $foreignKeys, $useTablePrefix, $indent);
                 } elseif ($addForeignKeys) {
                     // Auto-detect foreign keys from fields ending with _id
                     $content .= "\n" . $this->generateForeignKeys($tableName, $fields, $useTablePrefix, $onDeleteCascade, $indent);
                 }
+
                 break;
 
             case 'add':
@@ -826,11 +824,12 @@ PHP;
                     $columnDef = $this->parseFieldDefinitionAdvanced($field, false);
                     $content .= $indent . "\$this->addColumn({$tableRef}, '{$columnName}', {$columnDef});\n";
                 }
+
                 break;
 
             case 'drop':
                 $tableRef = $useTablePrefix ? "'{{%{$tableName}}}'" : "'{$tableName}'";
-                if (!empty($fields)) {
+                if (! empty($fields)) {
                     // Drop specific columns
                     foreach ($fields as $field) {
                         $columnName = explode(':', $field)[0];
@@ -840,6 +839,7 @@ PHP;
                     // Drop table
                     $content .= $indent . "\$this->dropTable({$tableRef});\n";
                 }
+
                 break;
 
             case 'junction':
@@ -893,6 +893,7 @@ PHP;
                 $content .= $indent . "    'id',\n";
                 $content .= $indent . "    'CASCADE'\n";
                 $content .= $indent . ");\n";
+
                 break;
 
             default:
@@ -920,7 +921,7 @@ PHP;
         if (preg_match('/^enum\((.+)\)$/', $type, $matches)) {
             $enumValues = $matches[1];
             $typeCall = "\$this->string()";
-            
+
             // Add check constraint for enum values after other modifiers
             $checkConstraint = "->check(\"{$name} IN ({$enumValues})\")";
         } elseif (preg_match('/^(\w+)\(([^)]+)\)$/', $type, $matches)) {
@@ -943,9 +944,9 @@ PHP;
                 $modName = $matches[1];
                 $modArg = $matches[2];
                 // Handle string arguments - only add quotes if not already quoted
-                if (!is_numeric($modArg) && $modArg !== 'true' && $modArg !== 'false' && $modArg !== 'null') {
+                if (! is_numeric($modArg) && $modArg !== 'true' && $modArg !== 'false' && $modArg !== 'null') {
                     // Check if argument is already quoted
-                    if (!preg_match('/^[\'"].*[\'"]$/', $modArg)) {
+                    if (! preg_match('/^[\'"].*[\'"]$/', $modArg)) {
                         $modArg = "'{$modArg}'";
                     }
                 }
@@ -984,8 +985,7 @@ PHP;
         bool   $useTablePrefix,
         bool   $onDeleteCascade,
         string $indent
-    ): string
-    {
+    ): string {
         $content = '';
         $tableRef = $useTablePrefix ? "'{{%{$tableName}}}'" : "'{$tableName}'";
         $onDelete = $onDeleteCascade ? 'CASCADE' : 'RESTRICT';
@@ -1035,29 +1035,29 @@ PHP;
         bool    $addForeignKeys,
         array   $indexes = [],
         array   $foreignKeys = []
-    ): string
-    {
+    ): string {
         $content = '';
         $indent = '        ';
 
         switch ($migrationType) {
             case 'create':
                 // Drop foreign keys first if they were added
-                if (!empty($foreignKeys)) {
+                if (! empty($foreignKeys)) {
                     $content .= $this->generateDropForeignKeysExplicit($tableName, $foreignKeys, $indent);
                     $content .= "\n";
                 } elseif ($addForeignKeys) {
                     $content .= $this->generateDropForeignKeys($tableName, $fields, $indent);
                     $content .= "\n";
                 }
-                
+
                 // Drop indexes if they were added
-                if (!empty($indexes)) {
+                if (! empty($indexes)) {
                     $content .= $this->generateDropIndexes($tableName, $indexes, $indent);
                     $content .= "\n";
                 }
-                
+
                 $content .= $indent . "\$this->dropTable('{{%{$tableName}}}');\n";
+
                 break;
 
             case 'add':
@@ -1065,15 +1065,17 @@ PHP;
                     $columnName = explode(':', $field)[0];
                     $content .= $indent . "\$this->dropColumn('{{%{$tableName}}}', '{$columnName}');\n";
                 }
+
                 break;
 
             case 'drop':
-                if (!empty($fields)) {
+                if (! empty($fields)) {
                     // Re-add columns (would need more info in real scenario)
                     $content .= $indent . "// Re-add dropped columns here\n";
                 } else {
                     $content .= $indent . "// Re-create dropped table here\n";
                 }
+
                 break;
 
             case 'junction':
@@ -1093,6 +1095,7 @@ PHP;
 
                 // Drop table
                 $content .= $indent . "\$this->dropTable('{{%{$junctionTableName}}}');\n";
+
                 break;
 
             default:
@@ -1211,10 +1214,10 @@ PHP;
             }
 
             // Validate FK actions
-            if (!in_array($onDelete, $validActions, true)) {
+            if (! in_array($onDelete, $validActions, true)) {
                 $onDelete = 'RESTRICT';
             }
-            if (!in_array($onUpdate, $validActions, true)) {
+            if (! in_array($onUpdate, $validActions, true)) {
                 $onUpdate = 'RESTRICT';
             }
 

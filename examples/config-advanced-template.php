@@ -34,7 +34,7 @@
 require_once __DIR__ . '/vendor/autoload.php';
 
 // Simple array merge function (don't need Yii for this)
-if (!function_exists('mergeYii2Config')) {
+if (! function_exists('mergeYii2Config')) {
     function mergeYii2Config(...$arrays)
     {
         $result = [];
@@ -53,7 +53,7 @@ if (!function_exists('mergeYii2Config')) {
 }
 
 // Helper function to safely load config files
-if (!function_exists('loadConfigIfExists')) {
+if (! function_exists('loadConfigIfExists')) {
     function loadConfigIfExists($path)
     {
         if (file_exists($path)) {
@@ -143,7 +143,7 @@ if ($isBasicTemplate) {
 $loadedConfigs = [];
 foreach ($configFiles as $configFile) {
     $loaded = loadConfigIfExists($configFile);
-    if (!empty($loaded)) {
+    if (! empty($loaded)) {
         $loadedConfigs[] = $loaded;
     }
 }
@@ -160,7 +160,7 @@ fwrite(STDERR, "[MCP Config] Successfully loaded " . count($loadedConfigs) . " c
 $config = mergeYii2Config(...$loadedConfigs);
 
 // Set up Yii2 path aliases for advanced template
-if (!isset($config['aliases'])) {
+if (! isset($config['aliases'])) {
     $config['aliases'] = [];
 }
 
@@ -178,7 +178,7 @@ if ($hasApiDirectory) {
 fwrite(STDERR, "[MCP Config] Path aliases configured: @backend, @frontend, @common, @console\n");
 
 // Ensure Gii module is enabled for MCP server
-if (!isset($config['modules']['gii'])) {
+if (! isset($config['modules']['gii'])) {
     fwrite(STDERR, "[MCP Config] WARNING: Gii module not found in config, adding default configuration\n");
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',

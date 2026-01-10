@@ -3,7 +3,6 @@
 namespace Took\Yii2GiiMCP\Helpers;
 
 use PhpParser\Node;
-use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\NodeFinder;
 use PhpParser\ParserFactory;
@@ -39,7 +38,7 @@ class ComponentAnalyzer
             }
 
             // Check if it's a controller
-            if (!self::isController($class->getName())) {
+            if (! self::isController($class->getName())) {
                 return null;
             }
 
@@ -76,7 +75,7 @@ class ComponentAnalyzer
             }
 
             // Check if it's a model
-            if (!self::isModel($class->getName())) {
+            if (! self::isModel($class->getName())) {
                 return null;
             }
 
@@ -154,12 +153,12 @@ class ComponentAnalyzer
      */
     public static function extractBehaviors(ReflectionClass $class): array
     {
-        if (!$class->hasMethod('behaviors')) {
+        if (! $class->hasMethod('behaviors')) {
             return [];
         }
 
         $behaviors = self::parseMethodReturnValue($class->getMethod('behaviors'));
-        if (!is_array($behaviors)) {
+        if (! is_array($behaviors)) {
             return [];
         }
 
@@ -208,12 +207,12 @@ class ComponentAnalyzer
      */
     public static function extractValidationRules(ReflectionClass $class): array
     {
-        if (!$class->hasMethod('rules')) {
+        if (! $class->hasMethod('rules')) {
             return [];
         }
 
         $rules = self::parseMethodReturnValue($class->getMethod('rules'));
-        if (!is_array($rules)) {
+        if (! is_array($rules)) {
             return [];
         }
 
@@ -228,12 +227,12 @@ class ComponentAnalyzer
      */
     public static function extractScenarios(ReflectionClass $class): array
     {
-        if (!$class->hasMethod('scenarios')) {
+        if (! $class->hasMethod('scenarios')) {
             return [];
         }
 
         $scenarios = self::parseMethodReturnValue($class->getMethod('scenarios'));
-        if (!is_array($scenarios)) {
+        if (! is_array($scenarios)) {
             return [];
         }
 
@@ -262,7 +261,7 @@ class ComponentAnalyzer
         // so we'll extract from public properties and rules
         $properties = $class->getProperties(\ReflectionProperty::IS_PUBLIC);
         foreach ($properties as $property) {
-            if (!$property->isStatic()) {
+            if (! $property->isStatic()) {
                 $attributes[] = $property->getName();
             }
         }
@@ -273,7 +272,7 @@ class ComponentAnalyzer
             if (isset($rule[0])) {
                 $ruleAttributes = is_array($rule[0]) ? $rule[0] : [$rule[0]];
                 foreach ($ruleAttributes as $attr) {
-                    if (is_string($attr) && !in_array($attr, $attributes)) {
+                    if (is_string($attr) && ! in_array($attr, $attributes)) {
                         $attributes[] = $attr;
                     }
                 }
@@ -324,12 +323,13 @@ class ComponentAnalyzer
      */
     public static function extractTableName(ReflectionClass $class): ?string
     {
-        if (!$class->hasMethod('tableName')) {
+        if (! $class->hasMethod('tableName')) {
             return null;
         }
 
         try {
             $result = self::parseMethodReturnValue($class->getMethod('tableName'));
+
             return is_string($result) ? $result : null;
         } catch (Throwable $e) {
             return null;
@@ -346,7 +346,7 @@ class ComponentAnalyzer
     {
         try {
             $fileName = $method->getFileName();
-            if ($fileName === false || !file_exists($fileName)) {
+            if ($fileName === false || ! file_exists($fileName)) {
                 return null;
             }
 
@@ -366,7 +366,7 @@ class ComponentAnalyzer
                 return $node instanceof ClassMethod && (string)$node->name === $methodName;
             });
 
-            if ($methodNode === null || !($methodNode instanceof ClassMethod)) {
+            if ($methodNode === null || ! ($methodNode instanceof ClassMethod)) {
                 return null;
             }
 
@@ -379,7 +379,7 @@ class ComponentAnalyzer
 
             // Try to evaluate the first return statement
             $firstReturn = $returnNodes[0];
-            if ($firstReturn->expr === null) {
+            if (! $firstReturn instanceof Node\Stmt\Return_ || $firstReturn->expr === null) {
                 return null;
             }
 
@@ -414,6 +414,7 @@ class ComponentAnalyzer
                     $result[] = $value;
                 }
             }
+
             return $result;
         }
 
@@ -450,6 +451,7 @@ class ComponentAnalyzer
         if ($node instanceof Node\Expr\ClassConstFetch) {
             $class = $node->class instanceof Node\Name ? $node->class->toString() : 'unknown';
             $const = $node->name instanceof Node\Identifier ? $node->name->toString() : 'unknown';
+
             return $class . '::' . $const;
         }
 
@@ -466,7 +468,7 @@ class ComponentAnalyzer
     public static function getClassFromFile(string $filePath): ?ReflectionClass
     {
         try {
-            if (!file_exists($filePath) || !is_readable($filePath)) {
+            if (! file_exists($filePath) || ! is_readable($filePath)) {
                 return null;
             }
 
@@ -496,7 +498,7 @@ class ComponentAnalyzer
             $fullClassName = $namespace ? $namespace . '\\' . $className : $className;
 
             // Try to load the class
-            if (!class_exists($fullClassName)) {
+            if (! class_exists($fullClassName)) {
                 // Try to include the file (for testing)
                 require_once $filePath;
             }
@@ -596,6 +598,7 @@ class ComponentAnalyzer
                 'default' => $param->isDefaultValueAvailable() ? $param->getDefaultValue() : null,
             ];
         }
+
         return $parameters;
     }
 

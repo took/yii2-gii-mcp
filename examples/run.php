@@ -39,7 +39,7 @@ if ($demoMode) {
                 'protocolVersion' => '2024-11-05',
                 'clientInfo' => [
                     'name' => 'example-client',
-                    'version' => '1.1.0',
+                    'version' => '1.1.1',
                 ],
                 'capabilities' => [],
             ],
@@ -81,9 +81,9 @@ $config = new ServerConfig();
 
 // Validate configuration (only if Yii2 integration is needed)
 // For basic MCP server without tools, this can be skipped
-if (!empty($_ENV['YII2_CONFIG_PATH']) || !empty($_ENV['YII2_APP_PATH'])) {
+if (! empty($_ENV['YII2_CONFIG_PATH']) || ! empty($_ENV['YII2_APP_PATH'])) {
     $errors = $config->validate();
-    if (!empty($errors)) {
+    if (! empty($errors)) {
         fwrite(STDERR, "Configuration errors:\n");
         foreach ($errors as $error) {
             fwrite(STDERR, "  - {$error}\n");

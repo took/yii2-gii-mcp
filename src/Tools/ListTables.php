@@ -74,7 +74,7 @@ class ListTables extends AbstractTool
             $detailed = $this->getOptionalParam($arguments, 'detailed', true);
 
             // Ensure Yii2 is initialized
-            if (!$this->bootstrap->isInitialized()) {
+            if (! $this->bootstrap->isInitialized()) {
                 $this->bootstrap->initialize();
             }
 
@@ -135,7 +135,7 @@ class ListTables extends AbstractTool
                     $tableInfo['primaryKey'] = $tableSchema->primaryKey;
 
                     // Add foreign keys
-                    if (!empty($tableSchema->foreignKeys)) {
+                    if (! empty($tableSchema->foreignKeys)) {
                         $foreignKeys = [];
                         foreach ($tableSchema->foreignKeys as $fk) {
                             $referencedTable = array_shift($fk);
@@ -159,7 +159,7 @@ class ListTables extends AbstractTool
                 $output = $summary . json_encode($tables, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
             } else {
                 // Simple table list
-                $output = $summary . implode("\n", array_map(fn($t) => "- " . $t['name'], $tables));
+                $output = $summary . implode("\n", array_map(fn ($t) => "- " . $t['name'], $tables));
             }
 
             return $this->createResult($output);

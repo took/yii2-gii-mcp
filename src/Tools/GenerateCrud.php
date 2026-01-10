@@ -117,7 +117,7 @@ class GenerateCrud extends AbstractTool
             $preview = $this->getOptionalParam($arguments, 'preview', true);
 
             // Validate model class name
-            if (!ValidationHelper::validateClassName($modelClass)) {
+            if (! ValidationHelper::validateClassName($modelClass)) {
                 return $this->createError(
                     ValidationHelper::getClassNameError($modelClass)
                 );
@@ -126,7 +126,7 @@ class GenerateCrud extends AbstractTool
             // Validate controller class if provided
             if (isset($arguments['controllerClass'])) {
                 $controllerClass = $arguments['controllerClass'];
-                if (!ValidationHelper::validateClassName($controllerClass)) {
+                if (! ValidationHelper::validateClassName($controllerClass)) {
                     return $this->createError(
                         ValidationHelper::getClassNameError($controllerClass)
                     );
@@ -136,7 +136,7 @@ class GenerateCrud extends AbstractTool
             // Validate search model class if provided
             if (isset($arguments['searchModelClass'])) {
                 $searchModelClass = $arguments['searchModelClass'];
-                if (!ValidationHelper::validateClassName($searchModelClass)) {
+                if (! ValidationHelper::validateClassName($searchModelClass)) {
                     return $this->createError(
                         ValidationHelper::getClassNameError($searchModelClass)
                     );
@@ -144,12 +144,12 @@ class GenerateCrud extends AbstractTool
             }
 
             // Ensure Yii2 is initialized
-            if (!$this->bootstrap->isInitialized()) {
+            if (! $this->bootstrap->isInitialized()) {
                 $this->bootstrap->initialize();
             }
 
             // Verify model class exists
-            if (!class_exists($modelClass)) {
+            if (! class_exists($modelClass)) {
                 return $this->createError(
                     "Model class '{$modelClass}' not found",
                     [
@@ -171,7 +171,7 @@ class GenerateCrud extends AbstractTool
             ];
 
             // Remove null values
-            $options = array_filter($options, fn($v) => $v !== null);
+            $options = array_filter($options, fn ($v) => $v !== null);
 
             // Generate or preview
             if ($preview) {
@@ -203,7 +203,7 @@ class GenerateCrud extends AbstractTool
      */
     private function formatGiiResult(array $result, bool $preview): array
     {
-        if (!$result['success']) {
+        if (! $result['success']) {
             // Handle validation errors
             if (isset($result['validationErrors'])) {
                 $errors = [];
@@ -219,7 +219,7 @@ class GenerateCrud extends AbstractTool
 
             // Handle conflicts
             if (isset($result['conflicts'])) {
-                $conflicts = array_map(fn($c) => $c['path'], $result['conflicts']);
+                $conflicts = array_map(fn ($c) => $c['path'], $result['conflicts']);
 
                 return $this->createError(
                     $result['error'] ?? 'File conflicts',
@@ -275,13 +275,13 @@ class GenerateCrud extends AbstractTool
                 }
             }
 
-            if (!empty($controllers)) {
+            if (! empty($controllers)) {
                 $output .= "\nControllers:\n" . implode("\n", $controllers) . "\n";
             }
-            if (!empty($models)) {
+            if (! empty($models)) {
                 $output .= "\nModels:\n" . implode("\n", $models) . "\n";
             }
-            if (!empty($views)) {
+            if (! empty($views)) {
                 $output .= "\nViews:\n" . implode("\n", $views) . "\n";
             }
         }

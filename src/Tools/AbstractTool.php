@@ -70,7 +70,7 @@ abstract class AbstractTool implements ToolInterface
             Constraint::CHECK_MODE_APPLY_DEFAULTS
         );
 
-        if (!$validator->isValid()) {
+        if (! $validator->isValid()) {
             $errors = [];
             foreach ($validator->getErrors() as $error) {
                 $property = $error['property'] ? "[{$error['property']}] " : '';
@@ -163,7 +163,7 @@ abstract class AbstractTool implements ToolInterface
      */
     protected function getRequiredParam(array $arguments, string $name): mixed
     {
-        if (!array_key_exists($name, $arguments)) {
+        if (! array_key_exists($name, $arguments)) {
             throw new InvalidArgumentException("Missing required parameter: {$name}");
         }
 

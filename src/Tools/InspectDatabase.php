@@ -77,7 +77,7 @@ class InspectDatabase extends AbstractTool
     {
         try {
             // Ensure Yii2 is initialized
-            if (!$this->bootstrap->isInitialized()) {
+            if (! $this->bootstrap->isInitialized()) {
                 $this->bootstrap->initialize();
             }
 
@@ -99,7 +99,7 @@ class InspectDatabase extends AbstractTool
             $schema = $db->getSchema();
 
             // Get all table names
-            $tableNames = $schema->getTableNames('', !$includeViews);
+            $tableNames = $schema->getTableNames('', ! $includeViews);
 
             // Filter by pattern if provided
             if ($tablePattern !== null) {

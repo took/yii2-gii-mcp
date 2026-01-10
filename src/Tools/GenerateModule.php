@@ -84,7 +84,7 @@ class GenerateModule extends AbstractTool
             $preview = $this->getOptionalParam($arguments, 'preview', true);
 
             // Validate module ID
-            if (!$this->validateModuleID($moduleID)) {
+            if (! $this->validateModuleID($moduleID)) {
                 return $this->createError(
                     "Invalid module ID '{$moduleID}'. Use lowercase alphanumeric with dashes/underscores."
                 );
@@ -93,7 +93,7 @@ class GenerateModule extends AbstractTool
             // Validate module class if provided
             if (isset($arguments['moduleClass'])) {
                 $moduleClass = $arguments['moduleClass'];
-                if (!ValidationHelper::validateClassName($moduleClass)) {
+                if (! ValidationHelper::validateClassName($moduleClass)) {
                     return $this->createError(
                         ValidationHelper::getClassNameError($moduleClass)
                     );
@@ -101,7 +101,7 @@ class GenerateModule extends AbstractTool
             }
 
             // Ensure Yii2 is initialized
-            if (!$this->bootstrap->isInitialized()) {
+            if (! $this->bootstrap->isInitialized()) {
                 $this->bootstrap->initialize();
             }
 
@@ -153,7 +153,7 @@ class GenerateModule extends AbstractTool
      */
     private function formatGiiResult(array $result, bool $preview): array
     {
-        if (!$result['success']) {
+        if (! $result['success']) {
             // Handle validation errors
             if (isset($result['validationErrors'])) {
                 $errors = [];
@@ -169,7 +169,7 @@ class GenerateModule extends AbstractTool
 
             // Handle conflicts
             if (isset($result['conflicts'])) {
-                $conflicts = array_map(fn($c) => $c['path'], $result['conflicts']);
+                $conflicts = array_map(fn ($c) => $c['path'], $result['conflicts']);
 
                 return $this->createError(
                     $result['error'] ?? 'File conflicts',
@@ -212,7 +212,7 @@ class GenerateModule extends AbstractTool
             }
 
             // Show other files (directories, views, etc.)
-            if (!empty($otherFiles)) {
+            if (! empty($otherFiles)) {
                 $output .= "Additional Files:\n";
                 foreach ($otherFiles as $file) {
                     $output .= "- {$file['relativePath']} ({$file['operation']})\n";
@@ -247,13 +247,13 @@ class GenerateModule extends AbstractTool
                 }
             }
 
-            if (!empty($moduleFiles)) {
+            if (! empty($moduleFiles)) {
                 $output .= "\nModule Class:\n" . implode("\n", $moduleFiles) . "\n";
             }
-            if (!empty($directories)) {
+            if (! empty($directories)) {
                 $output .= "\nDirectories:\n" . implode("\n", $directories) . "\n";
             }
-            if (!empty($otherFiles)) {
+            if (! empty($otherFiles)) {
                 $output .= "\nOther Files:\n" . implode("\n", $otherFiles) . "\n";
             }
         }

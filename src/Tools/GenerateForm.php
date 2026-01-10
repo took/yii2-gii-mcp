@@ -106,7 +106,7 @@ class GenerateForm extends AbstractTool
             $preview = $this->getOptionalParam($arguments, 'preview', true);
 
             // Validate model class name
-            if (!ValidationHelper::validateClassName($modelClass)) {
+            if (! ValidationHelper::validateClassName($modelClass)) {
                 return $this->createError(
                     ValidationHelper::getClassNameError($modelClass)
                 );
@@ -116,17 +116,17 @@ class GenerateForm extends AbstractTool
             $component = $this->getOptionalParam($arguments, 'component');
             $defaultNamespace = $this->getDefaultNamespace($component);
             $defaultViewPath = $this->getDefaultViewPath($component);
-            
+
             // Validate namespace if provided
             $namespace = $this->getOptionalParam($arguments, 'namespace', $defaultNamespace);
-            if (!ValidationHelper::validateNamespace($namespace)) {
+            if (! ValidationHelper::validateNamespace($namespace)) {
                 return $this->createError(
                     ValidationHelper::getNamespaceError($namespace)
                 );
             }
 
             // Ensure Yii2 is initialized
-            if (!$this->bootstrap->isInitialized()) {
+            if (! $this->bootstrap->isInitialized()) {
                 $this->bootstrap->initialize();
             }
 
@@ -143,7 +143,7 @@ class GenerateForm extends AbstractTool
             }
 
             // Remove null values
-            $options = array_filter($options, fn($v) => $v !== null);
+            $options = array_filter($options, fn ($v) => $v !== null);
 
             // Generate or preview
             if ($preview) {
@@ -179,6 +179,7 @@ class GenerateForm extends AbstractTool
         if ($templateType === 'advanced') {
             // For Advanced Template, use component or default to common (shared forms)
             $componentName = $component ?? 'common';
+
             return $componentName . '\\models';
         }
 
@@ -199,6 +200,7 @@ class GenerateForm extends AbstractTool
         if ($templateType === 'advanced') {
             // For Advanced Template, use component or default to frontend
             $componentName = $component ?? 'frontend';
+
             return '@' . $componentName . '/views';
         }
 
@@ -215,7 +217,7 @@ class GenerateForm extends AbstractTool
      */
     private function formatGiiResult(array $result, bool $preview): array
     {
-        if (!$result['success']) {
+        if (! $result['success']) {
             // Handle validation errors
             if (isset($result['validationErrors'])) {
                 $errors = [];
@@ -231,7 +233,7 @@ class GenerateForm extends AbstractTool
 
             // Handle conflicts
             if (isset($result['conflicts'])) {
-                $conflicts = array_map(fn($c) => $c['path'], $result['conflicts']);
+                $conflicts = array_map(fn ($c) => $c['path'], $result['conflicts']);
 
                 return $this->createError(
                     $result['error'] ?? 'File conflicts',

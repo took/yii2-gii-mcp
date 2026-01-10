@@ -17,8 +17,7 @@ class Response extends Message
     public function __construct(
         private readonly string|int $id,
         private readonly mixed      $result
-    )
-    {
+    ) {
     }
 
     /**
@@ -47,11 +46,11 @@ class Response extends Message
     {
         self::validateVersion($data);
 
-        if (!isset($data['id'])) {
+        if (! isset($data['id'])) {
             throw new InvalidArgumentException('Response must have an "id" field');
         }
 
-        if (!array_key_exists('result', $data)) {
+        if (! array_key_exists('result', $data)) {
             throw new InvalidArgumentException('Success response must have a "result" field');
         }
 

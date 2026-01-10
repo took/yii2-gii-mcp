@@ -113,7 +113,7 @@ class GenerateModel extends AbstractTool
             $preview = $this->getOptionalParam($arguments, 'preview', true);
 
             // Validate table name
-            if (!ValidationHelper::validateTableName($tableName)) {
+            if (! ValidationHelper::validateTableName($tableName)) {
                 return $this->createError(
                     ValidationHelper::getTableNameError($tableName)
                 );
@@ -123,7 +123,7 @@ class GenerateModel extends AbstractTool
             // Use dynamic default based on template type (common\models for Advanced, app\models for Basic)
             $defaultNamespace = $this->bootstrap->getDefaultModelNamespace();
             $namespace = $this->getOptionalParam($arguments, 'namespace', $defaultNamespace);
-            if (!ValidationHelper::validateNamespace($namespace)) {
+            if (! ValidationHelper::validateNamespace($namespace)) {
                 return $this->createError(
                     ValidationHelper::getNamespaceError($namespace)
                 );
@@ -132,7 +132,7 @@ class GenerateModel extends AbstractTool
             // Validate model class if provided
             if (isset($arguments['modelClass'])) {
                 $modelClass = $arguments['modelClass'];
-                if (!ValidationHelper::validateClassName($modelClass)) {
+                if (! ValidationHelper::validateClassName($modelClass)) {
                     return $this->createError(
                         ValidationHelper::getClassNameError($modelClass)
                     );
@@ -140,7 +140,7 @@ class GenerateModel extends AbstractTool
             }
 
             // Ensure Yii2 is initialized
-            if (!$this->bootstrap->isInitialized()) {
+            if (! $this->bootstrap->isInitialized()) {
                 $this->bootstrap->initialize();
             }
 
@@ -166,7 +166,7 @@ class GenerateModel extends AbstractTool
             ];
 
             // Remove null values
-            $options = array_filter($options, fn($v) => $v !== null);
+            $options = array_filter($options, fn ($v) => $v !== null);
 
             // Generate or preview
             if ($preview) {
@@ -198,7 +198,7 @@ class GenerateModel extends AbstractTool
      */
     private function formatGiiResult(array $result, bool $preview): array
     {
-        if (!$result['success']) {
+        if (! $result['success']) {
             // Handle validation errors
             if (isset($result['validationErrors'])) {
                 $errors = [];
@@ -214,7 +214,7 @@ class GenerateModel extends AbstractTool
 
             // Handle conflicts
             if (isset($result['conflicts'])) {
-                $conflicts = array_map(fn($c) => $c['path'], $result['conflicts']);
+                $conflicts = array_map(fn ($c) => $c['path'], $result['conflicts']);
 
                 return $this->createError(
                     $result['error'] ?? 'File conflicts',

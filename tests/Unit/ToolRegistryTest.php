@@ -31,8 +31,7 @@ class ToolRegistryTest extends Unit
         string $name,
         string $description = 'Test tool',
         array  $inputSchema = []
-    ): ToolInterface
-    {
+    ): ToolInterface {
         $tool = $this->createMock(ToolInterface::class);
 
         $tool->method('getName')->willReturn($name);

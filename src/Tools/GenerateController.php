@@ -102,7 +102,7 @@ class GenerateController extends AbstractTool
             $preview = $this->getOptionalParam($arguments, 'preview', true);
 
             // Validate controller ID
-            if (!$this->validateControllerID($controllerID)) {
+            if (! $this->validateControllerID($controllerID)) {
                 return $this->createError(
                     "Invalid controller ID '{$controllerID}'. " .
                     "Use lowercase with optional path (e.g., 'user', 'admin/user')."
@@ -113,8 +113,8 @@ class GenerateController extends AbstractTool
             $component = $this->getOptionalParam($arguments, 'component');
             $defaultNamespace = $this->getDefaultNamespace($component);
             $namespace = $this->getOptionalParam($arguments, 'namespace', $defaultNamespace);
-            
-            if (!ValidationHelper::validateNamespace($namespace)) {
+
+            if (! ValidationHelper::validateNamespace($namespace)) {
                 return $this->createError(
                     ValidationHelper::getNamespaceError($namespace)
                 );
@@ -122,14 +122,14 @@ class GenerateController extends AbstractTool
 
             // Validate actions if provided
             $actions = $this->getOptionalParam($arguments, 'actions', 'index');
-            if (!$this->validateActions($actions)) {
+            if (! $this->validateActions($actions)) {
                 return $this->createError(
                     "Invalid actions format. Use comma-separated action IDs (e.g., 'index,view,create')."
                 );
             }
 
             // Ensure Yii2 is initialized
-            if (!$this->bootstrap->isInitialized()) {
+            if (! $this->bootstrap->isInitialized()) {
                 $this->bootstrap->initialize();
             }
 
@@ -141,7 +141,7 @@ class GenerateController extends AbstractTool
             ];
 
             // Remove null values
-            $options = array_filter($options, fn($v) => $v !== null);
+            $options = array_filter($options, fn ($v) => $v !== null);
 
             // Generate or preview
             if ($preview) {
@@ -177,6 +177,7 @@ class GenerateController extends AbstractTool
         if ($templateType === 'advanced') {
             // For Advanced Template, use component-specific namespace
             $componentName = $component ?? 'frontend';
+
             return $componentName . '\\controllers';
         }
 
@@ -207,7 +208,7 @@ class GenerateController extends AbstractTool
         // Actions should be comma-separated action IDs (camelCase allowed)
         $actionList = array_map('trim', explode(',', $actions));
         foreach ($actionList as $action) {
-            if (!preg_match('/^[a-z][a-zA-Z0-9]*$/', $action)) {
+            if (! preg_match('/^[a-z][a-zA-Z0-9]*$/', $action)) {
                 return false;
             }
         }
@@ -224,7 +225,7 @@ class GenerateController extends AbstractTool
      */
     private function formatGiiResult(array $result, bool $preview): array
     {
-        if (!$result['success']) {
+        if (! $result['success']) {
             // Handle validation errors
             if (isset($result['validationErrors'])) {
                 $errors = [];
@@ -240,7 +241,7 @@ class GenerateController extends AbstractTool
 
             // Handle conflicts
             if (isset($result['conflicts'])) {
-                $conflicts = array_map(fn($c) => $c['path'], $result['conflicts']);
+                $conflicts = array_map(fn ($c) => $c['path'], $result['conflicts']);
 
                 return $this->createError(
                     $result['error'] ?? 'File conflicts',

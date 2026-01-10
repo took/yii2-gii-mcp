@@ -54,7 +54,7 @@ class LogReaderHelper
      */
     public static function readLogFile(string $filePath, array $filters = []): array
     {
-        if (!file_exists($filePath) || !is_readable($filePath)) {
+        if (! file_exists($filePath) || ! is_readable($filePath)) {
             return [];
         }
 
@@ -146,7 +146,7 @@ class LogReaderHelper
         }
 
         // Apply category filter
-        if (isset($filters['category']) && !empty($filters['category'])) {
+        if (isset($filters['category']) && ! empty($filters['category'])) {
             $category = $filters['category'];
             if (strpos($category, '*') !== false) {
                 // Wildcard support
@@ -170,13 +170,13 @@ class LogReaderHelper
         }
 
         // Apply search filter
-        if (isset($filters['search']) && !empty($filters['search'])) {
+        if (isset($filters['search']) && ! empty($filters['search'])) {
             $whereClauses[] = 'message LIKE :search';
             $params[':search'] = '%' . $filters['search'] . '%';
         }
 
         // Build WHERE clause
-        if (!empty($whereClauses)) {
+        if (! empty($whereClauses)) {
             $query->setSql(
                 $query->getSql() . ' WHERE ' . implode(' AND ', $whereClauses)
             );
@@ -225,6 +225,7 @@ class LogReaderHelper
         foreach ($possibleNames as $name) {
             try {
                 $db->createCommand("SELECT 1 FROM {{%{$name}}} LIMIT 1")->queryScalar();
+
                 return $name;
             } catch (\Exception $e) {
                 // Table doesn't exist, try next
@@ -252,12 +253,12 @@ class LogReaderHelper
             }
 
             // Filter by category
-            if (isset($filters['category']) && !empty($filters['category'])) {
+            if (isset($filters['category']) && ! empty($filters['category'])) {
                 $category = $filters['category'];
                 if (strpos($category, '*') !== false) {
                     // Wildcard support
                     $pattern = '/^' . str_replace(['\\', '*'], ['\\\\', '.*'], $category) . '$/';
-                    if (!preg_match($pattern, $log['category'])) {
+                    if (! preg_match($pattern, $log['category'])) {
                         continue;
                     }
                 } else {
@@ -286,7 +287,7 @@ class LogReaderHelper
             }
 
             // Filter by search term
-            if (isset($filters['search']) && !empty($filters['search'])) {
+            if (isset($filters['search']) && ! empty($filters['search'])) {
                 $searchTerm = strtolower($filters['search']);
                 $message = strtolower($log['message']);
                 $trace = strtolower($log['trace'] ?? '');
@@ -301,6 +302,7 @@ class LogReaderHelper
 
         // Apply limit
         $limit = $filters['limit'] ?? 100;
+
         return array_slice($filtered, 0, $limit);
     }
 
@@ -369,6 +371,7 @@ class LogReaderHelper
 
         // Apply limit
         $limit = $filters['limit'] ?? 100;
+
         return array_slice($allLogs, 0, $limit);
     }
 }

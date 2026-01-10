@@ -45,7 +45,7 @@ class GiiHelper
         $generator = $this->createModelGenerator($tableName, $options);
 
         // Validate generator
-        if (!$generator->validate()) {
+        if (! $generator->validate()) {
             return $this->formatErrors('Model validation failed', $generator->getErrors());
         }
 
@@ -166,7 +166,7 @@ class GiiHelper
         $generator = $this->createModelGenerator($tableName, $options);
 
         // Validate generator
-        if (!$generator->validate()) {
+        if (! $generator->validate()) {
             return $this->formatErrors('Model validation failed', $generator->getErrors());
         }
 
@@ -175,7 +175,7 @@ class GiiHelper
 
         // Check for conflicts
         $conflicts = $this->checkFileConflicts($files);
-        if (!empty($conflicts)) {
+        if (! empty($conflicts)) {
             return $this->formatConflicts($conflicts);
         }
 
@@ -280,9 +280,9 @@ class GiiHelper
      */
     private function formatGenerateResult(array $results): array
     {
-        $created = array_filter($results, fn($r) => $r['status'] === 'created');
-        $skipped = array_filter($results, fn($r) => $r['status'] === 'skipped');
-        $errors = array_filter($results, fn($r) => $r['status'] === 'error');
+        $created = array_filter($results, fn ($r) => $r['status'] === 'created');
+        $skipped = array_filter($results, fn ($r) => $r['status'] === 'skipped');
+        $errors = array_filter($results, fn ($r) => $r['status'] === 'error');
 
         return [
             'success' => empty($errors),
@@ -310,7 +310,7 @@ class GiiHelper
         $generator = $this->createCrudGenerator($modelClass, $options);
 
         // Validate generator
-        if (!$generator->validate()) {
+        if (! $generator->validate()) {
             return $this->formatErrors('CRUD validation failed', $generator->getErrors());
         }
 
@@ -486,7 +486,7 @@ class GiiHelper
         $generator = $this->createCrudGenerator($modelClass, $options);
 
         // Validate generator
-        if (!$generator->validate()) {
+        if (! $generator->validate()) {
             return $this->formatErrors('CRUD validation failed', $generator->getErrors());
         }
 
@@ -495,7 +495,7 @@ class GiiHelper
 
         // Check for conflicts
         $conflicts = $this->checkFileConflicts($files);
-        if (!empty($conflicts)) {
+        if (! empty($conflicts)) {
             return $this->formatConflicts($conflicts);
         }
 
@@ -520,7 +520,7 @@ class GiiHelper
         $generator = $this->createControllerGenerator($controllerID, $options);
 
         // Validate generator
-        if (!$generator->validate()) {
+        if (! $generator->validate()) {
             return $this->formatErrors('Controller validation failed', $generator->getErrors());
         }
 
@@ -567,7 +567,7 @@ class GiiHelper
         $generator = $this->createControllerGenerator($controllerID, $options);
 
         // Validate generator
-        if (!$generator->validate()) {
+        if (! $generator->validate()) {
             return $this->formatErrors('Controller validation failed', $generator->getErrors());
         }
 
@@ -576,7 +576,7 @@ class GiiHelper
 
         // Check for conflicts
         $conflicts = $this->checkFileConflicts($files);
-        if (!empty($conflicts)) {
+        if (! empty($conflicts)) {
             return $this->formatConflicts($conflicts);
         }
 
@@ -601,7 +601,7 @@ class GiiHelper
         $generator = $this->createFormGenerator($modelClass, $options);
 
         // Validate generator
-        if (!$generator->validate()) {
+        if (! $generator->validate()) {
             return $this->formatErrors('Form validation failed', $generator->getErrors());
         }
 
@@ -652,7 +652,7 @@ class GiiHelper
         $generator = $this->createFormGenerator($modelClass, $options);
 
         // Validate generator
-        if (!$generator->validate()) {
+        if (! $generator->validate()) {
             return $this->formatErrors('Form validation failed', $generator->getErrors());
         }
 
@@ -661,7 +661,7 @@ class GiiHelper
 
         // Check for conflicts
         $conflicts = $this->checkFileConflicts($files);
-        if (!empty($conflicts)) {
+        if (! empty($conflicts)) {
             return $this->formatConflicts($conflicts);
         }
 
@@ -686,7 +686,7 @@ class GiiHelper
         $generator = $this->createModuleGenerator($moduleID, $options);
 
         // Validate generator
-        if (!$generator->validate()) {
+        if (! $generator->validate()) {
             return $this->formatErrors('Module validation failed', $generator->getErrors());
         }
 
@@ -731,7 +731,7 @@ class GiiHelper
         $generator = $this->createModuleGenerator($moduleID, $options);
 
         // Validate generator
-        if (!$generator->validate()) {
+        if (! $generator->validate()) {
             return $this->formatErrors('Module validation failed', $generator->getErrors());
         }
 
@@ -740,7 +740,7 @@ class GiiHelper
 
         // Check for conflicts
         $conflicts = $this->checkFileConflicts($files);
-        if (!empty($conflicts)) {
+        if (! empty($conflicts)) {
             return $this->formatConflicts($conflicts);
         }
 
@@ -766,7 +766,7 @@ class GiiHelper
         $generator = $this->createExtensionGenerator($vendorName, $packageName, $options);
 
         // Validate generator
-        if (!$generator->validate()) {
+        if (! $generator->validate()) {
             return $this->formatErrors('Extension validation failed', $generator->getErrors());
         }
 
@@ -834,7 +834,7 @@ class GiiHelper
         $generator = $this->createExtensionGenerator($vendorName, $packageName, $options);
 
         // Validate generator
-        if (!$generator->validate()) {
+        if (! $generator->validate()) {
             return $this->formatErrors('Extension validation failed', $generator->getErrors());
         }
 
@@ -843,7 +843,7 @@ class GiiHelper
 
         // Check for conflicts
         $conflicts = $this->checkFileConflicts($files);
-        if (!empty($conflicts)) {
+        if (! empty($conflicts)) {
             return $this->formatConflicts($conflicts);
         }
 

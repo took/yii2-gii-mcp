@@ -388,6 +388,10 @@ MIT - See LICENSE file for details.
 
 ## Project Status
 
+**Patch 1.1.1 Released**
+
+Patch 1.1.1 fixed some tests
+
 **Version 1.1.0 Released** 🎉
 
 - ✅ Full MCP protocol implementation (JSON-RPC 2.0 over stdio)
