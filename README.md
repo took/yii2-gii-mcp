@@ -390,7 +390,7 @@ MIT - See LICENSE file for details.
 
 **Patch 1.1.1 Released**
 
-... todo ... describe patch ...
+Patch 1.1.1 fixed some tests
 
 **Version 1.1.0 Released** 🎉
 
