@@ -3,6 +3,7 @@
   "description": "Model Context Protocol (MCP) server for Yii2 Gii scaffolding - enables AI agents to generate models and CRUD interfaces",
   "type": "library",
   "keywords": [
+    "dev",
     "mcp",
     "model-context-protocol",
     "yii2",
