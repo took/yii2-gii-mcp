@@ -19,7 +19,7 @@ components—all through natural language conversations.
 - **Module Scaffolding** - Create complete Yii2 modules with directory structure
 - **Extension Scaffolding** - Generate extension boilerplate with Composer packaging
 - **Migration Management** - List, preview, and execute database migrations with safety confirmations
-- **Project Structure Detection** - Auto-detect template type, applications, modules, and environment configuration
+- **Project Structure Detection** - Auto-detect template type, applications, modules, and environment configuration (supports both standard and alternative naming: frontend/frontpage, backend/backoffice)
 - **Component Inspection** - Analyze controllers, models, and views with detailed metadata extraction
 - **Log Reading** - Read and filter application logs from files and database with advanced filtering
 - **Preview-First Workflow** - Review all code before writing to disk (safety built-in)
@@ -64,6 +64,8 @@ This wizard will:
 - Verify the setup
 
 **That's it!** Restart your IDE/client and you're ready to use it.
+
+> **Note:** The MCP server automatically detects both standard naming (`frontend`, `backend`) and alternative naming conventions (`frontpage`, `backoffice`) in Advanced Template projects. Both are fully supported.
 
 ### 3. Manual Setup (Alternative)
 
@@ -218,7 +220,7 @@ Ask your AI assistant (Firebender, Claude, etc.):
 "Generate a migration to create the table foo with some random fields"
 "Generate a migration to create the table bar with a bar_data text field where each bar has exactly one parent foo"
 "Generate ActiveRecord models for the foo and bar tables using yii2-gii-mcp (in /web or prefered in /common if available)"
-"Create CRUD operations (in the Backend/BackOffice if available) for the foo table using yii2-gii-mcp"
+"Create CRUD operations (in the backend or backoffice if available) for the foo table using yii2-gii-mcp"
 "Update the controller and CRUD views for foo to support the relation to bar ("inline" update of bar_data/insert new bars)."
 ```
 

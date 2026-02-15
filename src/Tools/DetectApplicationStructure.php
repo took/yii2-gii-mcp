@@ -79,7 +79,8 @@ class DetectApplicationStructure extends AbstractTool
                 // Use configured path
                 $basePath = $this->bootstrap->getApp()->getBasePath();
 
-                // For advanced template, get the root directory (parent of common/frontend/backend)
+                // For advanced template, get the root directory
+                // (parent of common/frontend/frontpage/backend/backoffice/api)
                 $templateType = $this->bootstrap->detectTemplateType();
                 if ($templateType !== 'basic') {
                     $basePath = dirname($basePath);
