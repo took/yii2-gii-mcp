@@ -300,12 +300,18 @@ class MigrationHelper
             $tableName = $this->extractTableNameFromMigrationName($name);
             $columns = $this->buildColumnsFromFields($fields);
 
-            $upContent = "        \$this->createTable('{$tableName}', [\n";
+            $upContent = "        \$tableOptions = null;\n";
+            $upContent .= "        if (\$this->db->driverName === 'mysql') {\n";
+            $upContent .= "            // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci\n";
+            $upContent .= "            \$tableOptions = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB';\n";
+            $upContent .= "        }\n\n";
+            $upContent .= "        // Create {$tableName} table\n";
+            $upContent .= "        \$this->createTable('{$tableName}', [\n";
             $upContent .= "            'id' => \$this->primaryKey(),\n";
             foreach ($columns as $column) {
                 $upContent .= "            {$column}\n";
             }
-            $upContent .= "        ]);\n";
+            $upContent .= "        ], \$tableOptions);\n";
 
             $downContent = "        \$this->dropTable('{$tableName}');\n";
         }
@@ -783,6 +789,15 @@ PHP;
         switch ($migrationType) {
             case 'create':
                 $tableRef = $useTablePrefix ? "'{{%{$tableName}}}'" : "'{$tableName}'";
+                
+                // Add table options for MySQL UTF-8 MB4 support
+                $content .= $indent . "\$tableOptions = null;\n";
+                $content .= $indent . "if (\$this->db->driverName === 'mysql') {\n";
+                $content .= $indent . "    // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci\n";
+                $content .= $indent . "    \$tableOptions = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB';\n";
+                $content .= $indent . "}\n\n";
+                
+                $content .= $indent . "// Create {$tableName} table\n";
                 $content .= $indent . "\$this->createTable({$tableRef}, [\n";
                 $content .= $indent . "    'id' => \$this->primaryKey(),\n";
 
@@ -792,7 +807,7 @@ PHP;
                     $content .= $indent . "    {$columnDef}\n";
                 }
 
-                $content .= $indent . "]);\n";
+                $content .= $indent . "], \$tableOptions);\n";
 
                 // Add table comment if provided
                 if ($comment !== null) {
@@ -848,12 +863,20 @@ PHP;
                 $table1IdColumn = rtrim($junctionTable1, 's') . '_id';
                 $table2IdColumn = rtrim($junctionTable2, 's') . '_id';
 
+                // Add table options for MySQL UTF-8 MB4 support
+                $content .= $indent . "\$tableOptions = null;\n";
+                $content .= $indent . "if (\$this->db->driverName === 'mysql') {\n";
+                $content .= $indent . "    // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci\n";
+                $content .= $indent . "    \$tableOptions = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB';\n";
+                $content .= $indent . "}\n\n";
+                
+                $content .= $indent . "// Create junction table\n";
                 $content .= $indent . "\$this->createTable({$tableRef}, [\n";
                 $content .= $indent . "    'id' => \$this->primaryKey(),\n";
                 $content .= $indent . "    '{$table1IdColumn}' => \$this->integer()->notNull(),\n";
                 $content .= $indent . "    '{$table2IdColumn}' => \$this->integer()->notNull(),\n";
                 $content .= $indent . "    'created_at' => \$this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),\n";
-                $content .= $indent . "]);\n\n";
+                $content .= $indent . "], \$tableOptions);\n\n";
 
                 // Add indexes
                 $content .= $indent . "// Creates index for column `{$table1IdColumn}`\n";
