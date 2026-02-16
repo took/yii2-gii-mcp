@@ -351,17 +351,87 @@ class ProjectStructureHelper
             'YII_DEBUG' => null,
         ];
 
-        // Parse YII_ENV using regex
-        if (preg_match("/defined\s*\(\s*'YII_ENV'\s*\)\s*or\s+define\s*\(\s*'YII_ENV'\s*,\s*'([^']+)'\s*\)/", $content, $matches)) {
+        // Parse YII_DEBUG using improved regex (handles both single and double quotes, flexible spacing)
+        if (preg_match("/define\s*\(\s*['\"]YII_DEBUG['\"]\s*,\s*(true|false)\s*\)/i", $content, $matches)) {
+            $result['YII_DEBUG'] = strtolower($matches[1]) === 'true';
+        }
+
+        // Parse YII_ENV using improved regex (handles both single and double quotes)
+        if (preg_match("/define\s*\(\s*['\"]YII_ENV['\"]\s*,\s*['\"]([^'\"]+)['\"]\s*\)/i", $content, $matches)) {
             $result['YII_ENV'] = $matches[1];
         }
 
-        // Parse YII_DEBUG using regex
-        if (preg_match("/defined\s*\(\s*'YII_DEBUG'\s*\)\s*or\s+define\s*\(\s*'YII_DEBUG'\s*,\s*(true|false)\s*\)/", $content, $matches)) {
-            $result['YII_DEBUG'] = $matches[1] === 'true';
+        return $result;
+    }
+
+    /**
+     * Detect YII_DEBUG and YII_ENV constants from all entry points
+     *
+     * @param string $basePath Base path to scan
+     * @return array{entryPoints: array, hasConflicts: bool, conflicts: array} Entry point detection results
+     */
+    public static function detectAllEntryPointConstants(string $basePath): array
+    {
+        $entryPoints = [];
+        $allDebugValues = [];
+        $allEnvValues = [];
+
+        // Entry points to check in priority order
+        $possibleEntryPoints = [
+            ['name' => 'Console', 'path' => $basePath . '/yii'],
+            ['name' => 'Frontend', 'path' => $basePath . '/frontend/web/index.php'],
+            ['name' => 'Frontpage', 'path' => $basePath . '/frontpage/web/index.php'],
+            ['name' => 'Backend', 'path' => $basePath . '/backend/web/index.php'],
+            ['name' => 'Backoffice', 'path' => $basePath . '/backoffice/web/index.php'],
+            ['name' => 'API', 'path' => $basePath . '/api/web/index.php'],
+            ['name' => 'Basic Web', 'path' => $basePath . '/web/index.php'],
+        ];
+
+        foreach ($possibleEntryPoints as $entry) {
+            if (! file_exists($entry['path'])) {
+                continue;
+            }
+
+            $parsed = self::parseIndexPhpFile($entry['path']);
+            if (empty($parsed['YII_ENV']) && $parsed['YII_DEBUG'] === null) {
+                continue;
+            }
+
+            $relativePath = str_replace($basePath . '/', '', $entry['path']);
+
+            $entryPoints[] = [
+                'name' => $entry['name'],
+                'path' => $entry['path'],
+                'relativePath' => $relativePath,
+                'YII_DEBUG' => $parsed['YII_DEBUG'],
+                'YII_ENV' => $parsed['YII_ENV'],
+            ];
+
+            // Collect unique values for conflict detection
+            if ($parsed['YII_DEBUG'] !== null) {
+                $allDebugValues[$parsed['YII_DEBUG'] ? 'true' : 'false'] = true;
+            }
+            if ($parsed['YII_ENV'] !== null) {
+                $allEnvValues[$parsed['YII_ENV']] = true;
+            }
         }
 
-        return $result;
+        // Determine if there are conflicts
+        $hasConflicts = count($allDebugValues) > 1 || count($allEnvValues) > 1;
+
+        $conflicts = [];
+        if (count($allDebugValues) > 1) {
+            $conflicts['YII_DEBUG'] = array_keys($allDebugValues);
+        }
+        if (count($allEnvValues) > 1) {
+            $conflicts['YII_ENV'] = array_keys($allEnvValues);
+        }
+
+        return [
+            'entryPoints' => $entryPoints,
+            'hasConflicts' => $hasConflicts,
+            'conflicts' => $conflicts,
+        ];
     }
 
     /**

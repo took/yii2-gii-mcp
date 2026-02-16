@@ -43,9 +43,10 @@ class DetectApplicationStructure extends AbstractTool
     public function getDescription(): string
     {
         return 'Auto-detect Yii2 project structure including template type (Basic/Advanced/Advanced+API), ' .
-            'available applications, modules, and environment configuration. Analyzes the init system ' .
-            'and compares index.php files with environment templates. This is a read-only operation ' .
-            'that helps you understand your project organization.';
+            'available applications, modules, and environment configuration. Detects YII_DEBUG and YII_ENV ' .
+            'constants from all entry points (console, web, API) and compares them to identify any conflicts. ' .
+            'Analyzes the init system and compares index.php files with environment templates. This is a ' .
+            'read-only operation that helps you understand your project organization and configuration.';
     }
 
     /**
@@ -125,6 +126,7 @@ class DetectApplicationStructure extends AbstractTool
             'basePath' => $basePath,
             'applications' => [],
             'environments' => ProjectStructureHelper::detectEnvironments($basePath),
+            'entryPointConstants' => ProjectStructureHelper::detectAllEntryPointConstants($basePath),
         ];
 
         // Find applications
@@ -229,6 +231,31 @@ class DetectApplicationStructure extends AbstractTool
                     $output .= "    - {$module['id']} ({$module['path']})\n";
                 }
             }
+        }
+
+        // Entry Points Comparison
+        $output .= "\n\nEntry Points - YII_DEBUG and YII_ENV Detection:\n";
+        $output .= str_repeat('-', 50) . "\n";
+
+        if (! empty($structure['entryPointConstants']['entryPoints'])) {
+            foreach ($structure['entryPointConstants']['entryPoints'] as $entry) {
+                $debugStr = $entry['YII_DEBUG'] !== null ? ($entry['YII_DEBUG'] ? 'true' : 'false') : 'not set';
+                $envStr = $entry['YII_ENV'] !== null ? "'{$entry['YII_ENV']}'" : 'not set';
+                $output .= "{$entry['name']} ({$entry['relativePath']}):\n";
+                $output .= "  YII_DEBUG={$debugStr}, YII_ENV={$envStr}\n";
+            }
+
+            // Show conflict warning if detected
+            if ($structure['entryPointConstants']['hasConflicts']) {
+                $output .= "\n⚠ WARNING: Different constants detected across entry points!\n";
+                foreach ($structure['entryPointConstants']['conflicts'] as $constant => $values) {
+                    $output .= "  {$constant}: " . count($values) . " different values (" . implode(', ', $values) . ")\n";
+                }
+            } else {
+                $output .= "\nStatus: All entry points match ✓\n";
+            }
+        } else {
+            $output .= "No entry points found or constants not detected\n";
         }
 
         // Environments
