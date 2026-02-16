@@ -67,6 +67,10 @@ if (! function_exists('loadConfigIfExists')) {
     }
 }
 
+// Set common constants
+defined('YII_DEBUG') or define('YII_DEBUG', false);
+defined('YII_ENV') or define('YII_ENV', 'mcp');
+
 // Detect Yii2 template type
 $isBasicTemplate = is_dir(__DIR__ . '/app') && is_dir(__DIR__ . '/config');
 $isAdvancedTemplate = is_dir(__DIR__ . '/common') && is_dir(__DIR__ . '/console');
