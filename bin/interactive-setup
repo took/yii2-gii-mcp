@@ -207,7 +207,7 @@ switch ($clientChoice) {
         // Project-specific Firebender config
         printInfo("Creating project-specific Firebender configuration...");
 
-        $firebenderConfigPath = $projectRoot . '/.firebender/firebender.json';
+        $firebenderConfigPath = $projectRoot . '/firebender.json';
         $firebenderDir = dirname($firebenderConfigPath);
 
         if (!is_dir($firebenderDir)) {
