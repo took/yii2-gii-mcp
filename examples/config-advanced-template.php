@@ -67,9 +67,124 @@ if (! function_exists('loadConfigIfExists')) {
     }
 }
 
-// Set common constants
-defined('YII_DEBUG') or define('YII_DEBUG', false);
-defined('YII_ENV') or define('YII_ENV', 'mcp');
+// Helper function to detect YII_DEBUG and YII_ENV from entry point files
+if (! function_exists('detectYiiConstantsFromFile')) {
+    /**
+     * Detect YII_DEBUG and YII_ENV constants from an entry point file.
+     *
+     * @param string $filepath Path to the entry point file
+     * @return array|null Array with 'debug' and 'env' keys, or null if file doesn't exist
+     */
+    function detectYiiConstantsFromFile($filepath)
+    {
+        if (! file_exists($filepath)) {
+            return null;
+        }
+
+        $content = file_get_contents($filepath);
+        $result = [];
+
+        // Detect YII_DEBUG - match: defined('YII_DEBUG') or define('YII_DEBUG', true/false);
+        if (preg_match("/define\s*\(\s*['\"]YII_DEBUG['\"]\s*,\s*(true|false)\s*\)/i", $content, $matches)) {
+            $result['debug'] = strtolower($matches[1]) === 'true';
+        }
+
+        // Detect YII_ENV - match: defined('YII_ENV') or define('YII_ENV', 'dev');
+        if (preg_match("/define\s*\(\s*['\"]YII_ENV['\"]\s*,\s*['\"]([^'\"]+)['\"]\s*\)/i", $content, $matches)) {
+            $result['env'] = $matches[1];
+        }
+
+        return ! empty($result) ? $result : null;
+    }
+}
+
+// Helper function to detect constants from all entry points
+if (! function_exists('detectYiiConstantsFromEntryPoints')) {
+    /**
+     * Detect YII_DEBUG and YII_ENV from entry points in priority order.
+     *
+     * @return array Array with 'debug' and 'env' keys
+     */
+    function detectYiiConstantsFromEntryPoints()
+    {
+        // Default values if nothing is detected
+        $defaults = ['debug' => false, 'env' => 'mcp'];
+
+        // Entry points in priority order
+        $entryPoints = [
+            'Console' => __DIR__ . '/yii',
+            'Basic Web' => __DIR__ . '/web/index.php',
+            'Frontend' => __DIR__ . '/frontend/web/index.php',
+            'Frontpage' => __DIR__ . '/frontpage/web/index.php',
+            'Backend' => __DIR__ . '/backend/web/index.php',
+            'Backoffice' => __DIR__ . '/backoffice/web/index.php',
+            'API' => __DIR__ . '/api/web/index.php',
+        ];
+
+        $allDetected = [];
+        $firstDetected = null;
+
+        fwrite(STDERR, "[MCP Config] Detecting YII_DEBUG and YII_ENV from entry points...\n");
+
+        foreach ($entryPoints as $name => $path) {
+            $detected = detectYiiConstantsFromFile($path);
+            if ($detected !== null) {
+                $allDetected[$name] = [
+                    'path' => $path,
+                    'constants' => $detected,
+                ];
+
+                if ($firstDetected === null) {
+                    $firstDetected = ['name' => $name, 'constants' => $detected];
+                }
+
+                $debugStr = isset($detected['debug']) ? ($detected['debug'] ? 'true' : 'false') : 'not set';
+                $envStr = isset($detected['env']) ? "'{$detected['env']}'" : 'not set';
+                fwrite(STDERR, "[MCP Config]   $name: YII_DEBUG=$debugStr, YII_ENV=$envStr\n");
+            }
+        }
+
+        if (empty($allDetected)) {
+            fwrite(STDERR, "[MCP Config] No constants detected in entry points, using defaults: YII_DEBUG=false, YII_ENV='mcp'\n");
+
+            return $defaults;
+        }
+
+        // Check if values differ across entry points
+        if (count($allDetected) > 1) {
+            $hasConflict = false;
+            $firstDebug = $firstDetected['constants']['debug'] ?? null;
+            $firstEnv = $firstDetected['constants']['env'] ?? null;
+
+            foreach ($allDetected as $data) {
+                $debug = $data['constants']['debug'] ?? null;
+                $env = $data['constants']['env'] ?? null;
+
+                if (($debug !== null && $firstDebug !== null && $debug !== $firstDebug) ||
+                    ($env !== null && $firstEnv !== null && $env !== $firstEnv)) {
+                    $hasConflict = true;
+                    break;
+                }
+            }
+
+            if ($hasConflict) {
+                fwrite(STDERR, "[MCP Config] WARNING: Different constants detected across entry points!\n");
+            }
+        }
+
+        // Use first detected values, merge with defaults for any missing values
+        $result = array_merge($defaults, $firstDetected['constants']);
+        $debugStr = $result['debug'] ? 'true' : 'false';
+        fwrite(STDERR, "[MCP Config] Using: YII_DEBUG=$debugStr, YII_ENV='{$result['env']}' (from {$firstDetected['name']})\n");
+
+        return $result;
+    }
+}
+
+// Detect and set common constants
+$detectedConstants = detectYiiConstantsFromEntryPoints();
+defined('YII_DEBUG') or define('YII_DEBUG', $detectedConstants['debug']);
+defined('YII_ENV') or define('YII_ENV', $detectedConstants['env']);
 
 // Detect Yii2 template type
 $isBasicTemplate = is_dir(__DIR__ . '/app') && is_dir(__DIR__ . '/config');
