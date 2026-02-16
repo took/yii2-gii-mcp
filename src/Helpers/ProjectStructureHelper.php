@@ -60,7 +60,8 @@ class ProjectStructureHelper
             }
         } else {
             // Advanced template - scan for common application directories
-            $possibleApps = ['frontend', 'backend', 'console', 'api'];
+            // Support both standard and alternative naming conventions
+            $possibleApps = ['frontend', 'frontpage', 'backend', 'backoffice', 'console', 'api'];
 
             foreach ($possibleApps as $appName) {
                 $appPath = $basePath . '/' . $appName;
@@ -273,10 +274,12 @@ class ProjectStructureHelper
      */
     public static function detectCurrentEnvironment(string $basePath): ?array
     {
-        // Paths to check for index files
+        // Paths to check for index files (support both standard and alternative naming)
         $indexPaths = [
             'frontend/web/index.php',
+            'frontpage/web/index.php',
             'backend/web/index.php',
+            'backoffice/web/index.php',
             'api/web/index.php',
         ];
 
@@ -425,7 +428,9 @@ class ProjectStructureHelper
             $basePath . '/config',
             $basePath . '/common/config',
             $basePath . '/frontend/config',
+            $basePath . '/frontpage/config',
             $basePath . '/backend/config',
+            $basePath . '/backoffice/config',
             $basePath . '/console/config',
             $basePath . '/api/config',
         ];

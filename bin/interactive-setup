@@ -108,7 +108,9 @@ $isBasicTemplate = is_dir($projectRoot . '/app') && is_dir($projectRoot . '/conf
 $isAdvancedTemplate = is_dir($projectRoot . '/common') && is_dir($projectRoot . '/console');
 $hasApiDirectory = is_dir($projectRoot . '/api');
 $hasFrontend = is_dir($projectRoot . '/frontend');
+$hasFrontpage = is_dir($projectRoot . '/frontpage');
 $hasBackend = is_dir($projectRoot . '/backend');
+$hasBackoffice = is_dir($projectRoot . '/backoffice');
 
 echo "Template type: ";
 if ($isBasicTemplate) {
@@ -117,7 +119,9 @@ if ($isBasicTemplate) {
     echo Colors::GREEN . "Advanced Template";
     $parts = [];
     if ($hasFrontend) $parts[] = "frontend";
+    if ($hasFrontpage) $parts[] = "frontpage";
     if ($hasBackend) $parts[] = "backend";
+    if ($hasBackoffice) $parts[] = "backoffice";
     if ($hasApiDirectory) $parts[] = "api";
     if (!empty($parts)) {
         echo " (" . implode(", ", $parts) . ")";

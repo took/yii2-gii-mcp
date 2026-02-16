@@ -105,7 +105,7 @@ Yii2 Gii for automated scaffolding and code generation.
         - List pretty URL rules
         - Show route parameters and defaults
     - Input schema:
-        - `application` (optional): Application name (frontend/backend/console)
+        - `application` (optional): Application name (frontend/backend/frontpage/backoffice/console/api)
         - `pattern` (optional): Filter routes by pattern
         - `testUrl` (optional): Test URL parsing
         - `testRoute` (optional): Test URL creation
@@ -215,7 +215,7 @@ Yii2 Gii for automated scaffolding and code generation.
         - **Models**: List ActiveRecord models, form models with attributes, rules, relations
         - **Views**: List view files organized by controller
     - Input schema:
-        - `application` (optional): Application name (frontend/backend/console/api)
+        - `application` (optional): Application name (frontend/backend/frontpage/backoffice/console/api)
         - `module` (optional): Module name within application
         - `componentType` (optional): Filter by type (controllers/models/views/all)
         - `includeDetails` (default: true): Include detailed metadata

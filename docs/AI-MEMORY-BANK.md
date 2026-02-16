@@ -626,8 +626,8 @@ Generate model in app/models (Basic Template):
     },
     "component": {
       "type": "string",
-      "enum": ["frontend", "backend", "api", "common"],
-      "description": "For Advanced Template: which component to generate CRUD into. If not specified, auto-detects from model namespace or defaults to frontend."
+      "enum": ["frontend", "frontpage", "backend", "backoffice", "api", "common"],
+      "description": "For Advanced Template: which component to generate CRUD into. Supports both standard (frontend/backend) and alternative naming (frontpage/backoffice). If not specified, auto-detects from model namespace or defaults to frontend."
     },
     "controllerClass": {
       "type": "string",
@@ -1490,7 +1490,7 @@ Examples:
   "basePath": "/path/to/project",
   "applications": [
     {
-      "name": "frontend|backend|console|api|app",
+      "name": "frontend|frontpage|backend|backoffice|console|api|app",
       "path": "/full/path",
       "type": "web|console|api",
       "hasWeb": true,
@@ -2115,8 +2115,8 @@ $baseDir = dirname(__DIR__);
 $configFiles = [];
 $componentsDir = null;
 
-// Check for Advanced Template
-if (is_dir($baseDir . '/common') && is_dir($baseDir . '/frontend')) {
+// Check for Advanced Template (supports both standard and alternative naming)
+if (is_dir($baseDir . '/common') && (is_dir($baseDir . '/frontend') || is_dir($baseDir . '/frontpage'))) {
     $configFiles = [
         $baseDir . '/common/config/main.php',
         $baseDir . '/common/config/main-local.php',
@@ -2463,10 +2463,19 @@ The bootstrap automatically detects which Yii2 template is being used:
 - **Advanced Template**: Detected by presence of `/common` and `/console` directories
 - **Basic Template**: Detected by presence of `/app` and `/config` directories
 
+**Alternative Naming Support**:
+
+The MCP server fully supports both standard and alternative naming conventions in Advanced Template:
+
+- **Standard**: `frontend`, `backend` (traditional Yii2 naming)
+- **Alternative**: `frontpage`, `backoffice` (custom project naming)
+
+Both conventions are automatically detected and handled correctly. When both exist, standard names take priority.
+
 **Smart Defaults Based on Template Type**:
 
 - **Models**: `common\models` for Advanced Template, `app\models` for Basic Template
-- **Controllers**: `frontend\controllers` for Advanced Template, `app\controllers` for Basic Template
+- **Controllers**: `frontend\controllers` (or `frontpage\controllers`) for Advanced Template, `app\controllers` for Basic Template
 - **Forms**: Default to `common\models` for Advanced (shared forms), `app\models` for Basic
 
 This detection is used across all code generation tools (`generate-model`, `generate-crud`, `generate-controller`, `generate-form`) to provide appropriate defaults without requiring explicit configuration.

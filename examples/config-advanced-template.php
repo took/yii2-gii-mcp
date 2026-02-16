@@ -9,7 +9,7 @@
  *
  * Supported Templates:
  * - Basic Template: Single /app directory with /config
- * - Advanced Template: /common, /console, /frontend, /backend directories
+ * - Advanced Template: /common, /console, /frontend or /frontpage, /backend or /backoffice directories
  * - Advanced + API: Advanced template with additional /api directory
  *
  * Usage:
@@ -76,7 +76,9 @@ $isBasicTemplate = is_dir(__DIR__ . '/app') && is_dir(__DIR__ . '/config');
 $isAdvancedTemplate = is_dir(__DIR__ . '/common') && is_dir(__DIR__ . '/console');
 $hasApiDirectory = is_dir(__DIR__ . '/api');
 $hasFrontend = is_dir(__DIR__ . '/frontend');
+$hasFrontpage = is_dir(__DIR__ . '/frontpage');
 $hasBackend = is_dir(__DIR__ . '/backend');
+$hasBackoffice = is_dir(__DIR__ . '/backoffice');
 
 fwrite(STDERR, "[MCP Config] Detecting Yii2 template structure...\n");
 
@@ -111,18 +113,26 @@ if ($isBasicTemplate) {
     $configFiles[] = __DIR__ . '/console/config/main.php';
     $configFiles[] = __DIR__ . '/console/config/main-local.php';
 
-    // Load frontend config if exists
+    // Load frontend or frontpage config if exists
     if ($hasFrontend) {
         fwrite(STDERR, "[MCP Config] Including: frontend\n");
         $configFiles[] = __DIR__ . '/frontend/config/main.php';
         $configFiles[] = __DIR__ . '/frontend/config/main-local.php';
+    } elseif ($hasFrontpage) {
+        fwrite(STDERR, "[MCP Config] Including: frontpage\n");
+        $configFiles[] = __DIR__ . '/frontpage/config/main.php';
+        $configFiles[] = __DIR__ . '/frontpage/config/main-local.php';
     }
 
-    // Load backend config if exists
+    // Load backend or backoffice config if exists
     if ($hasBackend) {
         fwrite(STDERR, "[MCP Config] Including: backend\n");
         $configFiles[] = __DIR__ . '/backend/config/main.php';
         $configFiles[] = __DIR__ . '/backend/config/main-local.php';
+    } elseif ($hasBackoffice) {
+        fwrite(STDERR, "[MCP Config] Including: backoffice\n");
+        $configFiles[] = __DIR__ . '/backoffice/config/main.php';
+        $configFiles[] = __DIR__ . '/backoffice/config/main-local.php';
     }
 
     // Load API config if exists
@@ -168,10 +178,22 @@ if (! isset($config['aliases'])) {
     $config['aliases'] = [];
 }
 
-// Add path aliases for backend, frontend, common, and console
+// Add path aliases for backend/backoffice, frontend/frontpage, common, and console
 // This is crucial for class autoloading to work properly
-$config['aliases']['@backend'] = __DIR__ . '/backend';
-$config['aliases']['@frontend'] = __DIR__ . '/frontend';
+if ($hasBackend) {
+    $config['aliases']['@backend'] = __DIR__ . '/backend';
+} elseif ($hasBackoffice) {
+    $config['aliases']['@backend'] = __DIR__ . '/backoffice';
+    $config['aliases']['@backoffice'] = __DIR__ . '/backoffice';
+}
+
+if ($hasFrontend) {
+    $config['aliases']['@frontend'] = __DIR__ . '/frontend';
+} elseif ($hasFrontpage) {
+    $config['aliases']['@frontend'] = __DIR__ . '/frontpage';
+    $config['aliases']['@frontpage'] = __DIR__ . '/frontpage';
+}
+
 $config['aliases']['@common'] = __DIR__ . '/common';
 $config['aliases']['@console'] = __DIR__ . '/console';
 
@@ -179,7 +201,21 @@ if ($hasApiDirectory) {
     $config['aliases']['@api'] = __DIR__ . '/api';
 }
 
-fwrite(STDERR, "[MCP Config] Path aliases configured: @backend, @frontend, @common, @console\n");
+$aliases = ['@common', '@console'];
+if ($hasBackend) {
+    $aliases[] = '@backend';
+} elseif ($hasBackoffice) {
+    $aliases[] = '@backoffice (@backend)';
+}
+if ($hasFrontend) {
+    $aliases[] = '@frontend';
+} elseif ($hasFrontpage) {
+    $aliases[] = '@frontpage (@frontend)';
+}
+if ($hasApiDirectory) {
+    $aliases[] = '@api';
+}
+fwrite(STDERR, "[MCP Config] Path aliases configured: " . implode(', ', $aliases) . "\n");
 
 // Ensure Gii module is enabled for MCP server
 if (! isset($config['modules']['gii'])) {

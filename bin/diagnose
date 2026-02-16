@@ -66,7 +66,9 @@ if ($isBasic) {
 
     $parts = [];
     if (is_dir($projectRoot . '/frontend')) $parts[] = "frontend";
+    if (is_dir($projectRoot . '/frontpage')) $parts[] = "frontpage";
     if (is_dir($projectRoot . '/backend')) $parts[] = "backend";
+    if (is_dir($projectRoot . '/backoffice')) $parts[] = "backoffice";
     if (is_dir($projectRoot . '/api')) $parts[] = "api";
 
     if (!empty($parts)) {

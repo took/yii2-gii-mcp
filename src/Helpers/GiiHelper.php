@@ -385,7 +385,7 @@ class GiiHelper
      * Detect component from model class namespace
      *
      * @param string $modelClass Model class name
-     * @return string Component name (frontend/backend/api/common, defaults to frontend)
+     * @return string Component name (frontend/frontpage/backend/backoffice/api/common, defaults to frontend)
      */
     private function detectComponentFromModel(string $modelClass): string
     {
@@ -395,13 +395,21 @@ class GiiHelper
             return 'frontend';
         }
 
-        // Check if model is in specific component
+        // Check if model is in specific component (support both standard and alternative naming)
         if (str_starts_with($modelClass, 'frontend\\models\\')) {
             return 'frontend';
         }
 
+        if (str_starts_with($modelClass, 'frontpage\\models\\')) {
+            return 'frontpage';
+        }
+
         if (str_starts_with($modelClass, 'backend\\models\\')) {
             return 'backend';
+        }
+
+        if (str_starts_with($modelClass, 'backoffice\\models\\')) {
+            return 'backoffice';
         }
 
         if (str_starts_with($modelClass, 'api\\models\\')) {
