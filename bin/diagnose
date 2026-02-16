@@ -218,8 +218,8 @@ if ($hasConfig && isset($loadedConfig)) {
 section("Firebender Configuration");
 
 $firebenderPaths = [
-        $projectRoot . '/.firebender/firebender.json' => 'Project-specific',
-        (getenv('HOME') ?: getenv('USERPROFILE')) . '/.firebender/firebender.json' => 'Global'
+        $projectRoot . '/firebender.json' => 'Project-specific',
+        (getenv('HOME') ?: getenv('USERPROFILE')) . '/firebender.json' => 'Global'
 ];
 
 $foundFirebender = false;

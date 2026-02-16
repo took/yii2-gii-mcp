@@ -89,7 +89,7 @@ echo "config-mcp.php" >> .gitignore
 
 **For Firebender (Global - recommended):**
 
-Edit `~/.firebender/firebender.json`:
+Edit `~/firebender.json`:
 
 ```json
 {
@@ -324,7 +324,7 @@ confirmations** for all operations.
 
 ### Firebender doesn't see MCP server
 
-1. Verify `~/.firebender/firebender.json` exists and has correct JSON syntax
+1. Verify `~/firebender.json` exists and has correct JSON syntax
 2. Completely restart PhpStorm (not just close window)
 3. Check logs: Help → Show Log in Files
 

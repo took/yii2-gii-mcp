@@ -19,7 +19,7 @@ Example configurations for using yii2-gii-mcp with Docker Desktop.
 1. **Copy Firebender config:**
 
 ```bash
-# Merge content from firebender-host.json into ~/.firebender/firebender.json
+# Merge content from firebender-host.json into ~/firebender.json
 ```
 
 2. **Create MCP config:**
@@ -44,7 +44,7 @@ chmod +x ../../bin/yii2-gii-mcp-docker
 2. **Copy Firebender config:**
 
 ```bash
-# Merge content from firebender-docker.json into ~/.firebender/firebender.json
+# Merge content from firebender-docker.json into ~/firebender.json
 ```
 
 3. **Create MCP config in container:**

@@ -2174,7 +2174,7 @@ The MCP server works with any MCP-compatible client. Configuration involves spec
 
 ### Firebender (PhpStorm) - Global Setup (Recommended)
 
-**File**: `~/.firebender/firebender.json`
+**File**: `~/firebender.json`
 
 **Configuration**:
 
@@ -2214,7 +2214,7 @@ Each Yii2 project only needs:
 
 ### Firebender - Project-Specific Setup
 
-**File**: `.firebender/firebender.json` (in project root)
+**File**: `firebender.json` (in project root)
 
 **Configuration**: Same as global, but scoped to project only.
 
@@ -2782,8 +2782,8 @@ php vendor/took/yii2-gii-mcp/bin/interactive-setup
     - Shows sample table names
 
 6. **Firebender Configuration**
-    - Checks global config (`~/.firebender/firebender.json`)
-    - Checks local config (`.firebender/firebender.json`)
+    - Checks global config (`~/firebender.json`)
+    - Checks local config (`firebender.json`)
     - Validates JSON syntax
     - Verifies yii2-gii server entry
 
@@ -3456,7 +3456,7 @@ php vendor/took/yii2-gii-mcp/bin/interactive-setup
 
 **Causes and Solutions**:
 
-1. **Path incorrect**: Verify paths in `~/.firebender/firebender.json`
+1. **Path incorrect**: Verify paths in `~/firebender.json`
    ```bash
    ls -la vendor/took/yii2-gii-mcp/bin/yii2-gii-mcp
    ls -la config-mcp.php
@@ -3464,7 +3464,7 @@ php vendor/took/yii2-gii-mcp/bin/interactive-setup
 
 2. **JSON syntax error**: Validate JSON:
    ```bash
-   cat ~/.firebender/firebender.json | python -m json.tool
+   cat ~/firebender.json | python -m json.tool
    ```
 
 3. **PhpStorm not restarted**: Completely restart PhpStorm (File → Exit).

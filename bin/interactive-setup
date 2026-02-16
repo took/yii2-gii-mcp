@@ -264,7 +264,7 @@ switch ($clientChoice) {
         printInfo("Configuring global Firebender settings...");
 
         $homeDir = getenv('HOME') ?: getenv('USERPROFILE');
-        $globalFirebenderConfig = $homeDir . '/.firebender/firebender.json';
+        $globalFirebenderConfig = $homeDir . '/firebender.json';
         $globalFirebenderDir = dirname($globalFirebenderConfig);
 
         if (!is_dir($globalFirebenderDir)) {

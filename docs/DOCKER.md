@@ -15,7 +15,7 @@ composer require took/yii2-gii-mcp
 php vendor/took/yii2-gii-mcp/bin/interactive-setup
 
 # 3. Configure Firebender (one-time setup)
-# Edit ~/.firebender/firebender.json
+# Edit ~/firebender.json
 # See configuration below
 
 # 4. Restart PhpStorm/IDE
@@ -185,7 +185,7 @@ return [
 
 #### 3. Configure Firebender
 
-Edit `~/.firebender/firebender.json`:
+Edit `~/firebender.json`:
 
 ```json
 {
@@ -276,7 +276,7 @@ chmod +x bin/yii2-gii-mcp-docker
 
 #### 4. Configure Firebender
 
-Edit `~/.firebender/firebender.json`:
+Edit `~/firebender.json`:
 
 ```json
 {
